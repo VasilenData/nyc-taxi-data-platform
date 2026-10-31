@@ -1,0 +1,90 @@
+version: 2
+
+models:
+  - name: fct_trips
+    description: One row per valid yellow-taxi trip with zone names, duration and speed. Contract enforced, so a type or column change fails the build.
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: trip_id
+        data_type: varchar
+        data_tests: [not_null]
+      - name: source_month
+        data_type: varchar
+        data_tests: [not_null]
+      - name: pickup_at
+        data_type: timestamp
+        data_tests: [not_null]
+      - name: dropoff_at
+        data_type: timestamp
+      - name: pickup_date
+        data_type: date
+      - name: pickup_hour
+        data_type: integer
+        data_tests:
+          - accepted_range: {arguments: {min_value: 0, max_value: 23}}
+      - name: pickup_dow
+        data_type: integer
+        data_tests:
+          - accepted_range: {arguments: {min_value: 1, max_value: 7}}
+      - name: pickup_zone_id
+        data_type: integer
+        data_tests:
+          - relationships:
+              arguments: {to: ref('taxi_zone_lookup'), field: LocationID}
+      - name: dropoff_zone_id
+        data_type: integer
+        data_tests:
+          - relationships:
+              arguments: {to: ref('taxi_zone_lookup'), field: LocationID}
+      - name: pickup_borough
+        data_type: varchar
+      - name: pickup_zone
+        data_type: varchar
+      - name: dropoff_borough
+        data_type: varchar
+      - name: passenger_count
+        data_type: double
+      - name: distance_miles
+        data_type: double
+        data_tests:
+          - accepted_range: {arguments: {min_value: 0, max_value: 200, inclusive: false}}
+      - name: duration_min
+        data_type: double
+        data_tests:
+          - accepted_range: {arguments: {min_value: 0, max_value: 360, inclusive: false}}
+      - name: avg_speed_mph
+        data_type: double
+      - name: fare_amount
+        data_type: double
+        data_tests:
+          - accepted_range: {arguments: {min_value: 0}}
+      - name: tip_amount
+        data_type: double
+      - name: total_amount
+        data_type: double
+        data_tests:
+          - accepted_range: {arguments: {min_value: 0, inclusive: false}}
+      - name: tip_pct
+        data_type: double
+
+  - name: mart_daily_borough
+    columns:
+      - name: pickup_date
+        data_tests: [not_null]
+      - name: trips
+        data_tests:
+          - accepted_range: {arguments: {min_value: 1}}
+
+  - name: mart_hourly_demand
+    columns:
+      - name: trips
+        data_tests:
+          - accepted_range: {arguments: {min_value: 1}}
+
+  - name: mart_data_quality
+    columns:
+      - name: raw_rows
+        data_tests:
+          - accepted_range: {arguments: {min_value: 1}}
