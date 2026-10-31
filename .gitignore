@@ -1,0 +1,10 @@
+data/raw/
+data/*.duckdb
+data/*.duckdb.wal
+dbt/target/
+dbt/logs/
+.dagster/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+dagster_home/

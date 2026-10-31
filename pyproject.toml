@@ -1,0 +1,8 @@
+[project]
+name = "nyc-taxi-data-platform"
+version = "1.0.0"
+requires-python = ">=3.10"
+
+[tool.dagster]
+module_name = "taxi_platform.definitions"
+project_name = "taxi_platform"

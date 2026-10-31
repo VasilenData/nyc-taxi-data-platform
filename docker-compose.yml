@@ -1,0 +1,14 @@
+services:
+  platform:
+    build: .
+    ports: ["3000:3000"]
+    volumes:
+      - warehouse:/app/data
+      - dagster_home:/app/dagster_home
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:3000/server_info')"]
+      interval: 15s
+      retries: 5
+volumes:
+  warehouse:
+  dagster_home:

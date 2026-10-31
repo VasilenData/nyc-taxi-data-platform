@@ -1,0 +1,3 @@
+# Local instance config: run history and schedules live in $DAGSTER_HOME (SQLite), the warehouse is DuckDB.
+telemetry:
+  enabled: false
