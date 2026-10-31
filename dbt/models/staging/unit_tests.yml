@@ -1,0 +1,29 @@
+unit_tests:
+  - name: classification_picks_first_failed_rule
+    description: Each crafted trip breaks exactly one rule (or none); the classifier must name it.
+    model: stg_trips_classified
+    overrides:
+      macros:
+        is_incremental: false
+    given:
+      - input: source('raw', 'trips')
+        rows:
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-05 10:00:00", tpep_dropoff_datetime: "2023-01-05 10:20:00", PULocationID: 10, DOLocationID: 20, trip_distance: 3.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-05 11:00:00", tpep_dropoff_datetime: "2023-01-05 10:00:00", PULocationID: 10, DOLocationID: 20, trip_distance: 3.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-05 11:00:00", tpep_dropoff_datetime: "2023-01-05 20:00:00", PULocationID: 10, DOLocationID: 20, trip_distance: 3.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2022-12-31 23:50:00", tpep_dropoff_datetime: "2022-12-31 23:59:00", PULocationID: 10, DOLocationID: 20, trip_distance: 3.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-06 10:00:00", tpep_dropoff_datetime: "2023-01-06 10:10:00", PULocationID: 10, DOLocationID: 20, trip_distance: 0.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-06 11:00:00", tpep_dropoff_datetime: "2023-01-06 11:10:00", PULocationID: 10, DOLocationID: 20, trip_distance: 2.0, fare_amount: -4.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-06 12:00:00", tpep_dropoff_datetime: "2023-01-06 12:10:00", PULocationID: 999, DOLocationID: 20, trip_distance: 2.0, fare_amount: 9.0, total_amount: 12.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:00"}
+          - {VendorID: 1, tpep_pickup_datetime: "2023-01-05 10:00:00", tpep_dropoff_datetime: "2023-01-05 10:20:00", PULocationID: 10, DOLocationID: 20, trip_distance: 3.0, fare_amount: 15.0, total_amount: 18.0, _source_month: "2023-01", _source_file: f, _loaded_at: "2023-02-01 00:00:01"}
+    expect:
+      format: dict
+      rows:
+        - {pickup_zone_id: 10, distance_miles: 3.0, reject_reason: null}
+        - {pickup_zone_id: 10, distance_miles: 3.0, reject_reason: non_positive_duration}
+        - {pickup_zone_id: 10, distance_miles: 3.0, reject_reason: implausible_duration}
+        - {pickup_zone_id: 10, distance_miles: 3.0, reject_reason: out_of_period}
+        - {pickup_zone_id: 10, distance_miles: 0.0, reject_reason: bad_distance}
+        - {pickup_zone_id: 10, distance_miles: 2.0, reject_reason: bad_fare}
+        - {pickup_zone_id: 999, distance_miles: 2.0, reject_reason: unknown_zone}
+        - {pickup_zone_id: 10, distance_miles: 3.0, reject_reason: duplicate}

@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_trips_classified
+    description: Every raw trip with its first failed validation rule (null = valid). Incremental by month.
+    columns:
+      - name: trip_id
+        data_tests: [not_null]
+      - name: reject_reason
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [missing_timestamp, non_positive_duration, implausible_duration, out_of_period,
+                         bad_distance, bad_fare, unknown_zone, duplicate]
+              config:
+                where: "reject_reason is not null"
+  - name: stg_trips
+    columns:
+      - name: trip_id
+        description: Hash of the trip's identifying fields. Unique per source month among valid trips.
