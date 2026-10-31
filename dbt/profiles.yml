@@ -1,0 +1,7 @@
+taxi_platform:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('TAXI_DB', '../data/warehouse.duckdb') }}"
+      threads: 4

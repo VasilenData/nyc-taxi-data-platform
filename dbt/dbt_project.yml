@@ -1,0 +1,26 @@
+name: taxi_platform
+version: "1.0.0"
+config-version: 2
+profile: taxi_platform
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+vars:
+  max_trip_hours: 6
+  max_trip_miles: 200
+
+models:
+  taxi_platform:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  taxi_platform:
+    taxi_zone_lookup:
+      +column_types:
+        LocationID: integer
