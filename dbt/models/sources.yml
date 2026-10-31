@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Untouched TLC yellow-taxi trip records, one row per trip as published. Loaded by taxi_platform.ingest.
+    tables:
+      - name: trips
+        columns:
+          - name: _source_month
+            description: Month partition the row was loaded for (YYYY-MM).
+            data_tests: [not_null]
+          - name: _loaded_at
+            data_tests: [not_null]
