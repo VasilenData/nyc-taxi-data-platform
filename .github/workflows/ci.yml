@@ -36,6 +36,6 @@ jobs:
         run: docker build -t nyc-taxi-data-platform .
       - name: Start it and wait for the UI
         run: |
-          docker run -d --name p -p 3000:3000 nyc-taxi-data-platform
+          docker run -d --name platform -p 3000:3000 nyc-taxi-data-platform
           for i in $(seq 1 30); do curl -sf localhost:3000/server_info && exit 0; sleep 3; done
-          docker logs p; exit 1
+          docker logs platform; exit 1
