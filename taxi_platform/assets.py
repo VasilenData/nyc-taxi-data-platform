@@ -7,6 +7,7 @@ import dagster as dg
 from dagster_dbt import DagsterDbtTranslator, DbtCliResource, DbtProject, dbt_assets
 
 from . import config, ingest
+from .publication import TABLES, publish
 
 MONTHS = dg.MonthlyPartitionsDefinition(start_date="2023-01", end_offset=0, fmt="%Y-%m")
 
@@ -41,3 +42,9 @@ def raw_trips(context: dg.AssetExecutionContext) -> dg.MaterializeResult:
 def taxi_dbt_assets(context: dg.AssetExecutionContext, dbt: DbtCliResource):
     # `build` = run + test + seed in dependency order; a failing test stops downstream models.
     yield from dbt.cli(["build"], context=context).stream()
+
+
+@dg.asset(deps=[dg.AssetKey(name) for name in TABLES], group_name="publication",
+          description="Validate the build snapshot and atomically replace all main consumer tables.")
+def published_warehouse() -> dg.MaterializeResult:
+    return dg.MaterializeResult(metadata=publish())
