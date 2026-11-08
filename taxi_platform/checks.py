@@ -14,16 +14,21 @@ def _rows(sql: str) -> list[tuple]:
         con.close()
 
 
-@dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
-                description="raw rows = valid rows + quarantined rows, for every loaded month.")
-def reconciliation() -> dg.AssetCheckResult:
-    bad = _rows(
-        """select r.m, r.n, coalesce(v.n,0), coalesce(q.n,0) from
+def reconciliation_mismatches() -> list[tuple]:
+    """Include output-only months, which a raw-side LEFT JOIN would silently miss."""
+    return _rows(
+        """select coalesce(r.m, v.m, q.m), coalesce(r.n,0), coalesce(v.n,0), coalesce(q.n,0) from
            (select _source_month m, count(*) n from raw.trips group by 1) r
-           left join (select _source_month m, count(*) n from main.stg_trips group by 1) v using (m)
-           left join (select _source_month m, count(*) n from main.trips_quarantine group by 1) q using (m)
-           where r.n <> coalesce(v.n,0) + coalesce(q.n,0)"""
+           full outer join (select _source_month m, count(*) n from main.stg_trips group by 1) v using (m)
+           full outer join (select _source_month m, count(*) n from main.trips_quarantine group by 1) q using (m)
+           where coalesce(r.n,0) <> coalesce(v.n,0) + coalesce(q.n,0)"""
     )
+
+
+@dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
+                description="raw rows = valid rows + quarantined rows, including output-only months.")
+def reconciliation() -> dg.AssetCheckResult:
+    bad = reconciliation_mismatches()
     return dg.AssetCheckResult(passed=not bad, metadata={"mismatched_months": len(bad)})
 
 
@@ -42,7 +47,8 @@ def reject_rate() -> dg.AssetCheckResult:
     )
 
 
-@dg.asset_check(asset=dg.AssetKey("fct_trips"), description="Fact table is not empty and covers every raw month.")
+@dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
+                description="Fact table is not empty and covers every raw month.")
 def coverage() -> dg.AssetCheckResult:
     raw = {r[0] for r in _rows("select distinct _source_month from raw.trips")}
     fact = {r[0] for r in _rows("select distinct source_month from main.fct_trips")}

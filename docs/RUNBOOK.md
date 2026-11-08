@@ -4,9 +4,8 @@
 
 `python run_pipeline.py ...` exits non-zero when loading, dbt, or any asset check
 fails. The CLI explicitly evaluates every asset-check result. In Dagster,
-`reconciliation` and `reject_rate` are configured as blocking checks; `coverage`
-is recorded as a check but is not itself configured as blocking. Inspect the
-individual check results when operating through the UI.
+`reconciliation`, `reject_rate` and `coverage` are all configured as blocking
+checks. Inspect the individual check results when operating through the UI.
 
 Checks execute after tables have been materialized. A failure does not roll back
 the entire warehouse or atomically hide newly built tables from readers. Treat
@@ -19,7 +18,7 @@ boundary.
 
 | Failing check | Meaning | First thing to look at | Fix |
 |---|---|---|---|
-| `reconciliation` | raw rows are not equal to valid plus rejected for some month | `select * from main.mart_data_quality`, then dbt test `assert_raw_equals_valid_plus_rejected` | Re-run the month. If it persists the classifier dropped rows: check for a `where` or a join added to `stg_trips_classified`. |
+| `reconciliation` | raw rows are not equal to valid plus rejected for some month, including output-only months | dbt test `assert_raw_equals_valid_plus_rejected`, then the raw, valid and quarantine counts for the reported month | Investigate missing or stale classified rows. Re-run the affected load and transformation; a full refresh may be needed after manual raw-table changes. |
 | `reject_rate` | a month rejected more than 10% of its rows | `select reject_reason, rejected_rows from main.mart_data_quality where source_month = '2023-09'` | One dominant reason means upstream changed (TLC schema or unit change): inspect the raw file. Spread over many reasons means a corrupt file: re-download it. Raise `TAXI_MAX_REJECT_RATE` only after checking the rows. |
 | `coverage` | a raw month has no rows in the fact table | The `fct_trips` dbt run log | A contract or test failure upstream stopped the build. Fix, then re-run `transform_and_check`. |
 | dbt contract error | a column name or type in `fct_trips` changed | `dbt/models/marts/schema.yml` against the model SQL | Update both together, in one commit. |

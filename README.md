@@ -45,7 +45,7 @@ flowchart TD
 - **Ingestion:** reloads a month transactionally without accumulating a second copy; empty or failed replacements roll back to the previous data. Records source month, source filename and load timestamp.
 - **Transformation:** an incremental dbt classifier compares load versions per month, including corrected versions with older timestamps. The fact table has an enforced column/type contract and joins the zone lookup seed.
 - **Consumption:** marts summarize daily borough activity, hourly demand and data quality.
-- **Quality:** raw-to-valid-to-quarantine reconciliation, a configurable rejection-rate limit and coverage checks produce an explicit pass/fail result.
+- **Quality:** reconciliation includes output-only months as well as raw months, so stale valid or quarantined data cannot hide behind a raw-side join. Reconciliation, rejection-rate and coverage checks are blocking in Dagster and produce an explicit CLI pass/fail result.
 
 ## Run the sample
 
