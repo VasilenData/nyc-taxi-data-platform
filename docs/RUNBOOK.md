@@ -7,19 +7,38 @@ fails. The CLI explicitly evaluates every asset-check result. In Dagster,
 `reconciliation`, `reject_rate` and `coverage` are all configured as blocking
 checks. Inspect the individual check results when operating through the UI.
 
-Checks execute after tables have been materialized. A failure does not roll back
-the entire warehouse or atomically hide newly built tables from readers. Treat
-the result as unsuitable for downstream publication until it has been inspected
-and rerun successfully. An automated consumer needs a separate
-staging/validate/promote mechanism before this can serve as an atomic publication
-boundary.
+dbt materializes candidates in `build`, while consumers read `main`. The
+`published_warehouse` asset runs after the complete dbt graph and its blocking
+checks. It repeats the platform quality predicates in one DuckDB transaction,
+checks fact and mart totals, then copies all eight managed tables and their
+publication metadata. Validation errors, copy failures and process death before
+commit leave the previous `main` publication intact. On a first-run failure there
+is no published dataset yet. Raw loads and failed `build` candidates remain for
+diagnosis; they are not consumer tables.
+
+Inspect the current version with `select * from main.publication` and successful
+publication history with `select * from audit.publications order by published_at`.
+The history records source filenames/load timestamps and row counts, not retained
+old table snapshots. Retry `transform_and_check` after correcting the candidate;
+use the full job, not a manually selected publication asset, so dbt tests also run.
+Direct `dbt build` updates only `build` and never publishes.
+
+On upgrade, the first successful transform creates the new candidate schema and
+replaces the previous `main` tables/views in the same publication transaction.
+Keep one writer and do not modify raw/build data concurrently with a transform.
+DuckDB does not provide general concurrent multi-process read/write serving.
+A reader issuing several SELECTs must use a read transaction for one consistent
+publication. See DuckDB's [transaction](https://duckdb.org/docs/stable/sql/statements/transactions)
+and [concurrency](https://duckdb.org/docs/stable/connect/concurrency) documentation.
+The process-exit test covers abrupt application termination before commit, not
+power failure or a corrupt storage device.
 
 ## A check failed
 
 | Failing check | Meaning | First thing to look at | Fix |
 |---|---|---|---|
 | `reconciliation` | raw rows are not equal to valid plus rejected for some month, including output-only months | dbt test `assert_raw_equals_valid_plus_rejected`, then the raw, valid and quarantine counts for the reported month | Investigate missing or stale classified rows. Re-run the affected load and transformation; a full refresh may be needed after manual raw-table changes. |
-| `reject_rate` | a month rejected more than 10% of its rows | `select reject_reason, rejected_rows from main.mart_data_quality where source_month = '2023-09'` | One dominant reason means upstream changed (TLC schema or unit change): inspect the raw file. Spread over many reasons means a corrupt file: re-download it. Raise `TAXI_MAX_REJECT_RATE` only after checking the rows. |
+| `reject_rate` | a month rejected more than 10% of its rows | `select reject_reason, rejected_rows from build.mart_data_quality where source_month = '2023-09'` | One dominant reason means upstream changed (TLC schema or unit change): inspect the raw file. Spread over many reasons means a corrupt file: re-download it. Raise `TAXI_MAX_REJECT_RATE` only after checking the rows. |
 | `coverage` | a raw month has no rows in the fact table | The `fct_trips` dbt run log | A contract or test failure upstream stopped the build. Fix, then re-run `transform_and_check`. |
 | dbt contract error | a column name or type in `fct_trips` changed | `dbt/models/marts/schema.yml` against the model SQL | Update both together, in one commit. |
 
@@ -44,8 +63,8 @@ load timestamp is outside this versioning contract.
 ## Look at rejected rows
 
 ```sql
-select reject_reason, count(*) from main.trips_quarantine group by 1 order by 2 desc;
-select * from main.trips_quarantine where reject_reason = 'bad_distance' limit 20;
+select reject_reason, count(*) from build.trips_quarantine group by 1 order by 2 desc;
+select * from build.trips_quarantine where reject_reason = 'bad_distance' limit 20;
 ```
 
 ## Capture a reproducible run

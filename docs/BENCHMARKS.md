@@ -99,3 +99,11 @@ The [CI workflow](../.github/workflows/ci.yml) runs the bundled-sample benchmark
 and uploads its JSON and log as the `sample-benchmark` artifact, retained for
 14 days. CI does not download or run the full ten-month dataset. The repository's
 dated full-data measurement is separate from that sample CI evidence.
+
+## Publication-version timing
+
+The checked-in November 8 measurements predate the `build`-to-`main` publication
+step. New benchmark runs include validation and transactional copies of all
+managed consumer tables. Do not compare their wall time as an equal-workload
+regression without accounting for that additional work. Full-data timing for the
+new publication path has not been recorded.
