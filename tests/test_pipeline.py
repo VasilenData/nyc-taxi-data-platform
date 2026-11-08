@@ -70,7 +70,7 @@ def test_incremental_rerun_changes_nothing(warehouse):
 
 
 def test_poisoned_month_trips_the_quality_gate(tmp_path):
-    """Corrupt a month so >10% of rows are bad. The pipeline must fail instead of publishing it."""
+    """Corrupt a month so >10% of rows are bad. The CLI must report a failed run."""
     data = tmp_path / "raw"
     data.mkdir()
     src = ROOT / "data" / "sample" / "yellow_tripdata_2023-01.parquet"
