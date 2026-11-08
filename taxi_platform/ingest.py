@@ -66,7 +66,7 @@ def resolve_source(month: str) -> Path:
 def connect(path: Path | None = None) -> duckdb.DuckDBPyConnection:
     path = Path(path or config.DB_PATH)
     path.parent.mkdir(parents=True, exist_ok=True)
-    return duckdb.connect(str(path))
+    return duckdb.connect(str(path), config={"memory_limit": config.DUCKDB_MEMORY_LIMIT})
 
 
 def ensure_schema(con: duckdb.DuckDBPyConnection) -> None:

@@ -10,6 +10,8 @@ DATA_DIR = Path(os.environ.get("TAXI_DATA_DIR", ROOT / "data" / "raw"))
 SAMPLE_DIR = ROOT / "data" / "sample"
 TLC_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
 DBT_DIR = ROOT / "dbt"
+# Keep ingestion and dbt on the same optional memory budget. DuckDB's default is 80%.
+DUCKDB_MEMORY_LIMIT = os.environ.get("TAXI_DUCKDB_MEMORY_LIMIT", "80%")
 
 # A month where more than this share of rows is rejected fails the quality gate.
 MAX_REJECT_RATE = float(os.environ.get("TAXI_MAX_REJECT_RATE", "0.10"))
