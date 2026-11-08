@@ -1,5 +1,20 @@
 # Runbook
 
+## What a failed run means
+
+`python run_pipeline.py ...` exits non-zero when loading, dbt, or any asset check
+fails. The CLI explicitly evaluates every asset-check result. In Dagster,
+`reconciliation` and `reject_rate` are configured as blocking checks; `coverage`
+is recorded as a check but is not itself configured as blocking. Inspect the
+individual check results when operating through the UI.
+
+Checks execute after tables have been materialized. A failure does not roll back
+the entire warehouse or atomically hide newly built tables from readers. Treat
+the result as unsuitable for downstream publication until it has been inspected
+and rerun successfully. An automated consumer needs a separate
+staging/validate/promote mechanism before this can serve as an atomic publication
+boundary.
+
 ## A check failed
 
 | Failing check | Meaning | First thing to look at | Fix |
@@ -23,3 +38,13 @@ Replace the parquet in `TAXI_DATA_DIR` and load the month again. The loader dele
 select reject_reason, count(*) from main.trips_quarantine group by 1 order by 2 desc;
 select * from main.trips_quarantine where reject_reason = 'bad_distance' limit 20;
 ```
+
+## Capture a reproducible run
+
+Use the [benchmark runner](BENCHMARKS.md) for an isolated warehouse, source
+checksums, environment details and retained JSON/log evidence. A full benchmark
+requires all requested monthly files and never silently uses bundled extracts.
+For memory-constrained machines, set `TAXI_DUCKDB_MEMORY_LIMIT` (for example,
+`4GB`); the same configured limit is applied separately to ingestion and dbt.
+This is not a total process-memory cap, and the asset-check connections retain
+DuckDB's default memory setting.
