@@ -20,11 +20,16 @@ jobs:
         run: cd dbt && dbt parse --profiles-dir .
         env:
           TAXI_DB: ${{ runner.temp }}/parse.duckdb
-      - name: Run the pipeline on the bundled sample, with all checks
-        run: python run_pipeline.py 2023-01 2023-02 | grep -E "^check (reconciliation|reject_rate|coverage)"
-        env:
-          TAXI_DB: ${{ runner.temp }}/ci.duckdb
-          TAXI_DATA_DIR: ${{ runner.temp }}/none
+      - name: Benchmark the bundled sample, with all checks
+        run: python scripts/benchmark.py --output "${{ runner.temp }}/benchmark/sample.json"
+      - name: Retain benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-benchmark
+          path: ${{ runner.temp }}/benchmark/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Tests
         run: pytest -q
   docker:

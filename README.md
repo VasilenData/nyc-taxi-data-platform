@@ -2,72 +2,111 @@
 
 [![CI](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml)
 
-A small data platform built the way a production one is run: orchestrated, incremental, tested at every layer, and able to **refuse bad data** instead of publishing it.
+A reproducible batch pipeline that turns public NYC taxi records into tested analytics tables and retains rejected records with an auditable reason.
 
-It ingests the public NYC TLC yellow-taxi trip records (31.6 million trips, Jan to Oct 2023), validates every row, models the clean ones, and keeps every rejected row with the reason.
+**Stack:** Python, SQL, Dagster, dbt, DuckDB, Docker, GitHub Actions.
+
+**Operating status:** Runs locally, in Docker and in CI. Cloud deployment and a continuously operated production service are outside the current scope.
+
+## Results at a glance
+
+Measured on **November 8, 2026** using the actual pipeline, with a new warehouse for each run:
+
+| Dataset | Input rows | Valid fact rows | Quarantined rows | Pipeline wall time | Evidence |
+|---|---:|---:|---:|---:|---|
+| Full January–October 2023 TLC files | 31,593,944 | 30,694,510 | 899,434 (2.85%) | 78.576 s | [JSON](measurements/full-2026-11-08.json) · [run log](measurements/full-2026-11-08.log) |
+| Bundled January/February sample | 30,000 | 29,326 | 674 (2.25%) | 20.735 s | [JSON](measurements/sample-2026-11-08.json) · [run log](measurements/sample-2026-11-08.log) |
+
+Both runs passed the dbt tests, the three platform asset checks, and independent input/raw/valid/quarantine/fact reconciliation. These are public-data project results, not employer production or customer-usage metrics.
+
+The full-data measurement used an AMD EPYC host with an **8-CPU container quota**, **8 GiB container memory limit**, a **4 GB DuckDB limit for ingestion and dbt**, and four dbt threads. That DuckDB setting is not a total process-memory cap; asset-check connections keep their default setting. Input downloads and checksums are excluded from pipeline timing; the OS file cache was not cleared. The sample included the initial dbt parse, while the full run reused the manifest. Complete versions, input checksums and timing conditions are in the JSON files. See [how to reproduce and interpret the benchmarks](docs/BENCHMARKS.md).
+
+## The problem
+
+Raw trip files contain invalid distances, negative fares, impossible durations, missing timestamps and other inconsistencies. Silently dropping those rows makes analytics difficult to reconcile and failures difficult to investigate.
+
+This pipeline preserves raw records, classifies each rejected row by its first failed rule, and builds a fact table and marts from valid records. Its CLI reports a failed run when reconciliation, rejection-rate or coverage checks fail.
+
+## Architecture
 
 ```mermaid
-flowchart LR
-    TLC[TLC parquet files<br/>one per month] --> RAW[raw_trips<br/>Dagster, partitioned by month]
-    RAW --> CLS[stg_trips_classified<br/>dbt, incremental by month<br/>first failed rule per row]
-    CLS --> VALID[stg_trips<br/>valid]
-    CLS --> Q[trips_quarantine<br/>rejected + reason]
-    VALID --> F[fct_trips<br/>contract enforced]
-    ZONES[taxi_zone_lookup seed] --> F
-    F --> M1[mart_daily_borough]
-    F --> M2[mart_hourly_demand]
-    Q --> M3[mart_data_quality]
-    F --> CHK{{Asset checks<br/>reconciliation, reject rate, coverage}}
+flowchart TD
+    A["NYC TLC monthly Parquet"] --> B["Dagster ingestion"]
+    B --> C["DuckDB raw trips and lineage"]
+    C --> D["dbt classification"]
+    D --> E["Valid trips and fact table"]
+    D --> F["Quarantine and rejection reasons"]
+    E --> G["Analytics marts"]
+    C --> H["Run-level quality checks"]
+    E --> H
+    F --> H
 ```
 
-## What is in it
+- **Ingestion:** reloads a month transactionally without accumulating a second copy; records source month, source filename and load timestamp.
+- **Transformation:** an incremental dbt classifier reprocesses changed months. The fact table has an enforced column/type contract and joins the zone lookup seed.
+- **Consumption:** marts summarize daily borough activity, hourly demand and data quality.
+- **Quality:** raw-to-valid-to-quarantine reconciliation, a configurable rejection-rate limit and coverage checks produce an explicit pass/fail result.
 
-| Layer | What it does | Why it matters |
-|---|---|---|
-| **Ingestion** (`taxi_platform/ingest.py`) | Loads one month per run into `raw.trips` with lineage columns. Reloading a month leaves one copy. Tolerates renamed columns. | Safe to re-run after a failure or a late file. |
-| **Validation** (`stg_trips_classified`) | Every row gets the first rule it breaks: missing timestamp, non-positive or over-6-hour duration, wrong month, bad distance, negative fare, unknown zone, duplicate. | Bad rows are kept and counted, never silently dropped. |
-| **Modelling** (`fct_trips` + 3 marts) | Zone names, duration, speed and tip share. The fact table has an **enforced contract** (names and types). | A schema change fails the build instead of reaching a dashboard. |
-| **Testing** | 22 dbt data tests, 1 dbt unit test on the rules, 3 SQL reconciliation tests, 14 pytest tests including an end-to-end run. | Tested at the rule, model, pipeline and platform level. |
-| **Quality gate** (`taxi_platform/checks.py`) | Blocking Dagster checks: raw = valid + rejected per month, no month above 10% rejected, fact covers every raw month. | A corrupted month stops the run. A test proves it (see below). |
-| **Orchestration** (Dagster) | Raw and dbt models are one lineage graph. Two jobs, monthly schedules, partitions backfillable from the UI. | Operators can see, re-run and backfill every step. |
-| **Delivery** | `Dockerfile`, `docker-compose.yml`, CI that lints, parses, runs the full pipeline on a bundled sample and runs all tests. | Anyone can run it with one command. |
+## Run the sample
 
-## Measured results
-
-Run on one 17-core VM, DuckDB file warehouse, real TLC data.
-
-| | |
-|---|---|
-| Raw trips loaded (10 months) | 31,593,944 |
-| Valid trips in `fct_trips` | 30,694,510 (97.2%) |
-| Rejected and kept in quarantine | 899,434 (2.8%) |
-| Rejection reasons | bad distance 587,613, bad fare 271,517, implausible duration 27,121, non-positive duration 12,576, out of period 607 |
-| Full build, 10 months, load + dbt + all tests and checks | 62 s |
-| Reload and rebuild one month | 25 s, results identical (idempotent) |
-| Reject rate by month | 2.2% in January rising to 4.5% in September and October |
-
-**A real finding:** the first full run failed my own range test, because exactly one trip lasted precisely 360 minutes while the rule only rejected trips longer than 6 hours. The rule and the test disagreed at the boundary. I changed the rule to reject 6 hours or more so both agree.
-
-**The gate works:** `tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate` corrupts 40% of a month's fares and asserts that the pipeline exits non-zero. This test caught a bug in my own runner on the first attempt: a failed check with error severity does not fail a Dagster run unless the check is blocking, so a bad month would have gone through. The runner now fails on any failed check and `reject_rate` is blocking.
-
-## Run it
+Use Python 3.11 or later. The sample command uses two bundled 15,000-row extracts and requires no TLC data download.
 
 ```bash
-pip install -r requirements-dev.txt
-python run_pipeline.py 2023-01 2023-02      # uses the bundled 15,000-row sample per month, no download
-pytest -q                                   # 14 tests, about 45 s
-
-docker compose up --build                   # Dagster UI at http://localhost:3000
+git clone https://github.com/VasilenData/nyc-taxi-data-platform.git
+cd nyc-taxi-data-platform
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python scripts/benchmark.py --dataset sample --output measurements/local-sample.json
+pytest -q
 ```
 
-For real data, set `TAXI_DATA_DIR` to a folder of `yellow_tripdata_YYYY-MM.parquet` files, or leave it empty and months are downloaded from the TLC on demand. `make docs` builds the dbt docs site with column-level lineage.
+On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in PowerShell.
 
-## Decisions and limits
+Open the Dagster UI with Docker:
 
-- **DuckDB, not a cloud warehouse.** One file, no credentials, runs in CI. The dbt models are plain SQL and move to Snowflake, BigQuery or Postgres with small dialect changes (`date_diff`, `strftime`, `isodow`).
-- **Incremental by month, not by row.** A reloaded month is reprocessed in full. That is simpler to reason about and cheap here; at billions of rows I would partition by day.
-- **The repository sample is synthetic in size only.** It is 15,000 random real rows per month so CI is fast. The numbers above come from the full files.
-- **No streaming here.** See [wiki-stream-lakehouse](https://github.com/VasilenData/wiki-stream-lakehouse) for Kafka and Spark Structured Streaming.
-- **Not deployed to a cloud.** It runs locally and in Docker.
+```bash
+docker compose up --build
+# http://localhost:3000
+```
 
-See [docs/RUNBOOK.md](docs/RUNBOOK.md) for what to do when a check fails.
+The quickstart always selects the bundled sample, even if full TLC files have
+previously been downloaded. It writes `measurements/local-sample.json` and its
+companion `.log`. Choose a new `.json` filename to repeat the measurement; existing
+evidence is not overwritten.
+
+For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-januaryoctober-2023-data). Full mode requires every requested input file in the full-data directory and prevents the loader's automatic fallback to bundled samples. Verify the recorded row counts and checksums when reusing files. For ordinary runs, `TAXI_DATA_DIR` selects the input directory, `TAXI_DB` selects the warehouse, and `TAXI_DUCKDB_MEMORY_LIMIT` optionally caps ingestion/dbt memory.
+
+## Evidence to inspect
+
+| Engineering question | Where to look |
+|---|---|
+| Can a month be reloaded without double-counting? | [Transactional monthly loader](taxi_platform/ingest.py) and [rerun integration test](tests/test_pipeline.py) |
+| Are invalid rows handled deliberately? | [Classification rules](dbt/models/staging/stg_trips_classified.sql) and [quarantine model](dbt/models/staging/trips_quarantine.sql) |
+| Does a failed check actually fail the CLI run? | [Quality checks](taxi_platform/checks.py), [runner](run_pipeline.py) and the poisoned-month test in [integration tests](tests/test_pipeline.py) |
+| Can the results be reproduced? | [Benchmark runner](scripts/benchmark.py), [measurement guide](docs/BENCHMARKS.md), [CI workflow](.github/workflows/ci.yml) and [Dockerfile](Dockerfile) |
+| Can another engineer operate it? | [Runbook: failed checks, backfills and corrected files](docs/RUNBOOK.md) |
+
+The failure-injection test corrupts roughly 40% of a sample month's fares and requires a non-zero pipeline exit:
+
+```bash
+pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
+```
+
+## Decisions and current limits
+
+- DuckDB provides a credential-free local warehouse and fast CI. Warehouse-specific cloud deployment and tuning have not been demonstrated here.
+- Incremental classification operates at monthly partition level: a changed month is reprocessed as a whole. Fact and mart models are rebuilt by dbt.
+- Invalid records remain available in quarantine with their first rejection reason; they are not silently discarded.
+- Asset checks can fail a run after tables have been materialized. A separate staging-to-production promotion step would be needed for atomic publication to external consumers.
+- CI uses the 30,000-row sample and retains its benchmark artifact for 14 days. The checked-in 31.6-million-row measurement is a separate full-data run.
+
+## Next improvement
+
+Add a tested staging-and-promotion step for consumers, then measure its failure and recovery behavior. Keep the runbook and benchmark evidence aligned with any changes.
+
+## Author
+
+[Vasilen Kanchev](https://github.com/VasilenData) · [Portfolio](https://vasilendata.github.io) · [LinkedIn](https://www.linkedin.com/in/vasilenkanchev/)
+
+Data source: public NYC Taxi and Limousine Commission trip records. Code: [MIT license](LICENSE).
