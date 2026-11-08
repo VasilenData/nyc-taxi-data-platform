@@ -1,0 +1,217 @@
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - RUN_START - Started execution of run for "load_latest_month".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - ENGINE_EVENT - Executing steps in process (pid: 88)
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - LOGS_CAPTURED - Capturing logs for process (pid: 88).
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - STEP_START - Started execution of step "raw_trips".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - ASSET_MATERIALIZATION - Materialized value raw_trips.
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - raw_trips - STEP_SUCCESS - Finished execution of step "raw_trips" in 80ms.
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - ENGINE_EVENT - Finished steps in process (pid: 88) in 104ms
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 96635f1f-a33c-4a9c-8a50-ee2c2eaeb4f2 - 88 - RUN_SUCCESS - Finished execution of run for "load_latest_month".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - RUN_START - Started execution of run for "load_latest_month".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - ENGINE_EVENT - Executing steps in process (pid: 88)
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - LOGS_CAPTURED - Capturing logs for process (pid: 88).
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - STEP_START - Started execution of step "raw_trips".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - ASSET_MATERIALIZATION - Materialized value raw_trips.
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - raw_trips - STEP_SUCCESS - Finished execution of step "raw_trips" in 69ms.
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - ENGINE_EVENT - Finished steps in process (pid: 88) in 75ms
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - load_latest_month - 9caac331-6bec-417d-be32-cdd60f9de687 - 88 - RUN_SUCCESS - Finished execution of run for "load_latest_month".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - RUN_START - Started execution of run for "transform_and_check".
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - ENGINE_EVENT - Executing steps in process (pid: 88)
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - RESOURCE_INIT_STARTED - Starting initialization of resources [dbt, io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - RESOURCE_INIT_SUCCESS - Finished initialization of resources [dbt, io_manager].
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - LOGS_CAPTURED - Capturing logs for process (pid: 88).
+2026-11-08 10:06:55 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_START - Started execution of step "taxi_dbt_assets".
+2026-11-08 10:06:55 -0500 - dagster - INFO - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - A dbt subsetted execution is not being performed. Using the default dbt selection arguments `['--select', 'fqn:*']`.
+2026-11-08 10:06:59 -0500 - dagster - INFO - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Copying `<REPOSITORY>/dbt/target/partial_parse.msgpack` to `<REPOSITORY>/dbt/target/taxi_dbt_assets-8d014df-06f0212/partial_parse.msgpack` to take advantage of partial parsing.
+2026-11-08 10:06:59 -0500 - dagster - INFO - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Running dbt command: `dbt build --select fqn:*`.
+Running with dbt=1.12.6
+Registered adapter: duckdb=1.11.1
+Found 7 models, 22 data tests, 1 seed, 1 source, 512 macros, 1 unit test
+
+Concurrency: 4 threads (target='dev')
+
+1 of 31 START seed file main.taxi_zone_lookup .................................. [RUN]
+2 of 31 START test source_not_null_raw_trips__loaded_at ........................ [RUN]
+3 of 31 START test source_not_null_raw_trips__source_month ..................... [RUN]
+3 of 31 PASS source_not_null_raw_trips__source_month ........................... [PASS in 0.10s]
+2026-11-08 10:07:02 -0500 - dagster - WARNING - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_raw_trips__source_month`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+2 of 31 PASS source_not_null_raw_trips__loaded_at .............................. [PASS in 0.12s]
+2026-11-08 10:07:02 -0500 - dagster - WARNING - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_raw_trips__loaded_at`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+4 of 31 START unit_test stg_trips_classified::classification_picks_first_failed_rule  [RUN]
+1 of 31 OK loaded seed file main.taxi_zone_lookup .............................. [INSERT 265 in 0.18s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "taxi_zone_lookup" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value taxi_zone_lookup.
+4 of 31 PASS stg_trips_classified::classification_picks_first_failed_rule ...... [PASS in 0.16s]
+5 of 31 START sql incremental model main.stg_trips_classified .................. [RUN]
+5 of 31 OK created sql incremental model main.stg_trips_classified ............. [OK in 0.11s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "stg_trips_classified" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value stg_trips_classified.
+6 of 31 START test accepted_values_stg_trips_classified_reject_reason__missing_timestamp__non_positive_duration__implausible_duration__out_of_period__bad_distance__bad_fare__unknown_zone__duplicate  [RUN]
+7 of 31 START test not_null_stg_trips_classified_trip_id ....................... [RUN]
+7 of 31 PASS not_null_stg_trips_classified_trip_id ............................. [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "stg_trips_classified_not_null_stg_trips_classified_trip_id" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'not_null_stg_trips_classified_trip_id' on 'stg_trips_classified' passed.
+6 of 31 PASS accepted_values_stg_trips_classified_reject_reason__missing_timestamp__non_positive_duration__implausible_duration__out_of_period__bad_distance__bad_fare__unknown_zone__duplicate  [PASS in 0.07s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "stg_trips_classified_accepted_values_stg_trips_classified_reject_reason__missing_timestamp__non_positive_duration__implausible_duration__out_of_period__bad_distance__bad_fare__unknown_zone__duplicate" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_values_stg_trips_classified_reject_reason__missing_timestamp__non_positive_duration__implausible_duration__out_of_period__bad_distance__bad_fare__unknown_zone__duplicate' on 'stg_trips_classified' passed.
+8 of 31 START sql view model main.stg_trips .................................... [RUN]
+9 of 31 START sql view model main.trips_quarantine ............................. [RUN]
+9 of 31 OK created sql view model main.trips_quarantine ........................ [OK in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "trips_quarantine" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value trips_quarantine.
+8 of 31 OK created sql view model main.stg_trips ............................... [OK in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "stg_trips" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value stg_trips.
+10 of 31 START sql table model main.mart_data_quality .......................... [RUN]
+11 of 31 START sql table model main.fct_trips .................................. [RUN]
+12 of 31 START test assert_raw_equals_valid_plus_rejected ...................... [RUN]
+12 of 31 PASS assert_raw_equals_valid_plus_rejected ............................ [PASS in 0.08s]
+2026-11-08 10:07:02 -0500 - dagster - WARNING - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `assert_raw_equals_valid_plus_rejected`.
+
+`assert_raw_equals_valid_plus_rejected` is a singular test with multiple dependencies. Configure an asset key in the test's dbt meta to load it as an asset check.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+10 of 31 OK created sql table model main.mart_data_quality ..................... [OK in 0.11s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_data_quality" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value mart_data_quality.
+13 of 31 START test accepted_range_mart_data_quality_raw_rows__1 ............... [RUN]
+13 of 31 PASS accepted_range_mart_data_quality_raw_rows__1 ..................... [PASS in 0.02s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_data_quality_accepted_range_mart_data_quality_raw_rows__1" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_mart_data_quality_raw_rows__1' on 'mart_data_quality' passed.
+11 of 31 OK created sql table model main.fct_trips ............................. [OK in 0.17s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value fct_trips.
+14 of 31 START test accepted_range_fct_trips_distance_miles__False__200__0 ..... [RUN]
+15 of 31 START test accepted_range_fct_trips_duration_min__False__360__0 ....... [RUN]
+16 of 31 START test accepted_range_fct_trips_fare_amount__0 .................... [RUN]
+17 of 31 START test accepted_range_fct_trips_pickup_dow__7__1 .................. [RUN]
+14 of 31 PASS accepted_range_fct_trips_distance_miles__False__200__0 ........... [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_distance_miles__False__200__0" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_distance_miles__False__200__0' on 'fct_trips' passed.
+18 of 31 START test accepted_range_fct_trips_pickup_hour__23__0 ................ [RUN]
+16 of 31 PASS accepted_range_fct_trips_fare_amount__0 .......................... [PASS in 0.07s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_fare_amount__0" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_fare_amount__0' on 'fct_trips' passed.
+17 of 31 PASS accepted_range_fct_trips_pickup_dow__7__1 ........................ [PASS in 0.08s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_pickup_dow__7__1" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_pickup_dow__7__1' on 'fct_trips' passed.
+19 of 31 START test accepted_range_fct_trips_total_amount__False__0 ............ [RUN]
+15 of 31 PASS accepted_range_fct_trips_duration_min__False__360__0 ............. [PASS in 0.08s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_duration_min__False__360__0" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_duration_min__False__360__0' on 'fct_trips' passed.
+20 of 31 START test assert_fact_matches_valid .................................. [RUN]
+21 of 31 START test assert_trip_id_unique_per_month ............................ [RUN]
+18 of 31 PASS accepted_range_fct_trips_pickup_hour__23__0 ...................... [PASS in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_pickup_hour__23__0" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_pickup_hour__23__0' on 'fct_trips' passed.
+22 of 31 START test not_null_fct_trips_pickup_at ............................... [RUN]
+19 of 31 PASS accepted_range_fct_trips_total_amount__False__0 .................. [PASS in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_accepted_range_fct_trips_total_amount__False__0" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_fct_trips_total_amount__False__0' on 'fct_trips' passed.
+23 of 31 START test not_null_fct_trips_source_month ............................ [RUN]
+20 of 31 PASS assert_fact_matches_valid ........................................ [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - WARNING - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `assert_fact_matches_valid`.
+
+`assert_fact_matches_valid` is a singular test with multiple dependencies. Configure an asset key in the test's dbt meta to load it as an asset check.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step taxi_dbt_assets
+21 of 31 PASS assert_trip_id_unique_per_month .................................. [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_assert_trip_id_unique_per_month" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'assert_trip_id_unique_per_month' on 'fct_trips' passed.
+24 of 31 START test not_null_fct_trips_trip_id ................................. [RUN]
+25 of 31 START test relationships_fct_trips_dropoff_zone_id__LocationID__ref_taxi_zone_lookup_  [RUN]
+22 of 31 PASS not_null_fct_trips_pickup_at ..................................... [PASS in 0.07s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_not_null_fct_trips_pickup_at" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'not_null_fct_trips_pickup_at' on 'fct_trips' passed.
+23 of 31 PASS not_null_fct_trips_source_month .................................. [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_not_null_fct_trips_source_month" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'not_null_fct_trips_source_month' on 'fct_trips' passed.
+26 of 31 START test relationships_fct_trips_pickup_zone_id__LocationID__ref_taxi_zone_lookup_  [RUN]
+24 of 31 PASS not_null_fct_trips_trip_id ....................................... [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_not_null_fct_trips_trip_id" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'not_null_fct_trips_trip_id' on 'fct_trips' passed.
+25 of 31 PASS relationships_fct_trips_dropoff_zone_id__LocationID__ref_taxi_zone_lookup_  [PASS in 0.06s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_relationships_fct_trips_dropoff_zone_id__LocationID__ref_taxi_zone_lookup_" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'relationships_fct_trips_dropoff_zone_id__LocationID__ref_taxi_zone_lookup_' on 'fct_trips' passed.
+26 of 31 PASS relationships_fct_trips_pickup_zone_id__LocationID__ref_taxi_zone_lookup_  [PASS in 0.03s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "fct_trips_relationships_fct_trips_pickup_zone_id__LocationID__ref_taxi_zone_lookup_" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'relationships_fct_trips_pickup_zone_id__LocationID__ref_taxi_zone_lookup_' on 'fct_trips' passed.
+27 of 31 START sql table model main.mart_daily_borough ......................... [RUN]
+28 of 31 START sql table model main.mart_hourly_demand ......................... [RUN]
+28 of 31 OK created sql table model main.mart_hourly_demand .................... [OK in 0.04s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_hourly_demand" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value mart_hourly_demand.
+27 of 31 OK created sql table model main.mart_daily_borough .................... [OK in 0.04s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_daily_borough" of type "Nothing". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_MATERIALIZATION - Materialized value mart_daily_borough.
+29 of 31 START test accepted_range_mart_daily_borough_trips__1 ................. [RUN]
+30 of 31 START test accepted_range_mart_hourly_demand_trips__1 ................. [RUN]
+31 of 31 START test not_null_mart_daily_borough_pickup_date .................... [RUN]
+29 of 31 PASS accepted_range_mart_daily_borough_trips__1 ....................... [PASS in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_daily_borough_accepted_range_mart_daily_borough_trips__1" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_mart_daily_borough_trips__1' on 'mart_daily_borough' passed.
+30 of 31 PASS accepted_range_mart_hourly_demand_trips__1 ....................... [PASS in 0.05s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_hourly_demand_accepted_range_mart_hourly_demand_trips__1" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'accepted_range_mart_hourly_demand_trips__1' on 'mart_hourly_demand' passed.
+31 of 31 PASS not_null_mart_daily_borough_pickup_date .......................... [PASS in 0.04s]
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_OUTPUT - Yielded output "mart_daily_borough_not_null_mart_daily_borough_pickup_date" of type "Any". (Type check passed).
+2026-11-08 10:07:02 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - ASSET_CHECK_EVALUATION - Asset check 'not_null_mart_daily_borough_pickup_date' on 'mart_daily_borough' passed.
+
+Finished running 1 incremental model, 1 seed, 4 table models, 22 data tests, 1 unit test, 2 view models in 0 hours 0 minutes and 1.17 seconds (1.17s).
+
+Completed successfully
+
+Done. PASS=31 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=31
+2026-11-08 10:07:03 -0500 - dagster - INFO - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - taxi_dbt_assets - Finished dbt command: `dbt build --select fqn:*`.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - taxi_dbt_assets - STEP_SUCCESS - Finished execution of step "taxi_dbt_assets" in 8.07s.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_coverage - STEP_START - Started execution of step "fct_trips_coverage".
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_coverage - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_coverage - ASSET_CHECK_EVALUATION - Asset check 'coverage' on 'fct_trips' passed.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_coverage - STEP_SUCCESS - Finished execution of step "fct_trips_coverage" in 48ms.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reconciliation - STEP_START - Started execution of step "fct_trips_reconciliation".
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reconciliation - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reconciliation - ASSET_CHECK_EVALUATION - Asset check 'reconciliation' on 'fct_trips' passed.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reconciliation - STEP_SUCCESS - Finished execution of step "fct_trips_reconciliation" in 30ms.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reject_rate - STEP_START - Started execution of step "fct_trips_reject_rate".
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reject_rate - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reject_rate - ASSET_CHECK_EVALUATION - Asset check 'reject_rate' on 'fct_trips' passed.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - fct_trips_reject_rate - STEP_SUCCESS - Finished execution of step "fct_trips_reject_rate" in 25ms.
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - ENGINE_EVENT - Finished steps in process (pid: 88) in 8.18s
+2026-11-08 10:07:03 -0500 - dagster - DEBUG - transform_and_check - 8d014df3-11e8-43c6-8229-66f64a567b37 - 88 - RUN_SUCCESS - Finished execution of run for "transform_and_check".
+check not_null_stg_trips_classified_trip_id            PASS
+check accepted_values_stg_trips_classified_reject_reas PASS
+check accepted_range_mart_data_quality_raw_rows__1     PASS
+check accepted_range_fct_trips_distance_miles__False__ PASS
+check accepted_range_fct_trips_fare_amount__0          PASS
+check accepted_range_fct_trips_pickup_dow__7__1        PASS
+check accepted_range_fct_trips_duration_min__False__36 PASS
+check accepted_range_fct_trips_pickup_hour__23__0      PASS
+check accepted_range_fct_trips_total_amount__False__0  PASS
+check assert_trip_id_unique_per_month                  PASS
+check not_null_fct_trips_pickup_at                     PASS
+check not_null_fct_trips_source_month                  PASS
+check not_null_fct_trips_trip_id                       PASS
+check relationships_fct_trips_dropoff_zone_id__Locatio PASS
+check relationships_fct_trips_pickup_zone_id__Location PASS
+check accepted_range_mart_daily_borough_trips__1       PASS
+check accepted_range_mart_hourly_demand_trips__1       PASS
+check not_null_mart_daily_borough_pickup_date          PASS
+check coverage                                         PASS
+check reconciliation                                   PASS
+check reject_rate                                      PASS
