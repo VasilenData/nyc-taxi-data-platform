@@ -5,3 +5,5 @@ taxi_platform:
       type: duckdb
       path: "{{ env_var('TAXI_DB', '../data/warehouse.duckdb') }}"
       threads: 4
+      settings:
+        memory_limit: "{{ env_var('TAXI_DUCKDB_MEMORY_LIMIT', '80%') }}"
