@@ -1,6 +1,8 @@
 """End-to-end: load the bundled sample, build dbt, run every asset check, then try to break the data."""
 import subprocess
 import sys
+import os
+import shutil
 from pathlib import Path
 
 import duckdb
@@ -12,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 @pytest.fixture(scope="module")
 def warehouse(tmp_path_factory):
     db = tmp_path_factory.mktemp("wh") / "w.duckdb"
-    env = {"TAXI_DB": str(db), "TAXI_DATA_DIR": str(tmp_path_factory.mktemp("none")), "PATH": __import__("os").environ["PATH"]}
+    env = {**os.environ, "TAXI_DB": str(db), "TAXI_DATA_DIR": str(tmp_path_factory.mktemp("none"))}
     proc = subprocess.run([sys.executable, "run_pipeline.py", "2023-01", "2023-02"], cwd=ROOT, env=env,
                           capture_output=True, text=True, timeout=600)
     assert proc.returncode == 0, proc.stdout[-3000:] + proc.stderr[-3000:]
@@ -69,14 +71,36 @@ def test_incremental_rerun_changes_nothing(warehouse):
     assert q(db, "select count(*), round(sum(total_amount), 2) from main.fct_trips")[0] == before
 
 
+def test_corrected_month_is_reprocessed_when_load_timestamp_moves_backwards(warehouse, tmp_path):
+    """An older load version must not be hidden behind another month's high-water mark."""
+    source_db, source_env, _ = warehouse
+    db = tmp_path / "corrected.duckdb"
+    shutil.copy2(source_db, db)
+    with duckdb.connect(str(db)) as con:
+        con.execute("""update raw.trips set _loaded_at = timestamp '2000-01-01',
+                       total_amount = total_amount + 1 where _source_month = '2023-01'""")
+        expected = con.execute("""select count(*), round(sum(total_amount), 2) from raw.trips
+                                  where _source_month = '2023-01'""").fetchone()
+    env = {**source_env, "TAXI_DB": str(db)}
+    proc = subprocess.run(
+        [sys.executable, "-c", "from run_pipeline import run; raise SystemExit(0 if run([]) else 1)"],
+        cwd=ROOT, env=env, capture_output=True, text=True, timeout=600,
+    )
+    assert proc.returncode == 0, proc.stdout[-3000:] + proc.stderr[-3000:]
+    assert q(db, """select count(*), round(sum(total_amount), 2) from main.stg_trips_classified
+                    where _source_month = '2023-01'""")[0] == expected
+    assert q(db, """select count(*) from main.stg_trips_classified
+                    where _source_month = '2023-01' and _loaded_at <> timestamp '2000-01-01'""")[0][0] == 0
+
+
 def test_poisoned_month_trips_the_quality_gate(tmp_path):
     """Corrupt a month so >10% of rows are bad. The CLI must report a failed run."""
     data = tmp_path / "raw"
     data.mkdir()
     src = ROOT / "data" / "sample" / "yellow_tripdata_2023-01.parquet"
-    duckdb.sql(f"""copy (select * replace (case when random() < 0.4 then -5.0 else fare_amount end as fare_amount)
+    duckdb.sql(f"""copy (select * replace (case when row_number() over () % 5 < 2 then -5.0 else fare_amount end as fare_amount)
                     from read_parquet('{src}')) to '{data}/yellow_tripdata_2023-01.parquet' (format parquet)""")
-    env = {"TAXI_DB": str(tmp_path / "p.duckdb"), "TAXI_DATA_DIR": str(data), "PATH": __import__("os").environ["PATH"]}
+    env = {**os.environ, "TAXI_DB": str(tmp_path / "p.duckdb"), "TAXI_DATA_DIR": str(data)}
     proc = subprocess.run([sys.executable, "run_pipeline.py", "2023-01"], cwd=ROOT, env=env,
                           capture_output=True, text=True, timeout=600)
     assert proc.returncode != 0

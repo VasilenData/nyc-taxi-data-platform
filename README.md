@@ -42,8 +42,8 @@ flowchart TD
     F --> H
 ```
 
-- **Ingestion:** reloads a month transactionally without accumulating a second copy; records source month, source filename and load timestamp.
-- **Transformation:** an incremental dbt classifier reprocesses changed months. The fact table has an enforced column/type contract and joins the zone lookup seed.
+- **Ingestion:** reloads a month transactionally without accumulating a second copy; empty or failed replacements roll back to the previous data. Records source month, source filename and load timestamp.
+- **Transformation:** an incremental dbt classifier compares load versions per month, including corrected versions with older timestamps. The fact table has an enforced column/type contract and joins the zone lookup seed.
 - **Consumption:** marts summarize daily borough activity, hourly demand and data quality.
 - **Quality:** raw-to-valid-to-quarantine reconciliation, a configurable rejection-rate limit and coverage checks produce an explicit pass/fail result.
 
@@ -82,6 +82,7 @@ For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-jan
 | Engineering question | Where to look |
 |---|---|
 | Can a month be reloaded without double-counting? | [Transactional monthly loader](taxi_platform/ingest.py) and [rerun integration test](tests/test_pipeline.py) |
+| Will a bad replacement destroy the previous load? | [Empty-input and failed-insert rollback tests](tests/test_ingest.py); [out-of-order correction integration test](tests/test_pipeline.py) |
 | Are invalid rows handled deliberately? | [Classification rules](dbt/models/staging/stg_trips_classified.sql) and [quarantine model](dbt/models/staging/trips_quarantine.sql) |
 | Does a failed check actually fail the CLI run? | [Quality checks](taxi_platform/checks.py), [runner](run_pipeline.py) and the poisoned-month test in [integration tests](tests/test_pipeline.py) |
 | Can the results be reproduced? | [Benchmark runner](scripts/benchmark.py), [measurement guide](docs/BENCHMARKS.md), [CI workflow](.github/workflows/ci.yml) and [Dockerfile](Dockerfile) |

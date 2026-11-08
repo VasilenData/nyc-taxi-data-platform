@@ -42,7 +42,7 @@ COLUMNS = {
 
 
 def validate_month(month: str) -> str:
-    if not MONTH_RE.match(month):
+    if not MONTH_RE.fullmatch(month):
         raise ValueError(f"month must look like 2023-01, got {month!r}")
     return month
 
@@ -100,15 +100,23 @@ def load_month(month: str, con: duckdb.DuckDBPyConnection | None = None) -> dict
         fee = available.get("airport_fee")
         select.append(f'try_cast("{fee}" as DOUBLE) as airport_fee' if fee else "cast(null as DOUBLE) as airport_fee")
         con.execute("begin")
-        con.execute("delete from raw.trips where _source_month = ?", [month])
-        con.execute(
-            f"""insert into raw.trips
-            select {', '.join(select)}, ?, ?, now()::timestamp
-            from read_parquet(?)""",
-            [month, src.name, str(src)],
-        )
-        con.execute("commit")
-        rows = con.execute("select count(*) from raw.trips where _source_month = ?", [month]).fetchone()[0]
+        try:
+            con.execute("delete from raw.trips where _source_month = ?", [month])
+            con.execute(
+                f"""insert into raw.trips
+                select {', '.join(select)}, ?, ?, now()::timestamp
+                from read_parquet(?)""",
+                [month, src.name, str(src)],
+            )
+            rows = con.execute("select count(*) from raw.trips where _source_month = ?", [month]).fetchone()[0]
+            if rows == 0:
+                raise ValueError(f"Refusing empty input for {month}: {src.name}; previous rows have been preserved")
+            con.execute("commit")
+        except Exception:
+            # A caller-owned connection must be usable again after a failed replacement,
+            # and a malformed/empty corrected file must not erase the previous month.
+            con.execute("rollback")
+            raise
         return {"month": month, "rows": rows, "file": src.name}
     finally:
         if own:

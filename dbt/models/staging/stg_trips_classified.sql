@@ -14,9 +14,16 @@ with raw as (
         *,
         md5(concat_ws('|', "VendorID", tpep_pickup_datetime, tpep_dropoff_datetime,
                       "PULocationID", "DOLocationID", trip_distance, fare_amount, total_amount)) as trip_id
-    from {{ source('raw', 'trips') }}
+    from {{ source('raw', 'trips') }} source_rows
     {% if is_incremental() %}
-    where _loaded_at > (select coalesce(max(_loaded_at), timestamp '1900-01-01') from {{ this }})
+    -- Compare each month's load version to its own processed version. A global
+    -- high-water mark skips corrected months when timestamps arrive out of order
+    -- (for example after restoring a warehouse or a host clock correction).
+    where not exists (
+        select 1 from {{ this }} processed
+        where processed._source_month = source_rows._source_month
+          and processed._loaded_at = source_rows._loaded_at
+    )
     {% endif %}
 
 ),

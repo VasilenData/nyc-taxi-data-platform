@@ -30,7 +30,17 @@ Dagster UI, asset `raw_trips`, select the month, Materialize. Then run job `tran
 
 ## Late or corrected file from the TLC
 
-Replace the parquet in `TAXI_DATA_DIR` and load the month again. The loader deletes the month before inserting, and dbt reprocesses any month whose `_loaded_at` is newer than what it has seen.
+Replace the parquet in `TAXI_DATA_DIR` and load the month again. The loader deletes
+and inserts the month in one transaction. Empty files and failed inserts roll back
+the replacement, preserving the previous month and leaving a caller-owned
+connection usable. An empty source is treated as an upstream failure, not as an
+instruction to delete historical data.
+
+The incremental classifier compares `_loaded_at` with that month's processed load
+version rather than a global timestamp. This also reprocesses a corrected month
+whose timestamp is older after a clock correction or warehouse restore. Use the
+loader to make corrections; manually changing raw values without changing their
+load timestamp is outside this versioning contract.
 
 ## Look at rejected rows
 
