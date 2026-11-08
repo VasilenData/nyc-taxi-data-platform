@@ -93,15 +93,21 @@ def test_corrected_month_is_reprocessed_when_load_timestamp_moves_backwards(ware
                     where _source_month = '2023-01' and _loaded_at <> timestamp '2000-01-01'""")[0][0] == 0
 
 
-def test_poisoned_month_trips_the_quality_gate(tmp_path):
+def test_poisoned_month_trips_the_quality_gate(warehouse, tmp_path):
     """Corrupt a month so >10% of rows are bad. The CLI must report a failed run."""
     data = tmp_path / "raw"
     data.mkdir()
     src = ROOT / "data" / "sample" / "yellow_tripdata_2023-01.parquet"
     duckdb.sql(f"""copy (select * replace (case when row_number() over () % 5 < 2 then -5.0 else fare_amount end as fare_amount)
                     from read_parquet('{src}')) to '{data}/yellow_tripdata_2023-01.parquet' (format parquet)""")
-    env = {**os.environ, "TAXI_DB": str(tmp_path / "p.duckdb"), "TAXI_DATA_DIR": str(data)}
+    database = tmp_path / "p.duckdb"
+    shutil.copy2(warehouse[0], database)
+    before = q(database, "select * from main.publication")
+    fact_before = q(database, "select count(*), sum(total_amount) from main.fct_trips")
+    env = {**os.environ, "TAXI_DB": str(database), "TAXI_DATA_DIR": str(data)}
     proc = subprocess.run([sys.executable, "run_pipeline.py", "2023-01"], cwd=ROOT, env=env,
                           capture_output=True, text=True, timeout=600)
     assert proc.returncode != 0
     assert "reject_rate" in proc.stdout and "FAIL" in proc.stdout
+    assert q(database, "select * from main.publication") == before
+    assert q(database, "select count(*), sum(total_amount) from main.fct_trips") == fact_before
