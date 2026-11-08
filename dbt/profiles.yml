@@ -3,6 +3,7 @@ taxi_platform:
   outputs:
     dev:
       type: duckdb
+      schema: build
       path: "{{ env_var('TAXI_DB', '../data/warehouse.duckdb') }}"
       threads: 4
       settings:
