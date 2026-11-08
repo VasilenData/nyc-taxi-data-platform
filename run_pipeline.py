@@ -1,4 +1,4 @@
-"""Run the whole platform without the UI: load months, build dbt, run the asset checks.
+"""Run the whole platform without the UI: load months, build candidates, check and atomically publish.
 
     python run_pipeline.py 2023-01 2023-02
 

@@ -1,56 +1,35 @@
-"""Asset checks that run after the dbt graph. They read the warehouse, not the dbt artifacts, so they
-verify what is actually stored."""
+"""Blocking checks read candidate tables; consumers stay on the last publication."""
 import dagster as dg
 import duckdb
 
 from . import config
-
-
-def _rows(sql: str) -> list[tuple]:
-    con = duckdb.connect(str(config.DB_PATH), read_only=True)
-    try:
-        return con.execute(sql).fetchall()
-    finally:
-        con.close()
+from .quality import RECONCILIATION_SQL, evaluate
 
 
 def reconciliation_mismatches() -> list[tuple]:
-    """Include output-only months, which a raw-side LEFT JOIN would silently miss."""
-    return _rows(
-        """select coalesce(r.m, v.m, q.m), coalesce(r.n,0), coalesce(v.n,0), coalesce(q.n,0) from
-           (select _source_month m, count(*) n from raw.trips group by 1) r
-           full outer join (select _source_month m, count(*) n from main.stg_trips group by 1) v using (m)
-           full outer join (select _source_month m, count(*) n from main.trips_quarantine group by 1) q using (m)
-           where coalesce(r.n,0) <> coalesce(v.n,0) + coalesce(q.n,0)"""
-    )
+    with duckdb.connect(str(config.DB_PATH), read_only=True) as con:
+        return con.execute(RECONCILIATION_SQL).fetchall()
+
+
+def _check(name: str) -> dg.AssetCheckResult:
+    with duckdb.connect(str(config.DB_PATH), read_only=True) as con:
+        passed, metadata = evaluate(con, config.MAX_REJECT_RATE)[name]
+    return dg.AssetCheckResult(passed=passed, metadata=metadata, severity=dg.AssetCheckSeverity.ERROR)
 
 
 @dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
-                description="raw rows = valid rows + quarantined rows, including output-only months.")
+                description="Candidate raw rows = valid + quarantined rows, including output-only months.")
 def reconciliation() -> dg.AssetCheckResult:
-    bad = reconciliation_mismatches()
-    return dg.AssetCheckResult(passed=not bad, metadata={"mismatched_months": len(bad)})
+    return _check("reconciliation")
 
 
 @dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
-                description=f"No month may reject more than {config.MAX_REJECT_RATE:.0%} of its rows.")
+                description=f"No candidate month may reject more than {config.MAX_REJECT_RATE:.0%} of rows.")
 def reject_rate() -> dg.AssetCheckResult:
-    rows = _rows(
-        """select source_month, sum(rejected_rows) * 1.0 / max(raw_rows)
-           from main.mart_data_quality group by 1 order by 1"""
-    )
-    worst = max(rows, key=lambda r: r[1], default=("none", 0.0))
-    return dg.AssetCheckResult(
-        passed=worst[1] <= config.MAX_REJECT_RATE,
-        severity=dg.AssetCheckSeverity.ERROR,
-        metadata={"worst_month": worst[0], "worst_reject_rate": float(worst[1]), "months_checked": len(rows)},
-    )
+    return _check("reject_rate")
 
 
 @dg.asset_check(asset=dg.AssetKey("fct_trips"), blocking=True,
-                description="Fact table is not empty and covers every raw month.")
+                description="Candidate fact table is not empty and covers every raw month.")
 def coverage() -> dg.AssetCheckResult:
-    raw = {r[0] for r in _rows("select distinct _source_month from raw.trips")}
-    fact = {r[0] for r in _rows("select distinct source_month from main.fct_trips")}
-    return dg.AssetCheckResult(passed=raw == fact and bool(fact),
-                               metadata={"raw_months": len(raw), "fact_months": len(fact)})
+    return _check("coverage")

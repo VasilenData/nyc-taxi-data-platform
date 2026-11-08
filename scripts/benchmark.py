@@ -184,7 +184,7 @@ def main() -> int:
             "dbt_manifest_present_at_start": (ROOT / "dbt" / "target" / "manifest.json").exists(),
             "duckdb_memory_limit": args.memory_limit,
             "dbt_threads": 4,
-            "timed_scope": "Python startup, monthly ingestion, dbt build with tests, Dagster asset checks",
+            "timed_scope": "Python startup, monthly ingestion, dbt build with tests, Dagster asset checks, transactional publication",
             "preparation_seconds": round(preparation_seconds, 3),
         },
         "command": ["python", "run_pipeline.py", *args.months],

@@ -10,6 +10,8 @@ def test_graph_is_one_connected_lineage():
     # raw_trips must be the upstream of the dbt staging model (translator wiring)
     parents = {p.to_user_string() for p in graph.get(AssetKey("stg_trips_classified")).parent_keys}
     assert "raw_trips" in parents
+    publication_parents = {p.to_user_string() for p in graph.get(AssetKey("published_warehouse")).parent_keys}
+    assert {"fct_trips", "mart_daily_borough", "mart_hourly_demand", "mart_data_quality"} <= publication_parents
 
 
 def test_checks_and_schedules_registered():

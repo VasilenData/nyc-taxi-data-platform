@@ -19,8 +19,9 @@ def test_asset_and_dbt_reconciliation_include_missing_and_orphan_months(tmp_path
     database = tmp_path / "reconcile.duckdb"
     with duckdb.connect(str(database)) as con:
         con.execute("create schema raw")
-        for table, months in {"raw.trips": ["2023-01"] * 2, "main.stg_trips": valid,
-                              "main.trips_quarantine": quarantine}.items():
+        con.execute("create schema build")
+        for table, months in {"raw.trips": ["2023-01"] * 2, "build.stg_trips": valid,
+                              "build.trips_quarantine": quarantine}.items():
             con.execute(f"create table {table} (_source_month varchar)")
             if months:
                 con.executemany(f"insert into {table} values (?)", [(month,) for month in months])
@@ -28,7 +29,7 @@ def test_asset_and_dbt_reconciliation_include_missing_and_orphan_months(tmp_path
     assert sorted(checks.reconciliation_mismatches()) == expected
     template = Path(__file__).resolve().parents[1] / "dbt/tests/assert_raw_equals_valid_plus_rejected.sql"
     sql = Template(template.read_text()).render(source=lambda schema, table: f"{schema}.{table}",
-                                                ref=lambda table: f"main.{table}")
+                                                ref=lambda table: f"build.{table}")
     with duckdb.connect(str(database), read_only=True) as con:
         assert sorted(con.execute(sql).fetchall()) == expected
 
