@@ -85,3 +85,71 @@ def test_failed_insert_rolls_back_borrowed_connection(con, monkeypatch):
 
     assert con.execute("select count(*), sum(total_amount) from raw.trips").fetchone() == before
     assert ingest.load_month("2023-01", con)["rows"] == 15000
+
+
+def test_missing_required_schema_cannot_replace_good_month(con, tmp_path, monkeypatch):
+    ingest.load_month("2023-01", con)
+    before = con.execute("select * from raw.trips order by all").fetchall()
+    audit = con.execute("select * from audit.source_loads").fetchall()
+    wrong = tmp_path / "wrong.parquet"
+    con.execute("copy (select 1 as unrelated) to ? (format parquet)", [str(wrong)])
+    monkeypatch.setattr(ingest, "resolve_source", lambda month: wrong)
+    with pytest.raises(ValueError, match="missing required columns.*fare_amount"):
+        ingest.load_month("2023-01", con)
+    assert con.execute("select * from raw.trips order by all").fetchall() == before
+    assert con.execute("select * from audit.source_loads").fetchall() == audit
+
+
+def test_optional_fields_are_nullable_and_audited_with_original_bytes(con, tmp_path, monkeypatch):
+    import hashlib
+    import json
+
+    source = tmp_path / "minimal.parquet"
+    columns = ",".join(f'"{c}"' for c in ingest.COLUMNS if c.lower() in ingest.REQUIRED_COLUMNS)
+    con.execute(f"copy (select {columns} from read_parquet(?) limit 5) to ? (format parquet)",
+                [str(config.SAMPLE_DIR / "yellow_tripdata_2023-01.parquet"), str(source)])
+    monkeypatch.setattr(ingest, "resolve_source", lambda month: source)
+    result = ingest.load_month("2023-01", con)
+    digest, size, schema, missing, rows, stamp = con.execute("""select source_sha256, source_bytes,
+        source_schema, missing_optional_columns, rows, loaded_at from audit.source_loads
+        where load_id=?""", [result["load_id"]]).fetchone()
+    assert digest == result["sha256"] == hashlib.sha256(source.read_bytes()).hexdigest()
+    assert size == source.stat().st_size and rows == 5
+    assert "airport_fee" in json.loads(missing)
+    assert {c["name"].lower() for c in json.loads(schema)} == ingest.REQUIRED_COLUMNS
+    assert con.execute("select count(*) from raw.trips where airport_fee is not null").fetchone() == (0,)
+    assert con.execute("select distinct _loaded_at from raw.trips").fetchall() == [(stamp,)]
+
+
+def test_changed_source_or_failed_audit_rolls_back_both_rows_and_lineage(con, monkeypatch):
+    ingest.load_month("2023-01", con)
+    before = con.execute("select * from raw.trips order by all").fetchall()
+    audit = con.execute("select * from audit.source_loads").fetchall()
+    hashes = iter(["a" * 64, "b" * 64])
+    with monkeypatch.context() as patch:
+        patch.setattr(ingest, "source_fingerprint", lambda path: next(hashes))
+        with pytest.raises(ValueError, match="Source changed"):
+            ingest.load_month("2023-01", con)
+    assert con.execute("select * from raw.trips order by all").fetchall() == before
+    assert con.execute("select * from audit.source_loads").fetchall() == audit
+
+    class FailedAudit:
+        def execute(self, sql, parameters=None):
+            if sql.startswith("insert into audit.source_loads"):
+                raise OSError("audit unavailable")
+            return con.execute(sql, parameters) if parameters is not None else con.execute(sql)
+
+    with pytest.raises(OSError, match="audit unavailable"):
+        ingest.load_month("2023-01", FailedAudit())
+    assert con.execute("select * from raw.trips order by all").fetchall() == before
+    assert con.execute("select * from audit.source_loads").fetchall() == audit
+    assert ingest.load_month("2023-01", con)["rows"] == 15000
+
+
+def test_nested_child_cannot_impersonate_top_level_required_field(con, tmp_path, monkeypatch):
+    source = tmp_path / "nested.parquet"
+    con.execute("copy (select {'tpep_pickup_datetime': timestamp '2023-01-01'} nested) "
+                "to ? (format parquet)", [str(source)])
+    monkeypatch.setattr(ingest, "resolve_source", lambda month: source)
+    with pytest.raises(ValueError, match="missing required columns.*tpep_pickup_datetime"):
+        ingest.load_month("2023-01", con)
