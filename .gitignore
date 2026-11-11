@@ -1,4 +1,8 @@
 data/raw/
+data/forecast_raw/
+data/forecast_work/
+# Initial unpublished evidence draft retained locally.
+docs/forecast-2026-11-11/
 data/*.duckdb
 data/*.duckdb.wal
 dbt/target/
