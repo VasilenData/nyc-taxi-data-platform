@@ -116,7 +116,7 @@ pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
 
 ## Next improvement
 
-Measure the staged publication overhead on full data, then add explicit source-schema drift diagnostics. The current loader still accepts missing fields as NULL; its transactional replacement and the publication gate are separate safeguards.
+Measure the staged publication overhead on full data. Required source fields are already validated before a month is replaced, while optional historical fee fields remain nullable; schema diagnostics and source fingerprints are recorded in the load audit.
 
 ## Author
 
