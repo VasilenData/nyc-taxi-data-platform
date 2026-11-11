@@ -1,0 +1,25 @@
+name: Forecast replay
+on:
+  workflow_dispatch:
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-forecast.txt
+      - run: pip install -r requirements-forecast.txt pytest ruff
+      - run: ruff check taxi_forecast tests/test_forecast.py
+      - run: pytest tests/test_forecast.py -q
+      - name: Replay all held-out days from full-source aggregates
+        run: python -m taxi_forecast --panel data/forecast/daily_pickups_2023_h1.csv --output "${{ runner.temp }}/forecast"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forecast-replay-${{ github.sha }}
+          path: ${{ runner.temp }}/forecast
+          retention-days: 30
+          if-no-files-found: error

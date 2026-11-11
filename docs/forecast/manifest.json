@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "files": {
+    "forecast.png": {
+      "bytes": 198606,
+      "sha256": "b008d7498634c5e06387e5e5247c94099269ef2e20385a338b86e656043836ed"
+    },
+    "index.html": {
+      "bytes": 4959,
+      "sha256": "dfd92ad297eab88619bc99b0e68cbb7d8f597d2c44c561f5036a845a511d4b83"
+    },
+    "predictions.csv": {
+      "bytes": 2436269,
+      "sha256": "0e981d7c258bfe6b0c4c14d4933bfc60c4cbca746cdf2c79f3da70b7653bd3d1"
+    },
+    "report.json": {
+      "bytes": 154255,
+      "sha256": "2dc04a586c6201107cf16318d315914b84ff60becb1162b1e910fc4c37b40582"
+    }
+  }
+}

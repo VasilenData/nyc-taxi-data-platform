@@ -8,6 +8,14 @@ A reproducible batch pipeline that turns public NYC taxi records into tested ana
 
 **Operating status:** Runs locally, in Docker and in CI. Cloud deployment and a continuously operated production service are outside the current scope.
 
+## New: observed pickup forecasting and planning replay
+
+[Forecasting evidence and contract](docs/FORECASTING.md) · [Measured report](docs/forecast/index.html) · [Per-prediction CSV](docs/forecast/predictions.csv)
+
+A separate module aggregates **19.49 million records from six complete TLC files** into 263 zone/day series. A fixed Poisson boosting model competes with a weekly seasonal baseline, with March selection, April interval calibration and a **May–June holdout of 16,043 zone-days**. Observed MAE was **40.23 versus 45.35 pickups per zone-day (11.3% lower)**; learned interval coverage was **88.2% against a 90% target**. The report retains monthly/zone errors, source and artifact checksums, and an explicitly hypothetical capacity-allocation scenario.
+
+This is next-day **historical replay**, assuming prior-day counts are available; monthly public TLC publication cannot feed it live. It forecasts recorded pickups, not unmet demand. Run `python -m taxi_forecast --panel data/forecast/daily_pickups_2023_h1.csv --output /tmp/forecast` after installing `requirements-forecast.txt`. Existing pipeline measurements below remain separate from this new modeling run.
+
 ## Results at a glance
 
 Historical measurements from **November 8, 2026**, before staged publication was added, using a new warehouse for each run:

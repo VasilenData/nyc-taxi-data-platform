@@ -1,0 +1,95 @@
+{
+  "sources": [
+    {
+      "month": "2023-01",
+      "filename": "yellow_tripdata_2023-01.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet",
+      "bytes": 47673370,
+      "sha256": "32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572",
+      "rows": 3066766,
+      "disposition": {
+        "unnamed_zone": 41761,
+        "outside_source_month": 48,
+        "accepted": 3024957
+      }
+    },
+    {
+      "month": "2023-02",
+      "filename": "yellow_tripdata_2023-02.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-02.parquet",
+      "bytes": 47748012,
+      "sha256": "4809e6aaac64f05a62d16a25d55713be1537ad64fc261e895eaf2d2120fe750a",
+      "rows": 2913955,
+      "disposition": {
+        "unnamed_zone": 37554,
+        "outside_source_month": 55,
+        "accepted": 2876346
+      }
+    },
+    {
+      "month": "2023-03",
+      "filename": "yellow_tripdata_2023-03.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-03.parquet",
+      "bytes": 56127762,
+      "sha256": "e7d44943111b007bf0e7084863511886e0db29f862f9a96239383a1f86c6c26e",
+      "rows": 3403766,
+      "disposition": {
+        "accepted": 3369121,
+        "unnamed_zone": 34456,
+        "outside_source_month": 189
+      }
+    },
+    {
+      "month": "2023-04",
+      "filename": "yellow_tripdata_2023-04.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-04.parquet",
+      "bytes": 54222699,
+      "sha256": "95c01c53c865e06489179bdecce3a59603697a1557c4d5d183c20ae13a144dc6",
+      "rows": 3288250,
+      "disposition": {
+        "unnamed_zone": 36145,
+        "outside_source_month": 95,
+        "accepted": 3252010
+      }
+    },
+    {
+      "month": "2023-05",
+      "filename": "yellow_tripdata_2023-05.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-05.parquet",
+      "bytes": 58654627,
+      "sha256": "9bd7d1c557bb9d0413619ba296b4828b884852a70bd07f2230b83f080d9a8591",
+      "rows": 3513649,
+      "disposition": {
+        "unnamed_zone": 38493,
+        "outside_source_month": 50,
+        "accepted": 3475106
+      }
+    },
+    {
+      "month": "2023-06",
+      "filename": "yellow_tripdata_2023-06.parquet",
+      "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-06.parquet",
+      "bytes": 54999465,
+      "sha256": "3e60e29b5df45683948b68acbfb503aa459d14162c610622585c6580fdbfc73a",
+      "rows": 3307234,
+      "disposition": {
+        "outside_source_month": 41,
+        "unnamed_zone": 35344,
+        "accepted": 3271849
+      }
+    }
+  ],
+  "raw_rows": 19493620,
+  "accepted_rows": 19269389,
+  "panel_rows": 47603,
+  "zone_count": 263,
+  "start": "2023-01-01",
+  "end_exclusive": "2023-07-01",
+  "grain": "named pickup zone / NYC local calendar day",
+  "target": "observed yellow-taxi pickup records; not unmet or total transport demand",
+  "duplicate_policy": "source records counted; no assumed unique trip key or deduplication",
+  "coverage_rule": "all declared files parse and every calendar day has accepted records",
+  "coverage_limit": "checks do not prove complete vendor submissions",
+  "time_zone": "TLC NYC local timestamps; daily buckets retain 23/25-hour DST days",
+  "panel_sha256": "7529bb1b258436a256b7cef36f9f034def7476b1ce496a77d667e84630629a5d"
+}

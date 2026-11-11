@@ -1,0 +1,5508 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-11T14:46:51.091629+00:00",
+  "source": {
+    "sources": [
+      {
+        "month": "2023-01",
+        "filename": "yellow_tripdata_2023-01.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet",
+        "bytes": 47673370,
+        "sha256": "32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572",
+        "rows": 3066766,
+        "disposition": {
+          "unnamed_zone": 41761,
+          "outside_source_month": 48,
+          "accepted": 3024957
+        }
+      },
+      {
+        "month": "2023-02",
+        "filename": "yellow_tripdata_2023-02.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-02.parquet",
+        "bytes": 47748012,
+        "sha256": "4809e6aaac64f05a62d16a25d55713be1537ad64fc261e895eaf2d2120fe750a",
+        "rows": 2913955,
+        "disposition": {
+          "unnamed_zone": 37554,
+          "outside_source_month": 55,
+          "accepted": 2876346
+        }
+      },
+      {
+        "month": "2023-03",
+        "filename": "yellow_tripdata_2023-03.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-03.parquet",
+        "bytes": 56127762,
+        "sha256": "e7d44943111b007bf0e7084863511886e0db29f862f9a96239383a1f86c6c26e",
+        "rows": 3403766,
+        "disposition": {
+          "accepted": 3369121,
+          "unnamed_zone": 34456,
+          "outside_source_month": 189
+        }
+      },
+      {
+        "month": "2023-04",
+        "filename": "yellow_tripdata_2023-04.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-04.parquet",
+        "bytes": 54222699,
+        "sha256": "95c01c53c865e06489179bdecce3a59603697a1557c4d5d183c20ae13a144dc6",
+        "rows": 3288250,
+        "disposition": {
+          "unnamed_zone": 36145,
+          "outside_source_month": 95,
+          "accepted": 3252010
+        }
+      },
+      {
+        "month": "2023-05",
+        "filename": "yellow_tripdata_2023-05.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-05.parquet",
+        "bytes": 58654627,
+        "sha256": "9bd7d1c557bb9d0413619ba296b4828b884852a70bd07f2230b83f080d9a8591",
+        "rows": 3513649,
+        "disposition": {
+          "unnamed_zone": 38493,
+          "outside_source_month": 50,
+          "accepted": 3475106
+        }
+      },
+      {
+        "month": "2023-06",
+        "filename": "yellow_tripdata_2023-06.parquet",
+        "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-06.parquet",
+        "bytes": 54999465,
+        "sha256": "3e60e29b5df45683948b68acbfb503aa459d14162c610622585c6580fdbfc73a",
+        "rows": 3307234,
+        "disposition": {
+          "outside_source_month": 41,
+          "unnamed_zone": 35344,
+          "accepted": 3271849
+        }
+      }
+    ],
+    "raw_rows": 19493620,
+    "accepted_rows": 19269389,
+    "panel_rows": 47603,
+    "zone_count": 263,
+    "start": "2023-01-01",
+    "end_exclusive": "2023-07-01",
+    "grain": "named pickup zone / NYC local calendar day",
+    "target": "observed yellow-taxi pickup records; not unmet or total transport demand",
+    "duplicate_policy": "source records counted; no assumed unique trip key or deduplication",
+    "coverage_rule": "all declared files parse and every calendar day has accepted records",
+    "coverage_limit": "checks do not prove complete vendor submissions",
+    "time_zone": "TLC NYC local timestamps; daily buckets retain 23/25-hour DST days",
+    "panel_sha256": "7529bb1b258436a256b7cef36f9f034def7476b1ce496a77d667e84630629a5d"
+  },
+  "evaluation": {
+    "selection": {
+      "seasonal_naive": {
+        "rows": 8153,
+        "actual_pickups": 3369121.0,
+        "mae": 33.38022813688213,
+        "rmse": 108.2490932258865,
+        "wape": 0.08077744907351206,
+        "bias": -1.88777137250092
+      },
+      "poisson_boosting": {
+        "rows": 8153,
+        "actual_pickups": 3369121.0,
+        "mae": 33.318517488631265,
+        "rmse": 115.742142641645,
+        "wape": 0.0806281143018641,
+        "bias": -3.220135766113504
+      }
+    },
+    "selected_model": "poisson_boosting",
+    "test": {
+      "seasonal_naive": {
+        "rows": 16043,
+        "actual_pickups": 6746955.0,
+        "mae": 45.348251573895155,
+        "rmse": 158.94126391706214,
+        "wape": 0.10782968020388457,
+        "bias": 4.018699744436826,
+        "interval_coverage": 0.9113632113694446,
+        "mean_interval_width": 177.69718880508634,
+        "uncovered_pickups_proxy": 715741,
+        "idle_capacity_proxy": 222750,
+        "illustrative_cost_units": 771428.5
+      },
+      "poisson_boosting": {
+        "rows": 16043,
+        "actual_pickups": 6746955.0,
+        "mae": 40.2305451207477,
+        "rmse": 140.2491006173072,
+        "wape": 0.09566072922854167,
+        "bias": 6.606329306885651,
+        "interval_coverage": 0.8820046126036277,
+        "mean_interval_width": 144.87429930935872,
+        "uncovered_pickups_proxy": 703222,
+        "idle_capacity_proxy": 210231,
+        "illustrative_cost_units": 755779.75
+      }
+    },
+    "test_by_month": [
+      {
+        "model": "poisson_boosting",
+        "month": "2023-05",
+        "rows": 8153,
+        "actual_pickups": 3475106.0,
+        "mae": 39.42236557257329,
+        "rmse": 140.00980209832494,
+        "wape": 0.09248942234084083,
+        "bias": 7.953858941862302,
+        "interval_coverage": 0.8799215012878695
+      },
+      {
+        "model": "poisson_boosting",
+        "month": "2023-06",
+        "rows": 7890,
+        "actual_pickups": 3271849.0,
+        "mae": 41.06566398719459,
+        "rmse": 140.4959475654964,
+        "wape": 0.09902904714091797,
+        "bias": 5.213882017409779,
+        "interval_coverage": 0.8841571609632446
+      },
+      {
+        "model": "seasonal_naive",
+        "month": "2023-05",
+        "rows": 8153,
+        "actual_pickups": 3475106.0,
+        "mae": 42.92235986753342,
+        "rmse": 151.74698612610544,
+        "wape": 0.10070081315505196,
+        "bias": 11.822641972280142,
+        "interval_coverage": 0.9098491352876242
+      },
+      {
+        "model": "seasonal_naive",
+        "month": "2023-06",
+        "rows": 7890,
+        "actual_pickups": 3271849.0,
+        "mae": 47.85500633713561,
+        "rmse": 166.04821249260667,
+        "wape": 0.11540141369604771,
+        "bias": -4.045373891001267,
+        "interval_coverage": 0.9129277566539924
+      }
+    ],
+    "test_by_zone": [
+      {
+        "model": "poisson_boosting",
+        "zone": 1,
+        "rows": 61,
+        "actual_pickups": 962.0,
+        "mae": 3.862473352494141,
+        "rmse": 4.465449036272601,
+        "wape": 0.2449177489627262,
+        "bias": 0.2259457997433399
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 2,
+        "rows": 61,
+        "actual_pickups": 6.0,
+        "mae": 0.2162099081072303,
+        "rmse": 0.3019693293865513,
+        "wape": 2.1981340657568413,
+        "bias": 0.051314853759348286
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 3,
+        "rows": 61,
+        "actual_pickups": 129.0,
+        "mae": 1.2265890079768689,
+        "rmse": 1.4775013629213891,
+        "wape": 0.5800149572603799,
+        "bias": 0.20296747000620227
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 4,
+        "rows": 61,
+        "actual_pickups": 8403.0,
+        "mae": 19.998194127065414,
+        "rmse": 27.67101123229784,
+        "wape": 0.14517313361311318,
+        "bias": -1.0451986946717375
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 5,
+        "rows": 61,
+        "actual_pickups": 100.0,
+        "mae": 0.8019272710689622,
+        "rmse": 1.0444878663754993,
+        "wape": 0.489175635352067,
+        "bias": 0.3364799266145598
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 6,
+        "rows": 61,
+        "actual_pickups": 87.0,
+        "mae": 0.8714286707015424,
+        "rmse": 1.0835931232877656,
+        "wape": 0.6110017116413113,
+        "bias": 0.4858789389949474
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 7,
+        "rows": 61,
+        "actual_pickups": 3683.0,
+        "mae": 10.20378640985139,
+        "rmse": 13.311218373639251,
+        "wape": 0.1690010781973757,
+        "bias": 3.861926109633387
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 8,
+        "rows": 61,
+        "actual_pickups": 29.0,
+        "mae": 0.6186837449889532,
+        "rmse": 0.725378578176107,
+        "wape": 1.3013692567009014,
+        "bias": 0.043431686822372424
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 9,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.249549822826683,
+        "rmse": 1.5112854366459054,
+        "wape": 0.686689542274123,
+        "bias": 0.2837789094023633
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 10,
+        "rows": 61,
+        "actual_pickups": 2102.0,
+        "mae": 6.464843814417377,
+        "rmse": 8.750414224750534,
+        "wape": 0.1876096444716746,
+        "bias": 2.3850324865732215
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 11,
+        "rows": 61,
+        "actual_pickups": 97.0,
+        "mae": 0.991634771014651,
+        "rmse": 1.2622450073488145,
+        "wape": 0.6236053714628218,
+        "bias": 0.343577060555872
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 12,
+        "rows": 61,
+        "actual_pickups": 3075.0,
+        "mae": 11.823383975626312,
+        "rmse": 16.967694394070495,
+        "wape": 0.23454517805307482,
+        "bias": -0.23035688664271087
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 13,
+        "rows": 61,
+        "actual_pickups": 41293.0,
+        "mae": 70.361405421778,
+        "rmse": 86.9823300418842,
+        "wape": 0.10394124260112993,
+        "bias": 1.3279863412670585
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 14,
+        "rows": 61,
+        "actual_pickups": 509.0,
+        "mae": 2.552086329359394,
+        "rmse": 3.352993109791035,
+        "wape": 0.3058492457581985,
+        "bias": 0.49565153956687075
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 15,
+        "rows": 61,
+        "actual_pickups": 69.0,
+        "mae": 0.9315736624009358,
+        "rmse": 1.1278210507547943,
+        "wape": 0.8235651218327114,
+        "bias": 0.3865027205606351
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 16,
+        "rows": 61,
+        "actual_pickups": 102.0,
+        "mae": 1.039740868373425,
+        "rmse": 1.2536917174852842,
+        "wape": 0.6218058134390091,
+        "bias": 0.26063074171186795
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 17,
+        "rows": 61,
+        "actual_pickups": 1041.0,
+        "mae": 4.083362673290615,
+        "rmse": 5.234282276237142,
+        "wape": 0.2392748540544933,
+        "bias": 0.19284148145095653
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 18,
+        "rows": 61,
+        "actual_pickups": 241.0,
+        "mae": 1.4828426272984256,
+        "rmse": 1.8596633698552318,
+        "wape": 0.3753253123037509,
+        "bias": 0.16832138869723065
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 19,
+        "rows": 61,
+        "actual_pickups": 158.0,
+        "mae": 1.446624657897845,
+        "rmse": 1.9148747792362302,
+        "wape": 0.5585069881757503,
+        "bias": 0.1829050572864694
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 20,
+        "rows": 61,
+        "actual_pickups": 125.0,
+        "mae": 1.3556203633967852,
+        "rmse": 1.6822141683387675,
+        "wape": 0.6615427373376311,
+        "bias": 0.337611350992025
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 21,
+        "rows": 61,
+        "actual_pickups": 159.0,
+        "mae": 1.4521474407862085,
+        "rmse": 1.8304001917982706,
+        "wape": 0.5571131691066585,
+        "bias": 0.6693870405335166
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 22,
+        "rows": 61,
+        "actual_pickups": 182.0,
+        "mae": 1.5642940661767732,
+        "rmse": 1.933854998854174,
+        "wape": 0.524296362839468,
+        "bias": -0.05824556106821512
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 23,
+        "rows": 61,
+        "actual_pickups": 211.0,
+        "mae": 1.1116430159276482,
+        "rmse": 1.4578881030071973,
+        "wape": 0.32137546905965186,
+        "bias": -0.0621489702629981
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 24,
+        "rows": 61,
+        "actual_pickups": 18070.0,
+        "mae": 37.379352113143206,
+        "rmse": 48.537000749429744,
+        "wape": 0.12618375644171198,
+        "bias": 11.832523280520025
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 25,
+        "rows": 61,
+        "actual_pickups": 3179.0,
+        "mae": 8.5672927191392,
+        "rmse": 11.309024244767004,
+        "wape": 0.1643928455072322,
+        "bias": 2.8200314766265078
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 26,
+        "rows": 61,
+        "actual_pickups": 232.0,
+        "mae": 1.8083515916839643,
+        "rmse": 2.2292994683738425,
+        "wape": 0.47547175471000785,
+        "bias": 0.23620347487818416
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 27,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.15588905907516484,
+        "rmse": 0.2044545462308511,
+        "wape": 4.754616301792527,
+        "bias": 0.09894019555503784
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 28,
+        "rows": 61,
+        "actual_pickups": 547.0,
+        "mae": 2.456735900673593,
+        "rmse": 3.0535262854334437,
+        "wape": 0.2739687201848065,
+        "bias": 0.32648565239482763
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 29,
+        "rows": 61,
+        "actual_pickups": 202.0,
+        "mae": 1.875781058878198,
+        "rmse": 2.2524694594835797,
+        "wape": 0.5664487356018321,
+        "bias": 0.32850131921344455
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 30,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.16456693051614946,
+        "rmse": 0.20922544209332733,
+        "wape": 5.019291380742558,
+        "bias": 0.1079473278300224
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 31,
+        "rows": 61,
+        "actual_pickups": 42.0,
+        "mae": 0.7646853549845971,
+        "rmse": 0.9123656313948616,
+        "wape": 1.1106144441442958,
+        "bias": 0.33440768462733766
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 32,
+        "rows": 61,
+        "actual_pickups": 204.0,
+        "mae": 1.7340516901349743,
+        "rmse": 2.0734540737690286,
+        "wape": 0.5185154563638893,
+        "bias": 0.562708175458126
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 33,
+        "rows": 61,
+        "actual_pickups": 3882.0,
+        "mae": 12.467655169665996,
+        "rmse": 15.993046704635645,
+        "wape": 0.19591111935848163,
+        "bias": 3.491443035552021
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 34,
+        "rows": 61,
+        "actual_pickups": 163.0,
+        "mae": 1.7795078302236114,
+        "rmse": 2.4800439029834576,
+        "wape": 0.6659507830898177,
+        "bias": 0.19318601634536894
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 35,
+        "rows": 61,
+        "actual_pickups": 456.0,
+        "mae": 2.546161725941352,
+        "rmse": 3.1726981352075176,
+        "wape": 0.3406049677246107,
+        "bias": 0.650172430776883
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 36,
+        "rows": 61,
+        "actual_pickups": 827.0,
+        "mae": 5.349555927880193,
+        "rmse": 7.267806402489138,
+        "wape": 0.394586350182215,
+        "bias": -1.0708832061774383
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 37,
+        "rows": 61,
+        "actual_pickups": 1065.0,
+        "mae": 5.074433931275682,
+        "rmse": 7.818348778292746,
+        "wape": 0.2906483284580438,
+        "bias": -0.9545020242527662
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 38,
+        "rows": 61,
+        "actual_pickups": 226.0,
+        "mae": 1.6185390255068581,
+        "rmse": 1.9461013669907845,
+        "wape": 0.43686230334477144,
+        "bias": 0.2115948423040985
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 39,
+        "rows": 61,
+        "actual_pickups": 562.0,
+        "mae": 2.6648563958604585,
+        "rmse": 3.3573415776909084,
+        "wape": 0.289245978910121,
+        "bias": 0.3764175262349355
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 40,
+        "rows": 61,
+        "actual_pickups": 890.0,
+        "mae": 3.5727290693492844,
+        "rmse": 4.566099692254113,
+        "wape": 0.24487244183180487,
+        "bias": 0.5941606534265129
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 41,
+        "rows": 61,
+        "actual_pickups": 16638.0,
+        "mae": 32.244859172725235,
+        "rmse": 42.28319657436173,
+        "wape": 0.11821952215027283,
+        "bias": 8.458446394298756
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 42,
+        "rows": 61,
+        "actual_pickups": 6134.0,
+        "mae": 14.639797862289061,
+        "rmse": 19.94325193568948,
+        "wape": 0.14558651281376472,
+        "bias": 3.4482028663904627
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 43,
+        "rows": 61,
+        "actual_pickups": 114153.0,
+        "mae": 178.93578231042946,
+        "rmse": 225.171340130325,
+        "wape": 0.09561801022256268,
+        "bias": 12.778423052185394
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 44,
+        "rows": 61,
+        "actual_pickups": 72.0,
+        "mae": 0.8098470530246389,
+        "rmse": 0.989003451109785,
+        "wape": 0.6861204199236525,
+        "bias": 0.39353248045200734
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 45,
+        "rows": 61,
+        "actual_pickups": 9657.0,
+        "mae": 17.01760397160609,
+        "rmse": 20.46847537568019,
+        "wape": 0.10749444364377876,
+        "bias": 5.3701003758905035
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 46,
+        "rows": 61,
+        "actual_pickups": 20.0,
+        "mae": 0.5247425249206521,
+        "rmse": 0.6697259981929921,
+        "wape": 1.6004647010079889,
+        "bias": 0.03067997867636851
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 47,
+        "rows": 61,
+        "actual_pickups": 233.0,
+        "mae": 2.142590317550056,
+        "rmse": 2.6673976027931277,
+        "wape": 0.560935662534564,
+        "bias": 0.38562503067689985
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 48,
+        "rows": 61,
+        "actual_pickups": 180013.0,
+        "mae": 161.72123509274388,
+        "rmse": 219.29596140187425,
+        "wape": 0.05480157177902361,
+        "bias": 16.334254214227386
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 49,
+        "rows": 61,
+        "actual_pickups": 1196.0,
+        "mae": 4.89771317935132,
+        "rmse": 5.876736070548839,
+        "wape": 0.24979975245855393,
+        "bias": 0.8484354509942896
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 50,
+        "rows": 61,
+        "actual_pickups": 45739.0,
+        "mae": 56.86094382725414,
+        "rmse": 72.11119522320621,
+        "wape": 0.07583282479858551,
+        "bias": 0.0814734426668729
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 51,
+        "rows": 61,
+        "actual_pickups": 677.0,
+        "mae": 3.4674784155937397,
+        "rmse": 4.303437264095803,
+        "wape": 0.3124315854523163,
+        "bias": 0.09422523392538172
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 52,
+        "rows": 61,
+        "actual_pickups": 1446.0,
+        "mae": 5.478062187933421,
+        "rmse": 6.666652863952981,
+        "wape": 0.23109390972609867,
+        "bias": 1.0474626988775568
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 53,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.1029198917357672,
+        "rmse": 1.3528040422836647,
+        "wape": 0.6061091296926289,
+        "bias": 0.1837368044328825
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 54,
+        "rows": 61,
+        "actual_pickups": 154.0,
+        "mae": 1.4698443568206017,
+        "rmse": 1.7923102021637847,
+        "wape": 0.5822110764029655,
+        "bias": 0.31938454158489127
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 55,
+        "rows": 61,
+        "actual_pickups": 392.0,
+        "mae": 2.7031568244792235,
+        "rmse": 3.502477572972845,
+        "wape": 0.4206443017684506,
+        "bias": 0.08727471318600896
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 56,
+        "rows": 61,
+        "actual_pickups": 345.0,
+        "mae": 2.1878834239582763,
+        "rmse": 2.79883224351903,
+        "wape": 0.386843156120159,
+        "bias": 0.3920747258459253
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 57,
+        "rows": 61,
+        "actual_pickups": 21.0,
+        "mae": 0.46486639284770404,
+        "rmse": 0.521552728382206,
+        "wape": 1.3503261887480928,
+        "bias": -0.007165835008175667
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 58,
+        "rows": 61,
+        "actual_pickups": 7.0,
+        "mae": 0.22961923942736231,
+        "rmse": 0.31992095901757533,
+        "wape": 2.0009676578670144,
+        "bias": 0.03513569812254742
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 59,
+        "rows": 61,
+        "actual_pickups": 26.0,
+        "mae": 0.8795288038498115,
+        "rmse": 2.4984279023058167,
+        "wape": 2.063509885955327,
+        "bias": 0.09317461705433215
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 60,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.1933112724365107,
+        "rmse": 1.4702520221658497,
+        "wape": 0.6557836722398842,
+        "bias": 0.4154088154083025
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 61,
+        "rows": 61,
+        "actual_pickups": 1623.0,
+        "mae": 5.802757731217091,
+        "rmse": 7.408627505880611,
+        "wape": 0.21809502255344582,
+        "bias": 1.737851282274309
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 62,
+        "rows": 61,
+        "actual_pickups": 468.0,
+        "mae": 2.378843906349386,
+        "rmse": 2.997816997600349,
+        "wape": 0.3100629877934029,
+        "bias": 0.4751476037476949
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 63,
+        "rows": 61,
+        "actual_pickups": 151.0,
+        "mae": 1.425588702242806,
+        "rmse": 2.0748610283225286,
+        "wape": 0.5759000717669613,
+        "bias": 0.29466870183571997
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 64,
+        "rows": 61,
+        "actual_pickups": 52.0,
+        "mae": 0.8346081389632267,
+        "rmse": 1.109547465141797,
+        "wape": 0.9790595476299391,
+        "bias": 0.17848884076590957
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 65,
+        "rows": 61,
+        "actual_pickups": 4900.0,
+        "mae": 11.430992139196583,
+        "rmse": 14.695757826581966,
+        "wape": 0.14230418785530438,
+        "bias": 1.8025331731395446
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 66,
+        "rows": 61,
+        "actual_pickups": 2518.0,
+        "mae": 9.55939418719603,
+        "rmse": 11.637508484230223,
+        "wape": 0.23158182899879184,
+        "bias": 0.4899651892774084
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 67,
+        "rows": 61,
+        "actual_pickups": 142.0,
+        "mae": 1.3943866889913352,
+        "rmse": 1.640714993394158,
+        "wape": 0.5989970987920524,
+        "bias": 0.4216887245032243
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 68,
+        "rows": 61,
+        "actual_pickups": 169592.0,
+        "mae": 165.20444942588915,
+        "rmse": 219.72167441032568,
+        "wape": 0.05942185607209796,
+        "bias": 34.1069796999404
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 69,
+        "rows": 61,
+        "actual_pickups": 440.0,
+        "mae": 2.675797506844961,
+        "rmse": 3.26803221608253,
+        "wape": 0.3709628361762332,
+        "bias": 0.5182115526601103
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 70,
+        "rows": 61,
+        "actual_pickups": 30316.0,
+        "mae": 58.23977908568127,
+        "rmse": 70.06346226411321,
+        "wape": 0.11718651946914362,
+        "bias": 32.711750251062384
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 71,
+        "rows": 61,
+        "actual_pickups": 396.0,
+        "mae": 2.1574902575596115,
+        "rmse": 2.657977906385496,
+        "wape": 0.33234067098771797,
+        "bias": 0.5980935480862241
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 72,
+        "rows": 61,
+        "actual_pickups": 414.0,
+        "mae": 2.118012555797404,
+        "rmse": 2.6312499389269877,
+        "wape": 0.31207431377691214,
+        "bias": 0.27355179535494567
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 73,
+        "rows": 61,
+        "actual_pickups": 49.0,
+        "mae": 0.8308215240239587,
+        "rmse": 1.017695816675093,
+        "wape": 1.0342880197032955,
+        "bias": 0.2446348441079615
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 74,
+        "rows": 61,
+        "actual_pickups": 14840.0,
+        "mae": 31.395889687128452,
+        "rmse": 38.815712466929746,
+        "wape": 0.12905318537161964,
+        "bias": 10.753787593394005
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 75,
+        "rows": 61,
+        "actual_pickups": 40064.0,
+        "mae": 67.72348178761857,
+        "rmse": 86.54127262060634,
+        "wape": 0.10311332840067725,
+        "bias": 15.588380018018565
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 76,
+        "rows": 61,
+        "actual_pickups": 816.0,
+        "mae": 4.286461602274303,
+        "rmse": 5.4203457694628066,
+        "wape": 0.320434016836682,
+        "bias": 0.30705317542477356
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 77,
+        "rows": 61,
+        "actual_pickups": 220.0,
+        "mae": 1.8264503344004113,
+        "rmse": 2.3550607646997865,
+        "wape": 0.5064248654473867,
+        "bias": 0.21003593604171025
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 78,
+        "rows": 61,
+        "actual_pickups": 287.0,
+        "mae": 2.135897178907302,
+        "rmse": 2.731740583943242,
+        "wape": 0.4539711773984161,
+        "bias": 0.3308835559700609
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 79,
+        "rows": 61,
+        "actual_pickups": 158770.0,
+        "mae": 262.2506825638492,
+        "rmse": 353.10190666390633,
+        "wape": 0.10075764713985513,
+        "bias": -2.215445321015649
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 80,
+        "rows": 61,
+        "actual_pickups": 1978.0,
+        "mae": 9.152219700272239,
+        "rmse": 14.207161460090918,
+        "wape": 0.2822474225058678,
+        "bias": -3.3591658243627545
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 81,
+        "rows": 61,
+        "actual_pickups": 186.0,
+        "mae": 1.4135933533862564,
+        "rmse": 1.8182136323611606,
+        "wape": 0.4635978201965679,
+        "bias": 0.5650756717382867
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 82,
+        "rows": 61,
+        "actual_pickups": 778.0,
+        "mae": 2.648536757976136,
+        "rmse": 3.2573624966496393,
+        "wape": 0.2076616224120107,
+        "bias": 0.5341855608320499
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 83,
+        "rows": 61,
+        "actual_pickups": 311.0,
+        "mae": 2.017114624240385,
+        "rmse": 2.4547106599548965,
+        "wape": 0.3956398459121012,
+        "bias": 0.4649051508313393
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 84,
+        "rows": 61,
+        "actual_pickups": 4.0,
+        "mae": 0.1972326157456971,
+        "rmse": 0.2648754319113466,
+        "wape": 3.0077973901218806,
+        "bias": 0.08446700500816993
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 85,
+        "rows": 61,
+        "actual_pickups": 273.0,
+        "mae": 1.9420399171431018,
+        "rmse": 2.3467334320211326,
+        "wape": 0.4339356591418652,
+        "bias": 0.2687570904876444
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 86,
+        "rows": 61,
+        "actual_pickups": 349.0,
+        "mae": 2.110314776390024,
+        "rmse": 2.6319633813753733,
+        "wape": 0.3688515798274827,
+        "bias": 0.3468488775744076
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 87,
+        "rows": 61,
+        "actual_pickups": 37881.0,
+        "mae": 57.191843673163326,
+        "rmse": 71.69659371967559,
+        "wape": 0.09209636662345141,
+        "bias": 6.239323774793996
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 88,
+        "rows": 61,
+        "actual_pickups": 19192.0,
+        "mae": 37.90364950514385,
+        "rmse": 49.25833356405927,
+        "wape": 0.12047325030292698,
+        "bias": 6.777255080575949
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 89,
+        "rows": 61,
+        "actual_pickups": 906.0,
+        "mae": 4.074534433870215,
+        "rmse": 4.865267380930052,
+        "wape": 0.2743339960994295,
+        "bias": -0.16128791568536424
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 90,
+        "rows": 61,
+        "actual_pickups": 109508.0,
+        "mae": 137.9407719749221,
+        "rmse": 181.14175724591095,
+        "wape": 0.07683810397843306,
+        "bias": -1.9810597355088762
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 91,
+        "rows": 61,
+        "actual_pickups": 435.0,
+        "mae": 2.7478350084523235,
+        "rmse": 3.5271332953527823,
+        "wape": 0.3853285873921649,
+        "bias": 0.47849913058565163
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 92,
+        "rows": 61,
+        "actual_pickups": 471.0,
+        "mae": 2.01149911620347,
+        "rmse": 2.5112134335442415,
+        "wape": 0.2605126243915322,
+        "bias": 0.20729063171789552
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 93,
+        "rows": 61,
+        "actual_pickups": 735.0,
+        "mae": 3.762628655756256,
+        "rmse": 4.50094629677945,
+        "wape": 0.31227258231446475,
+        "bias": 0.49417904340192353
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 94,
+        "rows": 61,
+        "actual_pickups": 121.0,
+        "mae": 1.2116083628550038,
+        "rmse": 1.4662070611496902,
+        "wape": 0.6108108275550019,
+        "bias": 0.31455513084295217
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 95,
+        "rows": 61,
+        "actual_pickups": 1007.0,
+        "mae": 4.775664619654163,
+        "rmse": 6.155898836338577,
+        "wape": 0.2892905082412154,
+        "bias": -0.8466722131735909
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 96,
+        "rows": 61,
+        "actual_pickups": 17.0,
+        "mae": 0.4335092137895282,
+        "rmse": 0.5906114892619666,
+        "wape": 1.5555330612447777,
+        "bias": -0.007307750422391261
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 97,
+        "rows": 61,
+        "actual_pickups": 2716.0,
+        "mae": 8.39632336904218,
+        "rmse": 10.595641648190288,
+        "wape": 0.18857721852414322,
+        "bias": 3.833981030835769
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 98,
+        "rows": 61,
+        "actual_pickups": 135.0,
+        "mae": 1.3571611701786706,
+        "rmse": 1.6996772368348219,
+        "wape": 0.6132357880066586,
+        "bias": 0.09004801695445755
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 99,
+        "rows": 61,
+        "actual_pickups": 4.0,
+        "mae": 0.18872469631174804,
+        "rmse": 0.25829708069484053,
+        "wape": 2.878051618754158,
+        "bias": 0.07708767974274003
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 100,
+        "rows": 61,
+        "actual_pickups": 109926.0,
+        "mae": 118.18081683858173,
+        "rmse": 139.7274628911986,
+        "wape": 0.06558075275324751,
+        "bias": 22.33116942773365
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 101,
+        "rows": 61,
+        "actual_pickups": 132.0,
+        "mae": 1.0190022926698499,
+        "rmse": 1.2444980288642127,
+        "wape": 0.4709025746428852,
+        "bias": 0.08612739757041205
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 102,
+        "rows": 61,
+        "actual_pickups": 107.0,
+        "mae": 1.0483667874826479,
+        "rmse": 1.3482381610704521,
+        "wape": 0.597667047069547,
+        "bias": 0.4136798188177942
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 103,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.1120639672403898,
+        "rmse": 0.11206396724038978,
+        "wape": null,
+        "bias": 0.1120639672403898
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 104,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.1120639672403898,
+        "rmse": 0.11206396724038978,
+        "wape": null,
+        "bias": 0.1120639672403898
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 105,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.16584905555412552,
+        "rmse": 0.2298109989915576,
+        "wape": 3.372264129600552,
+        "bias": 0.08126437549583009
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 106,
+        "rows": 61,
+        "actual_pickups": 448.0,
+        "mae": 2.7794907626736296,
+        "rmse": 3.679649365344601,
+        "wape": 0.3784574475961862,
+        "bias": -0.039921729793535636
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 107,
+        "rows": 61,
+        "actual_pickups": 142658.0,
+        "mae": 210.70243371893875,
+        "rmse": 287.1492282720186,
+        "wape": 0.09009553237011078,
+        "bias": 48.22690964599669
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 108,
+        "rows": 61,
+        "actual_pickups": 247.0,
+        "mae": 1.494223871872112,
+        "rmse": 1.943069703330684,
+        "wape": 0.3690188509481734,
+        "bias": 0.41602592963030455
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 109,
+        "rows": 61,
+        "actual_pickups": 10.0,
+        "mae": 0.32589018109492207,
+        "rmse": 0.4160314333899539,
+        "wape": 1.9879301046790245,
+        "bias": 0.07548302578037686
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 110,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.1120639672403898,
+        "rmse": 0.11206396724038978,
+        "wape": null,
+        "bias": 0.1120639672403898
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 111,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.17668735696123766,
+        "rmse": 0.238063775949955,
+        "wape": 3.5926429248784992,
+        "bias": 0.09062583662932014
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 112,
+        "rows": 61,
+        "actual_pickups": 1627.0,
+        "mae": 8.019859407545887,
+        "rmse": 9.892009091690324,
+        "wape": 0.3006831123910873,
+        "bias": -0.49745965371526507
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 113,
+        "rows": 61,
+        "actual_pickups": 90370.0,
+        "mae": 133.53365934025703,
+        "rmse": 169.63376446484764,
+        "wape": 0.09013558946282703,
+        "bias": 28.519675117122468
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 114,
+        "rows": 61,
+        "actual_pickups": 87746.0,
+        "mae": 143.43416033618035,
+        "rmse": 185.52337169002428,
+        "wape": 0.09971376222855745,
+        "bias": 4.183064778547592
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 115,
+        "rows": 61,
+        "actual_pickups": 7.0,
+        "mae": 0.2753263623697854,
+        "rmse": 0.4981706516089334,
+        "wape": 2.399272586365273,
+        "bias": 0.06420009589455333
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 116,
+        "rows": 61,
+        "actual_pickups": 4864.0,
+        "mae": 13.75539619519057,
+        "rmse": 17.8459536889152,
+        "wape": 0.17250805261238175,
+        "bias": 3.6285294662626724
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 117,
+        "rows": 61,
+        "actual_pickups": 325.0,
+        "mae": 2.1954043950085613,
+        "rmse": 2.6740147878037863,
+        "wape": 0.4120605172169915,
+        "bias": 0.4677626616872079
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 118,
+        "rows": 61,
+        "actual_pickups": 11.0,
+        "mae": 0.3396208686947233,
+        "rmse": 0.5420240639125439,
+        "wape": 1.8833520900343748,
+        "bias": 0.029014687001339513
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 119,
+        "rows": 61,
+        "actual_pickups": 369.0,
+        "mae": 2.179413404017997,
+        "rmse": 2.755363404312292,
+        "wape": 0.36028243264254156,
+        "bias": 0.230874054707591
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 120,
+        "rows": 61,
+        "actual_pickups": 45.0,
+        "mae": 0.8364065491787729,
+        "rmse": 1.10479679966525,
+        "wape": 1.1337955444423367,
+        "bias": 0.26925554309062644
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 121,
+        "rows": 61,
+        "actual_pickups": 319.0,
+        "mae": 1.847892760294599,
+        "rmse": 2.341485526109689,
+        "wape": 0.3533588036926976,
+        "bias": 0.41627642229289424
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 122,
+        "rows": 61,
+        "actual_pickups": 155.0,
+        "mae": 1.5007983950161017,
+        "rmse": 1.7931245596228254,
+        "wape": 0.5906367877160142,
+        "bias": 0.4381904071438074
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 123,
+        "rows": 61,
+        "actual_pickups": 166.0,
+        "mae": 1.5101764726032192,
+        "rmse": 1.8987759755822082,
+        "wape": 0.5549443664385323,
+        "bias": 0.46914299605380005
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 124,
+        "rows": 61,
+        "actual_pickups": 173.0,
+        "mae": 1.4486581758474428,
+        "rmse": 1.808940461295792,
+        "wape": 0.5107985475531446,
+        "bias": 0.41605969106928664
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 125,
+        "rows": 61,
+        "actual_pickups": 33816.0,
+        "mae": 59.385260314277524,
+        "rmse": 74.40084416091187,
+        "wape": 0.10712387269845425,
+        "bias": 15.211584221613528
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 126,
+        "rows": 61,
+        "actual_pickups": 147.0,
+        "mae": 1.4330423605984246,
+        "rmse": 1.8019234952809982,
+        "wape": 0.5946638367109108,
+        "bias": 0.1551040361729526
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 127,
+        "rows": 61,
+        "actual_pickups": 426.0,
+        "mae": 2.87682930258366,
+        "rmse": 3.7361885050640007,
+        "wape": 0.4119403461446086,
+        "bias": 0.18858340961888087
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 128,
+        "rows": 61,
+        "actual_pickups": 40.0,
+        "mae": 0.7975474776611345,
+        "rmse": 0.9104343238423974,
+        "wape": 1.2162599034332302,
+        "bias": 0.26288014933816556
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 129,
+        "rows": 61,
+        "actual_pickups": 1398.0,
+        "mae": 4.562102794233597,
+        "rmse": 5.695367477197111,
+        "wape": 0.1990617099057578,
+        "bias": 0.5807659628065246
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 130,
+        "rows": 61,
+        "actual_pickups": 1106.0,
+        "mae": 4.816034128039311,
+        "rmse": 6.313225036354956,
+        "wape": 0.2656221354524394,
+        "bias": -0.3576272056599788
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 131,
+        "rows": 61,
+        "actual_pickups": 338.0,
+        "mae": 2.5234201821836764,
+        "rmse": 3.1318895245894742,
+        "wape": 0.45541015122249784,
+        "bias": 0.1701985421998973
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 132,
+        "rows": 61,
+        "actual_pickups": 358185.0,
+        "mae": 476.5714942279239,
+        "rmse": 596.7567869578089,
+        "wape": 0.08116158171867431,
+        "bias": -104.103485900665
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 133,
+        "rows": 61,
+        "actual_pickups": 309.0,
+        "mae": 2.9117380377757986,
+        "rmse": 3.471586979357386,
+        "wape": 0.5748091271984587,
+        "bias": 0.08385106716807482
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 134,
+        "rows": 61,
+        "actual_pickups": 666.0,
+        "mae": 2.7632855299901617,
+        "rmse": 3.4763306995623404,
+        "wape": 0.2530937197138136,
+        "bias": 0.5869122244345049
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 135,
+        "rows": 61,
+        "actual_pickups": 407.0,
+        "mae": 2.332821734582438,
+        "rmse": 2.893863089899565,
+        "wape": 0.34963667275068483,
+        "bias": 0.9626039332048031
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 136,
+        "rows": 61,
+        "actual_pickups": 276.0,
+        "mae": 1.6972199559836685,
+        "rmse": 2.2222975743545943,
+        "wape": 0.37511020766305714,
+        "bias": 0.30892166039716323
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 137,
+        "rows": 61,
+        "actual_pickups": 72146.0,
+        "mae": 97.39366565187963,
+        "rmse": 132.4527790917123,
+        "wape": 0.08234709623214949,
+        "bias": 38.036388615105594
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 138,
+        "rows": 61,
+        "actual_pickups": 252184.0,
+        "mae": 321.5647906155013,
+        "rmse": 421.35038256039263,
+        "wape": 0.07778230271367564,
+        "bias": 104.35580650857291
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 139,
+        "rows": 61,
+        "actual_pickups": 251.0,
+        "mae": 1.8222184327511592,
+        "rmse": 2.3042860489956967,
+        "wape": 0.44284989799928576,
+        "bias": -0.06805893876033092
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 140,
+        "rows": 61,
+        "actual_pickups": 131958.0,
+        "mae": 203.1724194850859,
+        "rmse": 340.53245097810964,
+        "wape": 0.09392016845200926,
+        "bias": 35.651051704181256
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 141,
+        "rows": 61,
+        "actual_pickups": 157544.0,
+        "mae": 222.20678521683212,
+        "rmse": 331.10808487827074,
+        "wape": 0.08603700488896282,
+        "bias": 81.77146710507294
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 142,
+        "rows": 61,
+        "actual_pickups": 228384.0,
+        "mae": 332.84634339842944,
+        "rmse": 451.54934708786885,
+        "wape": 0.0889012669333412,
+        "bias": 175.18151689070083
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 143,
+        "rows": 61,
+        "actual_pickups": 75177.0,
+        "mae": 130.30038911005028,
+        "rmse": 181.06206799597172,
+        "wape": 0.10572813141935788,
+        "bias": 41.34716978147078
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 144,
+        "rows": 61,
+        "actual_pickups": 59387.0,
+        "mae": 77.64018511873928,
+        "rmse": 91.29039038827348,
+        "wape": 0.0797489567117904,
+        "bias": 1.5428474807785368
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 145,
+        "rows": 61,
+        "actual_pickups": 6116.0,
+        "mae": 18.05473083097095,
+        "rmse": 22.740006556343634,
+        "wape": 0.1800749804920255,
+        "bias": 3.126570472645132
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 146,
+        "rows": 61,
+        "actual_pickups": 3602.0,
+        "mae": 14.490094379543821,
+        "rmse": 19.48514259584813,
+        "wape": 0.24539027128044785,
+        "bias": 1.7609621436781
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 147,
+        "rows": 61,
+        "actual_pickups": 126.0,
+        "mae": 1.1669624204779943,
+        "rmse": 1.4317177282640579,
+        "wape": 0.5649579972155369,
+        "bias": 0.06783172163806003
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 148,
+        "rows": 61,
+        "actual_pickups": 71397.0,
+        "mae": 124.88565436892824,
+        "rmse": 179.00766785363234,
+        "wape": 0.10669951001449111,
+        "bias": -23.10777264899454
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 149,
+        "rows": 61,
+        "actual_pickups": 174.0,
+        "mae": 1.5840000942144123,
+        "rmse": 1.9661862245231678,
+        "wape": 0.5553103778567767,
+        "bias": 0.39494462855922235
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 150,
+        "rows": 61,
+        "actual_pickups": 76.0,
+        "mae": 1.098034007048636,
+        "rmse": 1.2951477044800646,
+        "wape": 0.8813167688153527,
+        "bias": 0.38489606654495273
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 151,
+        "rows": 61,
+        "actual_pickups": 55372.0,
+        "mae": 87.97657334933452,
+        "rmse": 113.88369831095963,
+        "wape": 0.09691849624917659,
+        "bias": 40.41115954994971
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 152,
+        "rows": 61,
+        "actual_pickups": 4426.0,
+        "mae": 11.828841310871297,
+        "rmse": 14.741803097784253,
+        "wape": 0.16302741074630572,
+        "bias": 5.04238179314244
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 153,
+        "rows": 61,
+        "actual_pickups": 51.0,
+        "mae": 0.8992442645296586,
+        "rmse": 1.0016581922703025,
+        "wape": 1.0755666693393955,
+        "bias": 0.13602089432938472
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 154,
+        "rows": 61,
+        "actual_pickups": 38.0,
+        "mae": 0.7294224573278298,
+        "rmse": 0.8919705402410057,
+        "wape": 1.170914997289411,
+        "bias": 0.08803706759744538
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 155,
+        "rows": 61,
+        "actual_pickups": 260.0,
+        "mae": 1.660721071373931,
+        "rmse": 2.0451790325879156,
+        "wape": 0.3896307128992684,
+        "bias": 0.463057313375066
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 156,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.2791931923462576,
+        "rmse": 0.39260371151911316,
+        "wape": 2.128848091640214,
+        "bias": 0.06161806934899093
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 157,
+        "rows": 61,
+        "actual_pickups": 505.0,
+        "mae": 3.8768976608856844,
+        "rmse": 5.922255117616357,
+        "wape": 0.46829852933470645,
+        "bias": -0.05842767678598637
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 158,
+        "rows": 61,
+        "actual_pickups": 59752.0,
+        "mae": 82.35529922736977,
+        "rmse": 108.6045670257314,
+        "wape": 0.08407539919784368,
+        "bias": 6.035768897836205
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 159,
+        "rows": 61,
+        "actual_pickups": 395.0,
+        "mae": 2.455139607679515,
+        "rmse": 3.0412724513401077,
+        "wape": 0.3791481419454441,
+        "bias": 0.7826861487440145
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 160,
+        "rows": 61,
+        "actual_pickups": 170.0,
+        "mae": 1.5763950333182335,
+        "rmse": 1.8875640601621388,
+        "wape": 0.565647629602425,
+        "bias": 0.2303216556853774
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 161,
+        "rows": 61,
+        "actual_pickups": 312943.0,
+        "mae": 541.4872797213952,
+        "rmse": 663.6992503200632,
+        "wape": 0.10554869117700383,
+        "bias": -91.54752448857887
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 162,
+        "rows": 61,
+        "actual_pickups": 238434.0,
+        "mae": 340.02938792826194,
+        "rmse": 438.633605678029,
+        "wape": 0.08699175731491306,
+        "bias": 81.70698954583612
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 163,
+        "rows": 61,
+        "actual_pickups": 200208.0,
+        "mae": 307.7059802228612,
+        "rmse": 427.75905016384473,
+        "wape": 0.09375282103409721,
+        "bias": 121.61167195362789
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 164,
+        "rows": 61,
+        "actual_pickups": 155028.0,
+        "mae": 183.88686009752917,
+        "rmse": 239.76741916264876,
+        "wape": 0.07235530656364836,
+        "bias": 50.59255301828056
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 165,
+        "rows": 61,
+        "actual_pickups": 254.0,
+        "mae": 2.21409205750485,
+        "rmse": 2.798374616238325,
+        "wape": 0.5317307697157317,
+        "bias": 0.5701506122225053
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 166,
+        "rows": 61,
+        "actual_pickups": 31545.0,
+        "mae": 104.52754146954284,
+        "rmse": 136.16736473442296,
+        "wape": 0.20212965698659419,
+        "bias": 28.493446300447506
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 167,
+        "rows": 61,
+        "actual_pickups": 354.0,
+        "mae": 2.352096390327364,
+        "rmse": 2.784332818286214,
+        "wape": 0.4053047452259017,
+        "bias": 0.7473766121749608
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 168,
+        "rows": 61,
+        "actual_pickups": 905.0,
+        "mae": 3.7382101559705267,
+        "rmse": 4.498576925628588,
+        "wape": 0.25196775636928415,
+        "bias": 0.47071324569509093
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 169,
+        "rows": 61,
+        "actual_pickups": 296.0,
+        "mae": 1.6915602880543508,
+        "rmse": 2.1529461149596885,
+        "wape": 0.3485985728760655,
+        "bias": 0.12151015778780132
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 170,
+        "rows": 61,
+        "actual_pickups": 203945.0,
+        "mae": 263.2267856045094,
+        "rmse": 341.77335227188985,
+        "wape": 0.07873119675341428,
+        "bias": 67.72891411707369
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 171,
+        "rows": 61,
+        "actual_pickups": 137.0,
+        "mae": 1.2226862634036575,
+        "rmse": 1.5308828999572788,
+        "wape": 0.5444077523184168,
+        "bias": 0.22743072505884115
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 172,
+        "rows": 61,
+        "actual_pickups": 5.0,
+        "mae": 0.20843933146648572,
+        "rmse": 0.4223702817925012,
+        "wape": 2.5429598438911256,
+        "bias": 0.05713330147676486
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 173,
+        "rows": 61,
+        "actual_pickups": 149.0,
+        "mae": 1.503631189855821,
+        "rmse": 1.899663991542066,
+        "wape": 0.6155805542362758,
+        "bias": 0.35535596340475684
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 174,
+        "rows": 61,
+        "actual_pickups": 259.0,
+        "mae": 2.1302781820046595,
+        "rmse": 2.819616505985145,
+        "wape": 0.5017257494296687,
+        "bias": 0.18955753736473765
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 175,
+        "rows": 61,
+        "actual_pickups": 80.0,
+        "mae": 1.2010842967138338,
+        "rmse": 1.4463100150329198,
+        "wape": 0.9158267762442982,
+        "bias": 0.5888190516432076
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 176,
+        "rows": 61,
+        "actual_pickups": 1.0,
+        "mae": 0.1385834939593083,
+        "rmse": 0.16978499044453355,
+        "wape": 8.453593131517806,
+        "bias": 0.10947083714751782
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 177,
+        "rows": 61,
+        "actual_pickups": 518.0,
+        "mae": 2.6400492773669617,
+        "rmse": 3.235805019209476,
+        "wape": 0.3108938338212059,
+        "bias": 0.38724298461146717
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 178,
+        "rows": 61,
+        "actual_pickups": 53.0,
+        "mae": 0.9564641939980273,
+        "rmse": 1.119753504712387,
+        "wape": 1.1008361478090503,
+        "bias": 0.19154298733896738
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 179,
+        "rows": 61,
+        "actual_pickups": 1269.0,
+        "mae": 5.090870380651928,
+        "rmse": 7.210013063225462,
+        "wape": 0.2447148094718421,
+        "bias": 0.49624731616312456
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 180,
+        "rows": 61,
+        "actual_pickups": 110.0,
+        "mae": 1.0394383431721324,
+        "rmse": 1.2444365132504502,
+        "wape": 0.5764158084863642,
+        "bias": 0.5350111455186541
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 181,
+        "rows": 61,
+        "actual_pickups": 2389.0,
+        "mae": 7.917497468264583,
+        "rmse": 10.913329217524515,
+        "wape": 0.20216297428385915,
+        "bias": 0.9597963363149598
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 182,
+        "rows": 61,
+        "actual_pickups": 276.0,
+        "mae": 1.9698803917387335,
+        "rmse": 2.3768037815421215,
+        "wape": 0.43537211556544475,
+        "bias": 0.2969277385986451
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 183,
+        "rows": 61,
+        "actual_pickups": 52.0,
+        "mae": 0.8140809748097211,
+        "rmse": 1.0091924988176766,
+        "wape": 0.9549796050652497,
+        "bias": 0.28791889924980935
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 184,
+        "rows": 61,
+        "actual_pickups": 14.0,
+        "mae": 0.34422716979678974,
+        "rmse": 0.41933704888429163,
+        "wape": 1.499846954114584,
+        "bias": -0.01147652169138949
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 185,
+        "rows": 61,
+        "actual_pickups": 153.0,
+        "mae": 1.2179016393282238,
+        "rmse": 1.4986871062699632,
+        "wape": 0.485568627444586,
+        "bias": 0.12400381463572298
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 186,
+        "rows": 61,
+        "actual_pickups": 222677.0,
+        "mae": 271.14563777114944,
+        "rmse": 362.0820704799342,
+        "wape": 0.07427746872842779,
+        "bias": 60.63944337591763
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 187,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.261164857853245,
+        "rmse": 0.34824859034237243,
+        "wape": 1.991382041130993,
+        "bias": 0.03913035976815395
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 188,
+        "rows": 61,
+        "actual_pickups": 962.0,
+        "mae": 3.823733566041625,
+        "rmse": 4.8677074009129955,
+        "wape": 0.24246127601719245,
+        "bias": 0.7078447295302673
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 189,
+        "rows": 61,
+        "actual_pickups": 817.0,
+        "mae": 2.9140369275975195,
+        "rmse": 3.894241093212444,
+        "wape": 0.2175719125868405,
+        "bias": 0.2859041290303321
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 190,
+        "rows": 61,
+        "actual_pickups": 154.0,
+        "mae": 1.9856696269080838,
+        "rmse": 2.431022165829241,
+        "wape": 0.7865314755934618,
+        "bias": 0.5871363572169719
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 191,
+        "rows": 61,
+        "actual_pickups": 417.0,
+        "mae": 2.1319469208483834,
+        "rmse": 2.853943660528753,
+        "wape": 0.3118675351840561,
+        "bias": 0.5301272459919143
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 192,
+        "rows": 61,
+        "actual_pickups": 100.0,
+        "mae": 0.960817258706125,
+        "rmse": 1.2242934342461345,
+        "wape": 0.5860985278107362,
+        "bias": 0.2009647295154504
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 193,
+        "rows": 61,
+        "actual_pickups": 5256.0,
+        "mae": 16.07790904098789,
+        "rmse": 20.279901137349903,
+        "wape": 0.1865967373478427,
+        "bias": 2.253793089868196
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 194,
+        "rows": 61,
+        "actual_pickups": 251.0,
+        "mae": 2.278168549043006,
+        "rmse": 2.8264708056868733,
+        "wape": 0.5536584919984995,
+        "bias": 0.34081928183209903
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 195,
+        "rows": 61,
+        "actual_pickups": 840.0,
+        "mae": 9.574931206204317,
+        "rmse": 19.075396077624255,
+        "wape": 0.6953223852124564,
+        "bias": -3.487181976468725
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 196,
+        "rows": 61,
+        "actual_pickups": 411.0,
+        "mae": 2.262010423739651,
+        "rmse": 2.9291574440196664,
+        "wape": 0.3357241748129409,
+        "bias": 0.3700812161098066
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 197,
+        "rows": 61,
+        "actual_pickups": 840.0,
+        "mae": 3.2715208634341693,
+        "rmse": 4.217523639094766,
+        "wape": 0.23757472936843374,
+        "bias": 0.28716754721831933
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 198,
+        "rows": 61,
+        "actual_pickups": 278.0,
+        "mae": 2.438233725451128,
+        "rmse": 3.150359436530681,
+        "wape": 0.5350081196133769,
+        "bias": 0.42810738308841667
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 199,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.17921034467838312,
+        "rmse": 0.23754851124301132,
+        "wape": 3.6439436751271237,
+        "bias": 0.09428094064919254
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 200,
+        "rows": 61,
+        "actual_pickups": 153.0,
+        "mae": 1.2549872579425423,
+        "rmse": 1.6724104898495074,
+        "wape": 0.5003543969574842,
+        "bias": 0.30254540880742015
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 201,
+        "rows": 61,
+        "actual_pickups": 102.0,
+        "mae": 0.9996563755710518,
+        "rmse": 1.2914924231009117,
+        "wape": 0.5978337148022956,
+        "bias": 0.20803244540696086
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 202,
+        "rows": 61,
+        "actual_pickups": 295.0,
+        "mae": 2.031667174067256,
+        "rmse": 2.542582075294057,
+        "wape": 0.42010744955289026,
+        "bias": 0.6101237308730204
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 203,
+        "rows": 61,
+        "actual_pickups": 335.0,
+        "mae": 2.1372476619733116,
+        "rmse": 2.6342027080815464,
+        "wape": 0.38917046979215525,
+        "bias": 0.14606573835346912
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 204,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.17789372315193225,
+        "rmse": 0.2374275344252887,
+        "wape": 3.6171723707559558,
+        "bias": 0.0926350582887417
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 205,
+        "rows": 61,
+        "actual_pickups": 602.0,
+        "mae": 3.009934629024693,
+        "rmse": 3.8790701205533966,
+        "wape": 0.30499337603074134,
+        "bias": 0.40157232802543613
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 206,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.27313028348699125,
+        "rmse": 0.3943598184550831,
+        "wape": 2.0826184115883084,
+        "bias": 0.048222198040598026
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 207,
+        "rows": 61,
+        "actual_pickups": 760.0,
+        "mae": 5.776740149502415,
+        "rmse": 8.687376352857777,
+        "wape": 0.46365940673637807,
+        "bias": -1.580838588898479
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 208,
+        "rows": 61,
+        "actual_pickups": 212.0,
+        "mae": 1.6806522027695612,
+        "rmse": 2.0986327991556215,
+        "wape": 0.4835838885327511,
+        "bias": 0.32706296752950453
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 209,
+        "rows": 61,
+        "actual_pickups": 12821.0,
+        "mae": 20.624140412500292,
+        "rmse": 26.387046081600765,
+        "wape": 0.09812593129728708,
+        "bias": 1.321245134811901
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 210,
+        "rows": 61,
+        "actual_pickups": 258.0,
+        "mae": 1.8034390345955253,
+        "rmse": 2.2627582783533953,
+        "wape": 0.42639450042762417,
+        "bias": 0.5859744528702369
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 211,
+        "rows": 61,
+        "actual_pickups": 50847.0,
+        "mae": 70.24291831140765,
+        "rmse": 86.84871507726585,
+        "wape": 0.08426884608720017,
+        "bias": 6.4056637634690565
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 212,
+        "rows": 61,
+        "actual_pickups": 162.0,
+        "mae": 1.3606250352742821,
+        "rmse": 1.6303961610424316,
+        "wape": 0.5123341182205631,
+        "bias": 0.2782797235413328
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 213,
+        "rows": 61,
+        "actual_pickups": 492.0,
+        "mae": 2.672967283948875,
+        "rmse": 3.182818327345539,
+        "wape": 0.33140448032699465,
+        "bias": 0.6859925689312131
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 214,
+        "rows": 61,
+        "actual_pickups": 43.0,
+        "mae": 0.39334065621732833,
+        "rmse": 0.5204576448036442,
+        "wape": 0.5579948844013263,
+        "bias": 0.18178687285491854
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 215,
+        "rows": 61,
+        "actual_pickups": 926.0,
+        "mae": 4.067111094287083,
+        "rmse": 5.11780398224369,
+        "wape": 0.26791984530400864,
+        "bias": 0.7108355739124617
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 216,
+        "rows": 61,
+        "actual_pickups": 1209.0,
+        "mae": 4.336037697921874,
+        "rmse": 5.47051441300183,
+        "wape": 0.21877444133435425,
+        "bias": 0.8689573426917574
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 217,
+        "rows": 61,
+        "actual_pickups": 239.0,
+        "mae": 1.6770968258536956,
+        "rmse": 2.1103775289482587,
+        "wape": 0.42804563337688467,
+        "bias": 0.2687606986286467
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 218,
+        "rows": 61,
+        "actual_pickups": 573.0,
+        "mae": 2.675684252477643,
+        "rmse": 3.450601050672733,
+        "wape": 0.28484596754124997,
+        "bias": -0.06294654695146264
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 219,
+        "rows": 61,
+        "actual_pickups": 637.0,
+        "mae": 3.1460826884435766,
+        "rmse": 4.198797205160728,
+        "wape": 0.30127322448203797,
+        "bias": -0.1443457570209525
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 220,
+        "rows": 61,
+        "actual_pickups": 307.0,
+        "mae": 2.3104753954876682,
+        "rmse": 2.736780968751041,
+        "wape": 0.45908468770276145,
+        "bias": 0.38243400078718337
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 221,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.2689417672345314,
+        "rmse": 0.39560409154494997,
+        "wape": 2.050680975163302,
+        "bias": 0.04007789244679722
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 222,
+        "rows": 61,
+        "actual_pickups": 239.0,
+        "mae": 1.9233148152724215,
+        "rmse": 2.4117889320613983,
+        "wape": 0.4908878817222499,
+        "bias": 0.7923067737302858
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 223,
+        "rows": 61,
+        "actual_pickups": 1358.0,
+        "mae": 4.837018036648876,
+        "rmse": 6.126029906629611,
+        "wape": 0.21727400606449296,
+        "bias": -0.2718166770118376
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 224,
+        "rows": 61,
+        "actual_pickups": 8903.0,
+        "mae": 16.79147416604207,
+        "rmse": 23.64563642263805,
+        "wape": 0.11504885141284582,
+        "bias": 5.34966252804873
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 225,
+        "rows": 61,
+        "actual_pickups": 923.0,
+        "mae": 3.312268933676339,
+        "rmse": 4.051453486425536,
+        "wape": 0.21890401403494766,
+        "bias": 0.2039911733535663
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 226,
+        "rows": 61,
+        "actual_pickups": 4944.0,
+        "mae": 11.573206268084974,
+        "rmse": 14.562704559084676,
+        "wape": 0.14279239125266655,
+        "bias": 4.622097519765804
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 227,
+        "rows": 61,
+        "actual_pickups": 139.0,
+        "mae": 1.48008258628533,
+        "rmse": 1.8054725781076486,
+        "wape": 0.649532645779893,
+        "bias": 0.10309390269672744
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 228,
+        "rows": 61,
+        "actual_pickups": 512.0,
+        "mae": 3.104014645853344,
+        "rmse": 4.4600781151972715,
+        "wape": 0.3698142449161211,
+        "bias": 0.2536986312517061
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 229,
+        "rows": 61,
+        "actual_pickups": 128416.0,
+        "mae": 168.14798492764808,
+        "rmse": 221.68030869432897,
+        "wape": 0.07987343540202571,
+        "bias": 21.917443157493242
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 230,
+        "rows": 61,
+        "actual_pickups": 220075.0,
+        "mae": 276.4377039268469,
+        "rmse": 360.7574275715148,
+        "wape": 0.07662251477695176,
+        "bias": 111.21958955748381
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 231,
+        "rows": 61,
+        "actual_pickups": 94427.0,
+        "mae": 176.44158270396682,
+        "rmse": 229.42870820870255,
+        "wape": 0.1139815576576824,
+        "bias": 30.824994627751543
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 232,
+        "rows": 61,
+        "actual_pickups": 7705.0,
+        "mae": 18.819423166723826,
+        "rmse": 23.14915293065568,
+        "wape": 0.1489921886009284,
+        "bias": 0.5044016174855654
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 233,
+        "rows": 61,
+        "actual_pickups": 87172.0,
+        "mae": 100.24407795045124,
+        "rmse": 134.84607396941794,
+        "wape": 0.07014739543635026,
+        "bias": 25.191929464346586
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 234,
+        "rows": 61,
+        "actual_pickups": 181472.0,
+        "mae": 280.730755904032,
+        "rmse": 367.6025260944438,
+        "wape": 0.0943648392597533,
+        "bias": 119.97882845800531
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 235,
+        "rows": 61,
+        "actual_pickups": 380.0,
+        "mae": 1.8125435693348686,
+        "rmse": 2.241168456724036,
+        "wape": 0.2909609413932289,
+        "bias": 0.3017836205101909
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 236,
+        "rows": 61,
+        "actual_pickups": 288853.0,
+        "mae": 583.3211060533885,
+        "rmse": 784.277683066913,
+        "wape": 0.12318579855240103,
+        "bias": 170.1376461221399
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 237,
+        "rows": 61,
+        "actual_pickups": 329762.0,
+        "mae": 794.3237854670324,
+        "rmse": 972.4946186360778,
+        "wape": 0.14693551990068285,
+        "bias": -182.01160757217457
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 238,
+        "rows": 61,
+        "actual_pickups": 130259.0,
+        "mae": 199.80982579855524,
+        "rmse": 267.91361768352044,
+        "wape": 0.09357049703829962,
+        "bias": 77.60790457173844
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 239,
+        "rows": 61,
+        "actual_pickups": 190216.0,
+        "mae": 293.2569343388548,
+        "rmse": 400.2081104403757,
+        "wape": 0.0940439973223606,
+        "bias": 157.17391452711027
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 240,
+        "rows": 61,
+        "actual_pickups": 23.0,
+        "mae": 0.5368855277748869,
+        "rmse": 0.6116043058812553,
+        "wape": 1.4239137910551347,
+        "bias": 0.038933570474720555
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 241,
+        "rows": 61,
+        "actual_pickups": 267.0,
+        "mae": 1.815045775234158,
+        "rmse": 2.2853288404203345,
+        "wape": 0.4146733793606129,
+        "bias": 0.39843537185270983
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 242,
+        "rows": 61,
+        "actual_pickups": 397.0,
+        "mae": 2.4968204510875185,
+        "rmse": 3.3817853657485255,
+        "wape": 0.38364243706886303,
+        "bias": 0.2766256764521319
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 243,
+        "rows": 61,
+        "actual_pickups": 1080.0,
+        "mae": 4.665670487558501,
+        "rmse": 5.508281478292628,
+        "wape": 0.2635239812417301,
+        "bias": 0.8758891730475034
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 244,
+        "rows": 61,
+        "actual_pickups": 4415.0,
+        "mae": 11.855729106314575,
+        "rmse": 14.648589509962333,
+        "wape": 0.1638050907101221,
+        "bias": 2.5367353627649223
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 245,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.15538714219581162,
+        "rmse": 0.20459674468894462,
+        "wape": 4.739307836972254,
+        "bias": 0.09810381771429492
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 246,
+        "rows": 61,
+        "actual_pickups": 112638.0,
+        "mae": 199.82886815237725,
+        "rmse": 250.87084100760654,
+        "wape": 0.1082189044309648,
+        "bias": -17.622106068642836
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 247,
+        "rows": 61,
+        "actual_pickups": 932.0,
+        "mae": 4.945605709518813,
+        "rmse": 6.296813495137704,
+        "wape": 0.3236930775543429,
+        "bias": -0.15229547123581605
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 248,
+        "rows": 61,
+        "actual_pickups": 185.0,
+        "mae": 1.554054245900596,
+        "rmse": 2.013401781952382,
+        "wape": 0.5124178864861424,
+        "bias": 0.19199138629537665
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 249,
+        "rows": 61,
+        "actual_pickups": 147552.0,
+        "mae": 203.09990271641277,
+        "rmse": 273.6927758525095,
+        "wape": 0.08396425711411014,
+        "bias": 1.725074389092026
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 250,
+        "rows": 61,
+        "actual_pickups": 156.0,
+        "mae": 1.49157189001889,
+        "rmse": 1.8354751116242658,
+        "wape": 0.5832428544304634,
+        "bias": 0.4324814216357678
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 251,
+        "rows": 61,
+        "actual_pickups": 23.0,
+        "mae": 0.4716514287026171,
+        "rmse": 0.6130711177960436,
+        "wape": 1.2509016152547672,
+        "bias": -0.06382606564499212
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 252,
+        "rows": 61,
+        "actual_pickups": 91.0,
+        "mae": 0.9511447312035641,
+        "rmse": 1.144789097342413,
+        "wape": 0.637580534103488,
+        "bias": 0.2974504651320933
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 253,
+        "rows": 61,
+        "actual_pickups": 33.0,
+        "mae": 0.586105206281838,
+        "rmse": 0.705094962495508,
+        "wape": 1.0834065934300643,
+        "bias": -0.09647273365099483
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 254,
+        "rows": 61,
+        "actual_pickups": 379.0,
+        "mae": 2.1703574960421896,
+        "rmse": 2.6211836476241728,
+        "wape": 0.349318752661144,
+        "bias": 0.6607192185290818
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 255,
+        "rows": 61,
+        "actual_pickups": 3145.0,
+        "mae": 11.697495750009251,
+        "rmse": 16.327095830004485,
+        "wape": 0.2268830654214831,
+        "bias": -2.108100986533534
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 256,
+        "rows": 61,
+        "actual_pickups": 2607.0,
+        "mae": 8.902745695730642,
+        "rmse": 12.091390379654642,
+        "wape": 0.20831127251230117,
+        "bias": -0.3236800558022689
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 257,
+        "rows": 61,
+        "actual_pickups": 195.0,
+        "mae": 1.882170813162266,
+        "rmse": 2.3224081806007164,
+        "wape": 0.5887816389892216,
+        "bias": 0.5643287686078999
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 258,
+        "rows": 61,
+        "actual_pickups": 216.0,
+        "mae": 1.3924841360367433,
+        "rmse": 1.7057654323648623,
+        "wape": 0.39324783471408026,
+        "bias": 0.4073443953340841
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 259,
+        "rows": 61,
+        "actual_pickups": 244.0,
+        "mae": 1.7824509832141007,
+        "rmse": 2.218087146028618,
+        "wape": 0.44561274580352517,
+        "bias": 0.11860204370165099
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 260,
+        "rows": 61,
+        "actual_pickups": 1386.0,
+        "mae": 4.876751487034837,
+        "rmse": 6.008175262322127,
+        "wape": 0.21463336270499642,
+        "bias": 0.37142291027307356
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 261,
+        "rows": 61,
+        "actual_pickups": 34449.0,
+        "mae": 46.01087292683803,
+        "rmse": 55.459288627408945,
+        "wape": 0.08147299627092572,
+        "bias": 12.808148915322716
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 262,
+        "rows": 61,
+        "actual_pickups": 90790.0,
+        "mae": 152.7986741702106,
+        "rmse": 221.69704258895123,
+        "wape": 0.10266239810973507,
+        "bias": 50.27701383506723
+      },
+      {
+        "model": "poisson_boosting",
+        "zone": 263,
+        "rows": 61,
+        "actual_pickups": 126653.0,
+        "mae": 155.3660599933747,
+        "rmse": 235.70213713878684,
+        "wape": 0.07482909729414902,
+        "bias": 67.84003896346957
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 1,
+        "rows": 61,
+        "actual_pickups": 962.0,
+        "mae": 4.081967213114754,
+        "rmse": 5.406432113392465,
+        "wape": 0.2588357588357588,
+        "bias": -0.2786885245901639
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 2,
+        "rows": 61,
+        "actual_pickups": 6.0,
+        "mae": 0.14754098360655737,
+        "rmse": 0.3841106397986879,
+        "wape": 1.5,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 3,
+        "rows": 61,
+        "actual_pickups": 129.0,
+        "mae": 1.4918032786885247,
+        "rmse": 1.911998353795848,
+        "wape": 0.7054263565891473,
+        "bias": -0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 4,
+        "rows": 61,
+        "actual_pickups": 8403.0,
+        "mae": 22.131147540983605,
+        "rmse": 28.94256607744968,
+        "wape": 0.16065690824705461,
+        "bias": -1.7704918032786885
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 5,
+        "rows": 61,
+        "actual_pickups": 100.0,
+        "mae": 0.8852459016393442,
+        "rmse": 1.1873651778512668,
+        "wape": 0.54,
+        "bias": 0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 6,
+        "rows": 61,
+        "actual_pickups": 87.0,
+        "mae": 0.9344262295081968,
+        "rmse": 1.2994324107716932,
+        "wape": 0.6551724137931034,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 7,
+        "rows": 61,
+        "actual_pickups": 3683.0,
+        "mae": 12.540983606557377,
+        "rmse": 17.051032371033514,
+        "wape": 0.20771110507738258,
+        "bias": 1.1311475409836065
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 8,
+        "rows": 61,
+        "actual_pickups": 29.0,
+        "mae": 0.7049180327868853,
+        "rmse": 1.06355420218417,
+        "wape": 1.4827586206896552,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 9,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.4262295081967213,
+        "rmse": 2.02038788679668,
+        "wape": 0.7837837837837838,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 10,
+        "rows": 61,
+        "actual_pickups": 2102.0,
+        "mae": 7.885245901639344,
+        "rmse": 10.093822165148312,
+        "wape": 0.22882968601332065,
+        "bias": -0.7704918032786885
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 11,
+        "rows": 61,
+        "actual_pickups": 97.0,
+        "mae": 1.1475409836065573,
+        "rmse": 1.56812512046795,
+        "wape": 0.7216494845360825,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 12,
+        "rows": 61,
+        "actual_pickups": 3075.0,
+        "mae": 15.770491803278688,
+        "rmse": 23.086437719089037,
+        "wape": 0.31284552845528457,
+        "bias": -1.9672131147540983
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 13,
+        "rows": 61,
+        "actual_pickups": 41293.0,
+        "mae": 76.91803278688525,
+        "rmse": 102.46166816240574,
+        "wape": 0.11362700699876492,
+        "bias": -0.8524590163934426
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 14,
+        "rows": 61,
+        "actual_pickups": 509.0,
+        "mae": 3.3442622950819674,
+        "rmse": 4.1131536303529,
+        "wape": 0.40078585461689586,
+        "bias": -0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 15,
+        "rows": 61,
+        "actual_pickups": 69.0,
+        "mae": 1.0819672131147542,
+        "rmse": 1.4598450400585696,
+        "wape": 0.9565217391304348,
+        "bias": 0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 16,
+        "rows": 61,
+        "actual_pickups": 102.0,
+        "mae": 1.4426229508196722,
+        "rmse": 1.8197459739853983,
+        "wape": 0.8627450980392157,
+        "bias": 0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 17,
+        "rows": 61,
+        "actual_pickups": 1041.0,
+        "mae": 5.688524590163935,
+        "rmse": 7.444879415289191,
+        "wape": 0.3333333333333333,
+        "bias": -0.3114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 18,
+        "rows": 61,
+        "actual_pickups": 241.0,
+        "mae": 1.9180327868852458,
+        "rmse": 2.525282000159164,
+        "wape": 0.4854771784232365,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 19,
+        "rows": 61,
+        "actual_pickups": 158.0,
+        "mae": 1.5573770491803278,
+        "rmse": 2.3987701767063343,
+        "wape": 0.6012658227848101,
+        "bias": -0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 20,
+        "rows": 61,
+        "actual_pickups": 125.0,
+        "mae": 1.721311475409836,
+        "rmse": 2.40559457222152,
+        "wape": 0.84,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 21,
+        "rows": 61,
+        "actual_pickups": 159.0,
+        "mae": 1.6721311475409837,
+        "rmse": 2.2250437461162753,
+        "wape": 0.6415094339622641,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 22,
+        "rows": 61,
+        "actual_pickups": 182.0,
+        "mae": 2.0491803278688523,
+        "rmse": 2.5317654049247476,
+        "wape": 0.6868131868131868,
+        "bias": -0.2459016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 23,
+        "rows": 61,
+        "actual_pickups": 211.0,
+        "mae": 1.3442622950819672,
+        "rmse": 1.88175014456154,
+        "wape": 0.3886255924170616,
+        "bias": -0.22950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 24,
+        "rows": 61,
+        "actual_pickups": 18070.0,
+        "mae": 52.0,
+        "rmse": 62.32779555190971,
+        "wape": 0.17553956834532375,
+        "bias": 4.491803278688525
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 25,
+        "rows": 61,
+        "actual_pickups": 3179.0,
+        "mae": 11.688524590163935,
+        "rmse": 15.675500358055874,
+        "wape": 0.22428436615287825,
+        "bias": -0.5081967213114754
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 26,
+        "rows": 61,
+        "actual_pickups": 232.0,
+        "mae": 2.622950819672131,
+        "rmse": 3.2289672510257397,
+        "wape": 0.6896551724137931,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 27,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.06557377049180328,
+        "rmse": 0.25607375986579195,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 28,
+        "rows": 61,
+        "actual_pickups": 547.0,
+        "mae": 2.9508196721311477,
+        "rmse": 3.5390097716641624,
+        "wape": 0.3290676416819013,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 29,
+        "rows": 61,
+        "actual_pickups": 202.0,
+        "mae": 2.3934426229508197,
+        "rmse": 3.062196789941474,
+        "wape": 0.7227722772277227,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 30,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.06557377049180328,
+        "rmse": 0.25607375986579195,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 31,
+        "rows": 61,
+        "actual_pickups": 42.0,
+        "mae": 0.7868852459016393,
+        "rmse": 1.159423259677831,
+        "wape": 1.1428571428571428,
+        "bias": 0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 32,
+        "rows": 61,
+        "actual_pickups": 204.0,
+        "mae": 2.278688524590164,
+        "rmse": 2.8772710203576866,
+        "wape": 0.6813725490196079,
+        "bias": 0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 33,
+        "rows": 61,
+        "actual_pickups": 3882.0,
+        "mae": 15.37704918032787,
+        "rmse": 20.904152854334402,
+        "wape": 0.24162802679031428,
+        "bias": 0.4262295081967213
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 34,
+        "rows": 61,
+        "actual_pickups": 163.0,
+        "mae": 2.4098360655737703,
+        "rmse": 3.276843743304338,
+        "wape": 0.901840490797546,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 35,
+        "rows": 61,
+        "actual_pickups": 456.0,
+        "mae": 3.3442622950819674,
+        "rmse": 4.246502900652006,
+        "wape": 0.4473684210526316,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 36,
+        "rows": 61,
+        "actual_pickups": 827.0,
+        "mae": 5.344262295081967,
+        "rmse": 7.0175424216276925,
+        "wape": 0.3941958887545345,
+        "bias": -0.8524590163934426
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 37,
+        "rows": 61,
+        "actual_pickups": 1065.0,
+        "mae": 5.540983606557377,
+        "rmse": 7.626528333798381,
+        "wape": 0.3173708920187793,
+        "bias": -1.1147540983606556
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 38,
+        "rows": 61,
+        "actual_pickups": 226.0,
+        "mae": 2.0,
+        "rmse": 2.515525561877481,
+        "wape": 0.5398230088495575,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 39,
+        "rows": 61,
+        "actual_pickups": 562.0,
+        "mae": 3.540983606557377,
+        "rmse": 4.265761516010407,
+        "wape": 0.38434163701067614,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 40,
+        "rows": 61,
+        "actual_pickups": 890.0,
+        "mae": 4.786885245901639,
+        "rmse": 6.145770236779007,
+        "wape": 0.32808988764044944,
+        "bias": 0.5245901639344263
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 41,
+        "rows": 61,
+        "actual_pickups": 16638.0,
+        "mae": 41.34426229508197,
+        "rmse": 53.8400789223108,
+        "wape": 0.1515807188363986,
+        "bias": 1.4098360655737705
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 42,
+        "rows": 61,
+        "actual_pickups": 6134.0,
+        "mae": 16.934426229508198,
+        "rmse": 22.953623950457505,
+        "wape": 0.1684056080860776,
+        "bias": -0.9016393442622951
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 43,
+        "rows": 61,
+        "actual_pickups": 114153.0,
+        "mae": 218.59016393442624,
+        "rmse": 273.0033927609992,
+        "wape": 0.11680814345658896,
+        "bias": 4.819672131147541
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 44,
+        "rows": 61,
+        "actual_pickups": 72.0,
+        "mae": 0.7377049180327869,
+        "rmse": 0.9666572451020045,
+        "wape": 0.625,
+        "bias": -0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 45,
+        "rows": 61,
+        "actual_pickups": 9657.0,
+        "mae": 19.0327868852459,
+        "rmse": 24.319930435620957,
+        "wape": 0.12022367194780988,
+        "bias": -0.3114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 46,
+        "rows": 61,
+        "actual_pickups": 20.0,
+        "mae": 0.5901639344262295,
+        "rmse": 0.9750998267516755,
+        "wape": 1.8,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 47,
+        "rows": 61,
+        "actual_pickups": 233.0,
+        "mae": 2.7868852459016393,
+        "rmse": 3.7852171473323715,
+        "wape": 0.7296137339055794,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 48,
+        "rows": 61,
+        "actual_pickups": 180013.0,
+        "mae": 219.65573770491804,
+        "rmse": 280.59342852452465,
+        "wape": 0.07443351313516246,
+        "bias": -15.950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 49,
+        "rows": 61,
+        "actual_pickups": 1196.0,
+        "mae": 6.836065573770492,
+        "rmse": 8.031699491471993,
+        "wape": 0.3486622073578595,
+        "bias": 0.14754098360655737
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 50,
+        "rows": 61,
+        "actual_pickups": 45739.0,
+        "mae": 63.90163934426229,
+        "rmse": 80.92761388132354,
+        "wape": 0.08522267649052231,
+        "bias": -10.19672131147541
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 51,
+        "rows": 61,
+        "actual_pickups": 677.0,
+        "mae": 4.295081967213115,
+        "rmse": 5.459237921956195,
+        "wape": 0.3870014771048744,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 52,
+        "rows": 61,
+        "actual_pickups": 1446.0,
+        "mae": 6.852459016393443,
+        "rmse": 8.537285628444168,
+        "wape": 0.28907330567081607,
+        "bias": 0.29508196721311475
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 53,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.3114754098360655,
+        "rmse": 1.6889224423855118,
+        "wape": 0.7207207207207207,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 54,
+        "rows": 61,
+        "actual_pickups": 154.0,
+        "mae": 1.7704918032786885,
+        "rmse": 2.202829774720108,
+        "wape": 0.7012987012987013,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 55,
+        "rows": 61,
+        "actual_pickups": 392.0,
+        "mae": 3.2950819672131146,
+        "rmse": 4.49589977135816,
+        "wape": 0.5127551020408163,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 56,
+        "rows": 61,
+        "actual_pickups": 345.0,
+        "mae": 2.9672131147540983,
+        "rmse": 3.977395143953834,
+        "wape": 0.5246376811594203,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 57,
+        "rows": 61,
+        "actual_pickups": 21.0,
+        "mae": 0.4918032786885246,
+        "rmse": 0.7465768876548,
+        "wape": 1.4285714285714286,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 58,
+        "rows": 61,
+        "actual_pickups": 7.0,
+        "mae": 0.16393442622950818,
+        "rmse": 0.40488816508945796,
+        "wape": 1.4285714285714286,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 59,
+        "rows": 61,
+        "actual_pickups": 26.0,
+        "mae": 0.8032786885245902,
+        "rmse": 3.3802706264730817,
+        "wape": 1.8846153846153846,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 60,
+        "rows": 61,
+        "actual_pickups": 111.0,
+        "mae": 1.4918032786885247,
+        "rmse": 1.9205531989934397,
+        "wape": 0.8198198198198198,
+        "bias": 0.21311475409836064
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 61,
+        "rows": 61,
+        "actual_pickups": 1623.0,
+        "mae": 6.737704918032787,
+        "rmse": 8.394963361210433,
+        "wape": 0.2532347504621072,
+        "bias": 0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 62,
+        "rows": 61,
+        "actual_pickups": 468.0,
+        "mae": 2.8360655737704916,
+        "rmse": 3.9525878636245557,
+        "wape": 0.3696581196581197,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 63,
+        "rows": 61,
+        "actual_pickups": 151.0,
+        "mae": 1.901639344262295,
+        "rmse": 2.991792050282096,
+        "wape": 0.7682119205298014,
+        "bias": -0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 64,
+        "rows": 61,
+        "actual_pickups": 52.0,
+        "mae": 1.0327868852459017,
+        "rmse": 1.4084056792618558,
+        "wape": 1.2115384615384615,
+        "bias": -0.14754098360655737
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 65,
+        "rows": 61,
+        "actual_pickups": 4900.0,
+        "mae": 14.278688524590164,
+        "rmse": 17.65563115483017,
+        "wape": 0.17775510204081632,
+        "bias": -0.639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 66,
+        "rows": 61,
+        "actual_pickups": 2518.0,
+        "mae": 11.37704918032787,
+        "rmse": 14.181493366298229,
+        "wape": 0.2756155679110405,
+        "bias": -1.0163934426229508
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 67,
+        "rows": 61,
+        "actual_pickups": 142.0,
+        "mae": 1.7049180327868851,
+        "rmse": 2.2688192928496,
+        "wape": 0.7323943661971831,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 68,
+        "rows": 61,
+        "actual_pickups": 169592.0,
+        "mae": 201.49180327868854,
+        "rmse": 254.99440688176594,
+        "wape": 0.0724739374498797,
+        "bias": -5.229508196721311
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 69,
+        "rows": 61,
+        "actual_pickups": 440.0,
+        "mae": 3.3278688524590163,
+        "rmse": 4.194062938777413,
+        "wape": 0.46136363636363636,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 70,
+        "rows": 61,
+        "actual_pickups": 30316.0,
+        "mae": 55.622950819672134,
+        "rmse": 68.76248023831448,
+        "wape": 0.11192109777015437,
+        "bias": 8.245901639344263
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 71,
+        "rows": 61,
+        "actual_pickups": 396.0,
+        "mae": 2.5081967213114753,
+        "rmse": 3.2668227909608114,
+        "wape": 0.38636363636363635,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 72,
+        "rows": 61,
+        "actual_pickups": 414.0,
+        "mae": 2.9836065573770494,
+        "rmse": 3.5941664940407594,
+        "wape": 0.4396135265700483,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 73,
+        "rows": 61,
+        "actual_pickups": 49.0,
+        "mae": 0.7213114754098361,
+        "rmse": 1.1161996413474886,
+        "wape": 0.8979591836734694,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 74,
+        "rows": 61,
+        "actual_pickups": 14840.0,
+        "mae": 31.80327868852459,
+        "rmse": 44.012665837215096,
+        "wape": 0.1307277628032345,
+        "bias": 0.29508196721311475
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 75,
+        "rows": 61,
+        "actual_pickups": 40064.0,
+        "mae": 80.09836065573771,
+        "rmse": 104.5378588570965,
+        "wape": 0.12195487220447285,
+        "bias": 6.950819672131147
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 76,
+        "rows": 61,
+        "actual_pickups": 816.0,
+        "mae": 5.819672131147541,
+        "rmse": 7.3384234694104045,
+        "wape": 0.43504901960784315,
+        "bias": 0.21311475409836064
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 77,
+        "rows": 61,
+        "actual_pickups": 220.0,
+        "mae": 2.3442622950819674,
+        "rmse": 3.1179017744967266,
+        "wape": 0.65,
+        "bias": -0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 78,
+        "rows": 61,
+        "actual_pickups": 287.0,
+        "mae": 3.0327868852459017,
+        "rmse": 3.6552230763258375,
+        "wape": 0.6445993031358885,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 79,
+        "rows": 61,
+        "actual_pickups": 158770.0,
+        "mae": 317.44262295081967,
+        "rmse": 470.9972329458241,
+        "wape": 0.12196258739056497,
+        "bias": 4.688524590163935
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 80,
+        "rows": 61,
+        "actual_pickups": 1978.0,
+        "mae": 9.655737704918034,
+        "rmse": 14.190160525438214,
+        "wape": 0.29777553083923153,
+        "bias": -2.9672131147540983
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 81,
+        "rows": 61,
+        "actual_pickups": 186.0,
+        "mae": 1.721311475409836,
+        "rmse": 2.2652036422766955,
+        "wape": 0.5645161290322581,
+        "bias": 0.2459016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 82,
+        "rows": 61,
+        "actual_pickups": 778.0,
+        "mae": 3.2295081967213113,
+        "rmse": 4.018400301563616,
+        "wape": 0.2532133676092545,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 83,
+        "rows": 61,
+        "actual_pickups": 311.0,
+        "mae": 2.4262295081967213,
+        "rmse": 3.0407074241604146,
+        "wape": 0.4758842443729904,
+        "bias": -0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 84,
+        "rows": 61,
+        "actual_pickups": 4.0,
+        "mae": 0.14754098360655737,
+        "rmse": 0.3841106397986879,
+        "wape": 2.25,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 85,
+        "rows": 61,
+        "actual_pickups": 273.0,
+        "mae": 2.278688524590164,
+        "rmse": 2.7311199888402236,
+        "wape": 0.5091575091575091,
+        "bias": -0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 86,
+        "rows": 61,
+        "actual_pickups": 349.0,
+        "mae": 3.1311475409836067,
+        "rmse": 3.765677610849402,
+        "wape": 0.5472779369627507,
+        "bias": 0.21311475409836064
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 87,
+        "rows": 61,
+        "actual_pickups": 37881.0,
+        "mae": 69.22950819672131,
+        "rmse": 90.87182470155511,
+        "wape": 0.11148068952773157,
+        "bias": -0.6721311475409836
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 88,
+        "rows": 61,
+        "actual_pickups": 19192.0,
+        "mae": 44.0655737704918,
+        "rmse": 57.98841037401282,
+        "wape": 0.14005835764902042,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 89,
+        "rows": 61,
+        "actual_pickups": 906.0,
+        "mae": 5.245901639344262,
+        "rmse": 6.121716249228281,
+        "wape": 0.35320088300220753,
+        "bias": -0.22950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 90,
+        "rows": 61,
+        "actual_pickups": 109508.0,
+        "mae": 175.2622950819672,
+        "rmse": 239.27489506807032,
+        "wape": 0.09762757058845016,
+        "bias": 9.360655737704919
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 91,
+        "rows": 61,
+        "actual_pickups": 435.0,
+        "mae": 4.016393442622951,
+        "rmse": 4.953885707861796,
+        "wape": 0.5632183908045977,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 92,
+        "rows": 61,
+        "actual_pickups": 471.0,
+        "mae": 2.721311475409836,
+        "rmse": 3.3485989240424656,
+        "wape": 0.3524416135881104,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 93,
+        "rows": 61,
+        "actual_pickups": 735.0,
+        "mae": 4.80327868852459,
+        "rmse": 5.801356540061819,
+        "wape": 0.3986394557823129,
+        "bias": -0.2459016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 94,
+        "rows": 61,
+        "actual_pickups": 121.0,
+        "mae": 1.4098360655737705,
+        "rmse": 1.8287324285094217,
+        "wape": 0.7107438016528925,
+        "bias": 0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 95,
+        "rows": 61,
+        "actual_pickups": 1007.0,
+        "mae": 6.19672131147541,
+        "rmse": 7.97948188465523,
+        "wape": 0.3753723932472691,
+        "bias": -0.32786885245901637
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 96,
+        "rows": 61,
+        "actual_pickups": 17.0,
+        "mae": 0.4262295081967213,
+        "rmse": 0.7892723355548015,
+        "wape": 1.5294117647058822,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 97,
+        "rows": 61,
+        "actual_pickups": 2716.0,
+        "mae": 10.573770491803279,
+        "rmse": 12.930457119200211,
+        "wape": 0.23748159057437407,
+        "bias": 0.5409836065573771
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 98,
+        "rows": 61,
+        "actual_pickups": 135.0,
+        "mae": 1.5901639344262295,
+        "rmse": 2.0764092587532126,
+        "wape": 0.7185185185185186,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 99,
+        "rows": 61,
+        "actual_pickups": 4.0,
+        "mae": 0.11475409836065574,
+        "rmse": 0.3387537429470791,
+        "wape": 1.75,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 100,
+        "rows": 61,
+        "actual_pickups": 109926.0,
+        "mae": 128.63934426229508,
+        "rmse": 164.32210471619652,
+        "wape": 0.07138438585957826,
+        "bias": 4.672131147540983
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 101,
+        "rows": 61,
+        "actual_pickups": 132.0,
+        "mae": 1.3770491803278688,
+        "rmse": 1.6693966712263564,
+        "wape": 0.6363636363636364,
+        "bias": -0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 102,
+        "rows": 61,
+        "actual_pickups": 107.0,
+        "mae": 1.3114754098360655,
+        "rmse": 1.7461902324399974,
+        "wape": 0.7476635514018691,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 103,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.0,
+        "rmse": 0.0,
+        "wape": null,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 104,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.0,
+        "rmse": 0.0,
+        "wape": null,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 105,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.09836065573770492,
+        "rmse": 0.31362502409359,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 106,
+        "rows": 61,
+        "actual_pickups": 448.0,
+        "mae": 3.9836065573770494,
+        "rmse": 5.148611144892521,
+        "wape": 0.5424107142857143,
+        "bias": -0.4098360655737705
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 107,
+        "rows": 61,
+        "actual_pickups": 142658.0,
+        "mae": 248.85245901639345,
+        "rmse": 348.7425655826663,
+        "wape": 0.10640833321650381,
+        "bias": 21.934426229508198
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 108,
+        "rows": 61,
+        "actual_pickups": 247.0,
+        "mae": 2.0,
+        "rmse": 2.515525561877481,
+        "wape": 0.4939271255060729,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 109,
+        "rows": 61,
+        "actual_pickups": 10.0,
+        "mae": 0.32786885245901637,
+        "rmse": 0.652862549237373,
+        "wape": 2.0,
+        "bias": 0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 110,
+        "rows": 61,
+        "actual_pickups": 0.0,
+        "mae": 0.0,
+        "rmse": 0.0,
+        "wape": null,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 111,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.09836065573770492,
+        "rmse": 0.31362502409359,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 112,
+        "rows": 61,
+        "actual_pickups": 1627.0,
+        "mae": 9.770491803278688,
+        "rmse": 12.695681465319318,
+        "wape": 0.3663183773816841,
+        "bias": -0.22950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 113,
+        "rows": 61,
+        "actual_pickups": 90370.0,
+        "mae": 162.0327868852459,
+        "rmse": 196.54624450624385,
+        "wape": 0.1093725793958172,
+        "bias": 15.245901639344263
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 114,
+        "rows": 61,
+        "actual_pickups": 87746.0,
+        "mae": 155.63934426229508,
+        "rmse": 214.66160941672138,
+        "wape": 0.10819866432657899,
+        "bias": 6.229508196721311
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 115,
+        "rows": 61,
+        "actual_pickups": 7.0,
+        "mae": 0.22950819672131148,
+        "rmse": 0.7012868733182767,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 116,
+        "rows": 61,
+        "actual_pickups": 4864.0,
+        "mae": 17.442622950819672,
+        "rmse": 22.5454004614514,
+        "wape": 0.21875,
+        "bias": 0.8524590163934426
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 117,
+        "rows": 61,
+        "actual_pickups": 325.0,
+        "mae": 3.0,
+        "rmse": 3.673119012322977,
+        "wape": 0.563076923076923,
+        "bias": 0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 118,
+        "rows": 61,
+        "actual_pickups": 11.0,
+        "mae": 0.36065573770491804,
+        "rmse": 0.7892723355548015,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 119,
+        "rows": 61,
+        "actual_pickups": 369.0,
+        "mae": 3.0163934426229506,
+        "rmse": 3.6887067350291187,
+        "wape": 0.4986449864498645,
+        "bias": -0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 120,
+        "rows": 61,
+        "actual_pickups": 45.0,
+        "mae": 1.0,
+        "rmse": 1.4429023574430648,
+        "wape": 1.3555555555555556,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 121,
+        "rows": 61,
+        "actual_pickups": 319.0,
+        "mae": 2.278688524590164,
+        "rmse": 3.1020881386047257,
+        "wape": 0.43573667711598746,
+        "bias": 0.21311475409836064
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 122,
+        "rows": 61,
+        "actual_pickups": 155.0,
+        "mae": 2.2131147540983607,
+        "rmse": 2.6145870751938043,
+        "wape": 0.8709677419354839,
+        "bias": 0.2459016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 123,
+        "rows": 61,
+        "actual_pickups": 166.0,
+        "mae": 1.7704918032786885,
+        "rmse": 2.482727215428531,
+        "wape": 0.6506024096385542,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 124,
+        "rows": 61,
+        "actual_pickups": 173.0,
+        "mae": 1.901639344262295,
+        "rmse": 2.4958982745138694,
+        "wape": 0.6705202312138728,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 125,
+        "rows": 61,
+        "actual_pickups": 33816.0,
+        "mae": 74.29508196721312,
+        "rmse": 93.44745170152152,
+        "wape": 0.13401939910101726,
+        "bias": 3.639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 126,
+        "rows": 61,
+        "actual_pickups": 147.0,
+        "mae": 1.9180327868852458,
+        "rmse": 2.4728028830379216,
+        "wape": 0.7959183673469388,
+        "bias": -0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 127,
+        "rows": 61,
+        "actual_pickups": 426.0,
+        "mae": 3.377049180327869,
+        "rmse": 4.501365912916569,
+        "wape": 0.4835680751173709,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 128,
+        "rows": 61,
+        "actual_pickups": 40.0,
+        "mae": 1.0163934426229508,
+        "rmse": 1.25450009637436,
+        "wape": 1.55,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 129,
+        "rows": 61,
+        "actual_pickups": 1398.0,
+        "mae": 5.918032786885246,
+        "rmse": 7.29810215617507,
+        "wape": 0.2582260371959943,
+        "bias": 0.21311475409836064
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 130,
+        "rows": 61,
+        "actual_pickups": 1106.0,
+        "mae": 6.39344262295082,
+        "rmse": 8.176335304792326,
+        "wape": 0.352622061482821,
+        "bias": -0.6885245901639344
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 131,
+        "rows": 61,
+        "actual_pickups": 338.0,
+        "mae": 3.0,
+        "rmse": 3.989740942327615,
+        "wape": 0.5414201183431953,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 132,
+        "rows": 61,
+        "actual_pickups": 358185.0,
+        "mae": 458.75409836065575,
+        "rmse": 579.3630476511308,
+        "wape": 0.0781272247581557,
+        "bias": -38.459016393442624
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 133,
+        "rows": 61,
+        "actual_pickups": 309.0,
+        "mae": 3.377049180327869,
+        "rmse": 4.258068522344797,
+        "wape": 0.6666666666666666,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 134,
+        "rows": 61,
+        "actual_pickups": 666.0,
+        "mae": 3.3442622950819674,
+        "rmse": 3.9835728258708154,
+        "wape": 0.3063063063063063,
+        "bias": -0.39344262295081966
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 135,
+        "rows": 61,
+        "actual_pickups": 407.0,
+        "mae": 3.0,
+        "rmse": 3.713069518053983,
+        "wape": 0.44963144963144963,
+        "bias": 0.47540983606557374
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 136,
+        "rows": 61,
+        "actual_pickups": 276.0,
+        "mae": 1.9180327868852458,
+        "rmse": 2.608309546147579,
+        "wape": 0.42391304347826086,
+        "bias": 0.14754098360655737
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 137,
+        "rows": 61,
+        "actual_pickups": 72146.0,
+        "mae": 108.09836065573771,
+        "rmse": 144.4108437870186,
+        "wape": 0.09139799850303551,
+        "bias": 11.967213114754099
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 138,
+        "rows": 61,
+        "actual_pickups": 252184.0,
+        "mae": 339.1311475409836,
+        "rmse": 475.7697300854414,
+        "wape": 0.0820313739174571,
+        "bias": 42.67213114754098
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 139,
+        "rows": 61,
+        "actual_pickups": 251.0,
+        "mae": 2.377049180327869,
+        "rmse": 3.1544919832092058,
+        "wape": 0.5776892430278885,
+        "bias": -0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 140,
+        "rows": 61,
+        "actual_pickups": 131958.0,
+        "mae": 232.68852459016392,
+        "rmse": 381.60923279891574,
+        "wape": 0.10756452810742811,
+        "bias": 41.442622950819676
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 141,
+        "rows": 61,
+        "actual_pickups": 157544.0,
+        "mae": 260.73770491803276,
+        "rmse": 373.1200966945858,
+        "wape": 0.1009559234245671,
+        "bias": 39.75409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 142,
+        "rows": 61,
+        "actual_pickups": 228384.0,
+        "mae": 339.55737704918033,
+        "rmse": 459.7551201365824,
+        "wape": 0.09069374386997338,
+        "bias": 83.62295081967213
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 143,
+        "rows": 61,
+        "actual_pickups": 75177.0,
+        "mae": 152.95081967213116,
+        "rmse": 215.38368356851217,
+        "wape": 0.12410710722694442,
+        "bias": 27.34426229508197
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 144,
+        "rows": 61,
+        "actual_pickups": 59387.0,
+        "mae": 87.01639344262296,
+        "rmse": 107.92331825398448,
+        "wape": 0.08937983060265715,
+        "bias": -3.639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 145,
+        "rows": 61,
+        "actual_pickups": 6116.0,
+        "mae": 21.39344262295082,
+        "rmse": 26.04000705094211,
+        "wape": 0.2133747547416612,
+        "bias": -0.47540983606557374
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 146,
+        "rows": 61,
+        "actual_pickups": 3602.0,
+        "mae": 19.688524590163933,
+        "rmse": 28.19574435974337,
+        "wape": 0.3334258745141588,
+        "bias": 0.47540983606557374
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 147,
+        "rows": 61,
+        "actual_pickups": 126.0,
+        "mae": 1.4262295081967213,
+        "rmse": 1.7970832470203797,
+        "wape": 0.6904761904761905,
+        "bias": -0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 148,
+        "rows": 61,
+        "actual_pickups": 71397.0,
+        "mae": 140.0327868852459,
+        "rmse": 193.6036173622221,
+        "wape": 0.11964088126952113,
+        "bias": -2.5901639344262297
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 149,
+        "rows": 61,
+        "actual_pickups": 174.0,
+        "mae": 2.098360655737705,
+        "rmse": 2.5414595006497,
+        "wape": 0.735632183908046,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 150,
+        "rows": 61,
+        "actual_pickups": 76.0,
+        "mae": 1.2295081967213115,
+        "rmse": 1.531098394970737,
+        "wape": 0.9868421052631579,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 151,
+        "rows": 61,
+        "actual_pickups": 55372.0,
+        "mae": 107.63934426229508,
+        "rmse": 133.1910989986156,
+        "wape": 0.11857978761829083,
+        "bias": 12.819672131147541
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 152,
+        "rows": 61,
+        "actual_pickups": 4426.0,
+        "mae": 13.901639344262295,
+        "rmse": 19.371264843560017,
+        "wape": 0.19159511974694984,
+        "bias": 1.180327868852459
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 153,
+        "rows": 61,
+        "actual_pickups": 51.0,
+        "mae": 0.9672131147540983,
+        "rmse": 1.2867547182419938,
+        "wape": 1.1568627450980393,
+        "bias": -0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 154,
+        "rows": 61,
+        "actual_pickups": 38.0,
+        "mae": 0.6229508196721312,
+        "rmse": 0.9750998267516755,
+        "wape": 1.0,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 155,
+        "rows": 61,
+        "actual_pickups": 260.0,
+        "mae": 2.180327868852459,
+        "rmse": 2.6145870751938043,
+        "wape": 0.5115384615384615,
+        "bias": -0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 156,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.22950819672131148,
+        "rmse": 0.6775074858941582,
+        "wape": 1.75,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 157,
+        "rows": 61,
+        "actual_pickups": 505.0,
+        "mae": 4.442622950819672,
+        "rmse": 6.79802285625007,
+        "wape": 0.5366336633663367,
+        "bias": -0.7049180327868853
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 158,
+        "rows": 61,
+        "actual_pickups": 59752.0,
+        "mae": 84.93442622950819,
+        "rmse": 115.00612955866993,
+        "wape": 0.08670839469808542,
+        "bias": 0.47540983606557374
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 159,
+        "rows": 61,
+        "actual_pickups": 395.0,
+        "mae": 2.8852459016393444,
+        "rmse": 3.6708867915076833,
+        "wape": 0.44556962025316454,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 160,
+        "rows": 61,
+        "actual_pickups": 170.0,
+        "mae": 1.9180327868852458,
+        "rmse": 2.5830468728888727,
+        "wape": 0.6882352941176471,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 161,
+        "rows": 61,
+        "actual_pickups": 312943.0,
+        "mae": 572.983606557377,
+        "rmse": 823.2648319991309,
+        "wape": 0.11168807099056377,
+        "bias": 77.50819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 162,
+        "rows": 61,
+        "actual_pickups": 238434.0,
+        "mae": 428.0327868852459,
+        "rmse": 532.5945771471555,
+        "wape": 0.10950619458634255,
+        "bias": 27.114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 163,
+        "rows": 61,
+        "actual_pickups": 200208.0,
+        "mae": 321.1311475409836,
+        "rmse": 447.9504327087255,
+        "wape": 0.09784324302725166,
+        "bias": 52.24590163934426
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 164,
+        "rows": 61,
+        "actual_pickups": 155028.0,
+        "mae": 215.27868852459017,
+        "rmse": 286.0653943350464,
+        "wape": 0.08470727868514075,
+        "bias": 25.147540983606557
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 165,
+        "rows": 61,
+        "actual_pickups": 254.0,
+        "mae": 2.4754098360655736,
+        "rmse": 3.5505714155680885,
+        "wape": 0.594488188976378,
+        "bias": 0.2786885245901639
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 166,
+        "rows": 61,
+        "actual_pickups": 31545.0,
+        "mae": 136.08196721311475,
+        "rmse": 181.10720491502028,
+        "wape": 0.26314788397527344,
+        "bias": 14.442622950819672
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 167,
+        "rows": 61,
+        "actual_pickups": 354.0,
+        "mae": 3.2131147540983607,
+        "rmse": 3.8538888173367747,
+        "wape": 0.5536723163841808,
+        "bias": 0.36065573770491804
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 168,
+        "rows": 61,
+        "actual_pickups": 905.0,
+        "mae": 4.770491803278689,
+        "rmse": 5.927153409604277,
+        "wape": 0.32154696132596683,
+        "bias": 0.3770491803278688
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 169,
+        "rows": 61,
+        "actual_pickups": 296.0,
+        "mae": 2.459016393442623,
+        "rmse": 3.0407074241604146,
+        "wape": 0.5067567567567568,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 170,
+        "rows": 61,
+        "actual_pickups": 203945.0,
+        "mae": 297.0655737704918,
+        "rmse": 394.5882061833785,
+        "wape": 0.0888523866728775,
+        "bias": 18.40983606557377
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 171,
+        "rows": 61,
+        "actual_pickups": 137.0,
+        "mae": 1.7868852459016393,
+        "rmse": 2.1615113109907576,
+        "wape": 0.7956204379562044,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 172,
+        "rows": 61,
+        "actual_pickups": 5.0,
+        "mae": 0.16393442622950818,
+        "rmse": 0.6005461994758755,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 173,
+        "rows": 61,
+        "actual_pickups": 149.0,
+        "mae": 1.6721311475409837,
+        "rmse": 2.2760333628601446,
+        "wape": 0.6845637583892618,
+        "bias": -0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 174,
+        "rows": 61,
+        "actual_pickups": 259.0,
+        "mae": 2.901639344262295,
+        "rmse": 3.699800614920206,
+        "wape": 0.6833976833976834,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 175,
+        "rows": 61,
+        "actual_pickups": 80.0,
+        "mae": 1.180327868852459,
+        "rmse": 1.6496398017172829,
+        "wape": 0.9,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 176,
+        "rows": 61,
+        "actual_pickups": 1.0,
+        "mae": 0.03278688524590164,
+        "rmse": 0.18107149208503706,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 177,
+        "rows": 61,
+        "actual_pickups": 518.0,
+        "mae": 3.0655737704918034,
+        "rmse": 3.7743743374689616,
+        "wape": 0.361003861003861,
+        "bias": -0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 178,
+        "rows": 61,
+        "actual_pickups": 53.0,
+        "mae": 1.1639344262295082,
+        "rmse": 1.531098394970737,
+        "wape": 1.3396226415094339,
+        "bias": -0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 179,
+        "rows": 61,
+        "actual_pickups": 1269.0,
+        "mae": 6.786885245901639,
+        "rmse": 9.517886526662641,
+        "wape": 0.3262411347517731,
+        "bias": 0.36065573770491804
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 180,
+        "rows": 61,
+        "actual_pickups": 110.0,
+        "mae": 1.1475409836065573,
+        "rmse": 1.4372104127412253,
+        "wape": 0.6363636363636364,
+        "bias": 0.22950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 181,
+        "rows": 61,
+        "actual_pickups": 2389.0,
+        "mae": 10.950819672131148,
+        "rmse": 15.246606717346737,
+        "wape": 0.2796149016324822,
+        "bias": -1.0491803278688525
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 182,
+        "rows": 61,
+        "actual_pickups": 276.0,
+        "mae": 2.459016393442623,
+        "rmse": 3.0835363985708804,
+        "wape": 0.5434782608695652,
+        "bias": 0.19672131147540983
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 183,
+        "rows": 61,
+        "actual_pickups": 52.0,
+        "mae": 1.0655737704918034,
+        "rmse": 1.3730425709494023,
+        "wape": 1.25,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 184,
+        "rows": 61,
+        "actual_pickups": 14.0,
+        "mae": 0.32786885245901637,
+        "rmse": 0.5725983343138682,
+        "wape": 1.4285714285714286,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 185,
+        "rows": 61,
+        "actual_pickups": 153.0,
+        "mae": 1.459016393442623,
+        "rmse": 1.9711027120978106,
+        "wape": 0.5816993464052288,
+        "bias": -0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 186,
+        "rows": 61,
+        "actual_pickups": 222677.0,
+        "mae": 290.57377049180326,
+        "rmse": 396.7322464960922,
+        "wape": 0.0795995994197874,
+        "bias": 15.78688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 187,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.18032786885245902,
+        "rmse": 0.4246502900652006,
+        "wape": 1.375,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 188,
+        "rows": 61,
+        "actual_pickups": 962.0,
+        "mae": 4.704918032786885,
+        "rmse": 6.131081791529634,
+        "wape": 0.2983367983367983,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 189,
+        "rows": 61,
+        "actual_pickups": 817.0,
+        "mae": 3.6557377049180326,
+        "rmse": 4.726971789114249,
+        "wape": 0.2729498164014688,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 190,
+        "rows": 61,
+        "actual_pickups": 154.0,
+        "mae": 1.8360655737704918,
+        "rmse": 2.605165109144071,
+        "wape": 0.7272727272727273,
+        "bias": 0.16393442622950818
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 191,
+        "rows": 61,
+        "actual_pickups": 417.0,
+        "mae": 2.7049180327868854,
+        "rmse": 3.6953670595649943,
+        "wape": 0.39568345323741005,
+        "bias": 0.4098360655737705
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 192,
+        "rows": 61,
+        "actual_pickups": 100.0,
+        "mae": 1.0819672131147542,
+        "rmse": 1.5257355119610398,
+        "wape": 0.66,
+        "bias": -0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 193,
+        "rows": 61,
+        "actual_pickups": 5256.0,
+        "mae": 16.59016393442623,
+        "rmse": 22.14556907167203,
+        "wape": 0.19254185692541856,
+        "bias": 0.9180327868852459
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 194,
+        "rows": 61,
+        "actual_pickups": 251.0,
+        "mae": 2.19672131147541,
+        "rmse": 3.2289672510257397,
+        "wape": 0.5338645418326693,
+        "bias": -0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 195,
+        "rows": 61,
+        "actual_pickups": 840.0,
+        "mae": 9.540983606557377,
+        "rmse": 22.505372764713062,
+        "wape": 0.6928571428571428,
+        "bias": -0.9836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 196,
+        "rows": 61,
+        "actual_pickups": 411.0,
+        "mae": 3.081967213114754,
+        "rmse": 3.819707310046966,
+        "wape": 0.45742092457420924,
+        "bias": 0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 197,
+        "rows": 61,
+        "actual_pickups": 840.0,
+        "mae": 3.8524590163934427,
+        "rmse": 5.022898386063699,
+        "wape": 0.27976190476190477,
+        "bias": 0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 198,
+        "rows": 61,
+        "actual_pickups": 278.0,
+        "mae": 2.5081967213114753,
+        "rmse": 3.206039382881964,
+        "wape": 0.5503597122302158,
+        "bias": -0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 199,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.08196721311475409,
+        "rmse": 0.2862991671569341,
+        "wape": 1.6666666666666667,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 200,
+        "rows": 61,
+        "actual_pickups": 153.0,
+        "mae": 1.721311475409836,
+        "rmse": 2.3011045102761227,
+        "wape": 0.6862745098039216,
+        "bias": 0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 201,
+        "rows": 61,
+        "actual_pickups": 102.0,
+        "mae": 1.2459016393442623,
+        "rmse": 1.6195526603578319,
+        "wape": 0.7450980392156863,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 202,
+        "rows": 61,
+        "actual_pickups": 295.0,
+        "mae": 2.6721311475409837,
+        "rmse": 3.2517334595263616,
+        "wape": 0.5525423728813559,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 203,
+        "rows": 61,
+        "actual_pickups": 335.0,
+        "mae": 3.0,
+        "rmse": 3.713069518053983,
+        "wape": 0.5462686567164179,
+        "bias": -0.08196721311475409
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 204,
+        "rows": 61,
+        "actual_pickups": 3.0,
+        "mae": 0.09836065573770492,
+        "rmse": 0.31362502409359,
+        "wape": 2.0,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 205,
+        "rows": 61,
+        "actual_pickups": 602.0,
+        "mae": 3.7704918032786887,
+        "rmse": 4.92234783378027,
+        "wape": 0.38205980066445183,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 206,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.22950819672131148,
+        "rmse": 0.5432144762551112,
+        "wape": 1.75,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 207,
+        "rows": 61,
+        "actual_pickups": 760.0,
+        "mae": 6.934426229508197,
+        "rmse": 10.804522428966159,
+        "wape": 0.5565789473684211,
+        "bias": -0.5409836065573771
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 208,
+        "rows": 61,
+        "actual_pickups": 212.0,
+        "mae": 2.3278688524590163,
+        "rmse": 2.8744208254824506,
+        "wape": 0.6698113207547169,
+        "bias": 0.13114754098360656
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 209,
+        "rows": 61,
+        "actual_pickups": 12821.0,
+        "mae": 25.540983606557376,
+        "rmse": 31.853661291991507,
+        "wape": 0.12151938226347399,
+        "bias": -2.098360655737705
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 210,
+        "rows": 61,
+        "actual_pickups": 258.0,
+        "mae": 2.4098360655737703,
+        "rmse": 3.1073682924490997,
+        "wape": 0.5697674418604651,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 211,
+        "rows": 61,
+        "actual_pickups": 50847.0,
+        "mae": 76.55737704918033,
+        "rmse": 104.35390603574949,
+        "wape": 0.0918441599307727,
+        "bias": 4.983606557377049
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 212,
+        "rows": 61,
+        "actual_pickups": 162.0,
+        "mae": 1.721311475409836,
+        "rmse": 2.1991056304258083,
+        "wape": 0.6481481481481481,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 213,
+        "rows": 61,
+        "actual_pickups": 492.0,
+        "mae": 3.278688524590164,
+        "rmse": 4.117137315190149,
+        "wape": 0.4065040650406504,
+        "bias": 0.4262295081967213
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 214,
+        "rows": 61,
+        "actual_pickups": 43.0,
+        "mae": 0.2786885245901639,
+        "rmse": 0.5279095799378564,
+        "wape": 0.3953488372093023,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 215,
+        "rows": 61,
+        "actual_pickups": 926.0,
+        "mae": 4.836065573770492,
+        "rmse": 6.387744413212272,
+        "wape": 0.3185745140388769,
+        "bias": 0.3770491803278688
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 216,
+        "rows": 61,
+        "actual_pickups": 1209.0,
+        "mae": 5.327868852459017,
+        "rmse": 6.489588130101991,
+        "wape": 0.26881720430107525,
+        "bias": -0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 217,
+        "rows": 61,
+        "actual_pickups": 239.0,
+        "mae": 2.2131147540983607,
+        "rmse": 2.8658532331747835,
+        "wape": 0.5648535564853556,
+        "bias": 0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 218,
+        "rows": 61,
+        "actual_pickups": 573.0,
+        "mae": 3.3934426229508197,
+        "rmse": 4.429779996757416,
+        "wape": 0.3612565445026178,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 219,
+        "rows": 61,
+        "actual_pickups": 637.0,
+        "mae": 4.016393442622951,
+        "rmse": 5.265103178040278,
+        "wape": 0.38461538461538464,
+        "bias": -0.4098360655737705
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 220,
+        "rows": 61,
+        "actual_pickups": 307.0,
+        "mae": 2.6721311475409837,
+        "rmse": 3.341247435648774,
+        "wape": 0.5309446254071661,
+        "bias": 0.11475409836065574
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 221,
+        "rows": 61,
+        "actual_pickups": 8.0,
+        "mae": 0.2459016393442623,
+        "rmse": 0.5279095799378564,
+        "wape": 1.875,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 222,
+        "rows": 61,
+        "actual_pickups": 239.0,
+        "mae": 2.5901639344262297,
+        "rmse": 3.131018794022896,
+        "wape": 0.6610878661087866,
+        "bias": 0.22950819672131148
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 223,
+        "rows": 61,
+        "actual_pickups": 1358.0,
+        "mae": 6.786885245901639,
+        "rmse": 8.366600265340756,
+        "wape": 0.30486008836524303,
+        "bias": -0.36065573770491804
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 224,
+        "rows": 61,
+        "actual_pickups": 8903.0,
+        "mae": 20.934426229508198,
+        "rmse": 30.07722301447218,
+        "wape": 0.1434347972593508,
+        "bias": 1.6229508196721312
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 225,
+        "rows": 61,
+        "actual_pickups": 923.0,
+        "mae": 4.049180327868853,
+        "rmse": 5.218190126540169,
+        "wape": 0.2676056338028169,
+        "bias": -0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 226,
+        "rows": 61,
+        "actual_pickups": 4944.0,
+        "mae": 12.508196721311476,
+        "rmse": 15.961531624605412,
+        "wape": 0.1543284789644013,
+        "bias": 0.5409836065573771
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 227,
+        "rows": 61,
+        "actual_pickups": 139.0,
+        "mae": 1.8688524590163935,
+        "rmse": 2.5350008891905187,
+        "wape": 0.8201438848920863,
+        "bias": -0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 228,
+        "rows": 61,
+        "actual_pickups": 512.0,
+        "mae": 3.7049180327868854,
+        "rmse": 5.703033417746597,
+        "wape": 0.44140625,
+        "bias": -0.32786885245901637
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 229,
+        "rows": 61,
+        "actual_pickups": 128416.0,
+        "mae": 199.5737704918033,
+        "rmse": 272.24043134519235,
+        "wape": 0.09480127086967356,
+        "bias": 23.868852459016395
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 230,
+        "rows": 61,
+        "actual_pickups": 220075.0,
+        "mae": 324.6885245901639,
+        "rmse": 419.5089635416665,
+        "wape": 0.08999659207088492,
+        "bias": 38.19672131147541
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 231,
+        "rows": 61,
+        "actual_pickups": 94427.0,
+        "mae": 213.80327868852459,
+        "rmse": 273.79219114946693,
+        "wape": 0.13811727577917332,
+        "bias": 18.131147540983605
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 232,
+        "rows": 61,
+        "actual_pickups": 7705.0,
+        "mae": 24.557377049180328,
+        "rmse": 31.2855699204266,
+        "wape": 0.1944192083062946,
+        "bias": -3.2131147540983607
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 233,
+        "rows": 61,
+        "actual_pickups": 87172.0,
+        "mae": 138.95081967213116,
+        "rmse": 173.3374421539069,
+        "wape": 0.09723305648602762,
+        "bias": 4.131147540983607
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 234,
+        "rows": 61,
+        "actual_pickups": 181472.0,
+        "mae": 319.72131147540983,
+        "rmse": 427.8393869007464,
+        "wape": 0.10747112502204197,
+        "bias": 40.049180327868854
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 235,
+        "rows": 61,
+        "actual_pickups": 380.0,
+        "mae": 2.4918032786885247,
+        "rmse": 3.0941510130895806,
+        "wape": 0.4,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 236,
+        "rows": 61,
+        "actual_pickups": 288853.0,
+        "mae": 634.1311475409836,
+        "rmse": 905.5056915210689,
+        "wape": 0.13391586724043025,
+        "bias": 143.9016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 237,
+        "rows": 61,
+        "actual_pickups": 329762.0,
+        "mae": 753.9672131147541,
+        "rmse": 1023.9963178724782,
+        "wape": 0.13947028462952069,
+        "bias": 134.59016393442624
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 238,
+        "rows": 61,
+        "actual_pickups": 130259.0,
+        "mae": 228.60655737704917,
+        "rmse": 314.7778034960065,
+        "wape": 0.10705594239169654,
+        "bias": 54.08196721311475
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 239,
+        "rows": 61,
+        "actual_pickups": 190216.0,
+        "mae": 331.40983606557376,
+        "rmse": 433.1231604649508,
+        "wape": 0.10627917735626867,
+        "bias": 59.24590163934426
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 240,
+        "rows": 61,
+        "actual_pickups": 23.0,
+        "mae": 0.5573770491803278,
+        "rmse": 0.8683883697146904,
+        "wape": 1.4782608695652173,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 241,
+        "rows": 61,
+        "actual_pickups": 267.0,
+        "mae": 2.2950819672131146,
+        "rmse": 2.9196900801171393,
+        "wape": 0.5243445692883895,
+        "bias": 0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 242,
+        "rows": 61,
+        "actual_pickups": 397.0,
+        "mae": 3.2295081967213113,
+        "rmse": 4.451929034828334,
+        "wape": 0.49622166246851385,
+        "bias": 0.2459016393442623
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 243,
+        "rows": 61,
+        "actual_pickups": 1080.0,
+        "mae": 6.19672131147541,
+        "rmse": 7.401816347755572,
+        "wape": 0.35,
+        "bias": 0.09836065573770492
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 244,
+        "rows": 61,
+        "actual_pickups": 4415.0,
+        "mae": 16.098360655737704,
+        "rmse": 19.671065544909638,
+        "wape": 0.22242355605889014,
+        "bias": -0.6885245901639344
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 245,
+        "rows": 61,
+        "actual_pickups": 2.0,
+        "mae": 0.04918032786885246,
+        "rmse": 0.22176638128637186,
+        "wape": 1.5,
+        "bias": -0.01639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 246,
+        "rows": 61,
+        "actual_pickups": 112638.0,
+        "mae": 211.55737704918033,
+        "rmse": 282.20800955277247,
+        "wape": 0.11457057121042633,
+        "bias": -33.19672131147541
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 247,
+        "rows": 61,
+        "actual_pickups": 932.0,
+        "mae": 7.655737704918033,
+        "rmse": 9.539392014169456,
+        "wape": 0.5010729613733905,
+        "bias": -0.14754098360655737
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 248,
+        "rows": 61,
+        "actual_pickups": 185.0,
+        "mae": 2.0,
+        "rmse": 2.605165109144071,
+        "wape": 0.6594594594594595,
+        "bias": 0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 249,
+        "rows": 61,
+        "actual_pickups": 147552.0,
+        "mae": 234.40983606557376,
+        "rmse": 323.5027807922644,
+        "wape": 0.0969082086315333,
+        "bias": 1.9508196721311475
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 250,
+        "rows": 61,
+        "actual_pickups": 156.0,
+        "mae": 1.901639344262295,
+        "rmse": 2.5350008891905187,
+        "wape": 0.7435897435897436,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 251,
+        "rows": 61,
+        "actual_pickups": 23.0,
+        "mae": 0.45901639344262296,
+        "rmse": 0.7892723355548015,
+        "wape": 1.2173913043478262,
+        "bias": -0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 252,
+        "rows": 61,
+        "actual_pickups": 91.0,
+        "mae": 1.459016393442623,
+        "rmse": 1.6644794391276476,
+        "wape": 0.978021978021978,
+        "bias": 0.18032786885245902
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 253,
+        "rows": 61,
+        "actual_pickups": 33.0,
+        "mae": 0.6885245901639344,
+        "rmse": 0.9750998267516755,
+        "wape": 1.2727272727272727,
+        "bias": -0.06557377049180328
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 254,
+        "rows": 61,
+        "actual_pickups": 379.0,
+        "mae": 2.721311475409836,
+        "rmse": 3.3632536939452047,
+        "wape": 0.43799472295514513,
+        "bias": 0.4262295081967213
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 255,
+        "rows": 61,
+        "actual_pickups": 3145.0,
+        "mae": 13.524590163934427,
+        "rmse": 17.99134582487269,
+        "wape": 0.26232114467408585,
+        "bias": -0.8688524590163934
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 256,
+        "rows": 61,
+        "actual_pickups": 2607.0,
+        "mae": 11.39344262295082,
+        "rmse": 15.708930320148431,
+        "wape": 0.2665899501342539,
+        "bias": -0.639344262295082
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 257,
+        "rows": 61,
+        "actual_pickups": 195.0,
+        "mae": 1.9672131147540983,
+        "rmse": 2.793434926488281,
+        "wape": 0.6153846153846154,
+        "bias": -0.03278688524590164
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 258,
+        "rows": 61,
+        "actual_pickups": 216.0,
+        "mae": 2.0655737704918034,
+        "rmse": 2.482727215428531,
+        "wape": 0.5833333333333334,
+        "bias": 0.0
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 259,
+        "rows": 61,
+        "actual_pickups": 244.0,
+        "mae": 2.540983606557377,
+        "rmse": 2.994530533281319,
+        "wape": 0.6352459016393442,
+        "bias": 0.04918032786885246
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 260,
+        "rows": 61,
+        "actual_pickups": 1386.0,
+        "mae": 5.80327868852459,
+        "rmse": 7.2088288310067465,
+        "wape": 0.2554112554112554,
+        "bias": -0.26229508196721313
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 261,
+        "rows": 61,
+        "actual_pickups": 34449.0,
+        "mae": 49.0655737704918,
+        "rmse": 64.51674074273726,
+        "wape": 0.08688205753432611,
+        "bias": -3.1311475409836067
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 262,
+        "rows": 61,
+        "actual_pickups": 90790.0,
+        "mae": 177.95081967213116,
+        "rmse": 259.5389670354648,
+        "wape": 0.11956162572970591,
+        "bias": 37.721311475409834
+      },
+      {
+        "model": "seasonal_naive",
+        "zone": 263,
+        "rows": 61,
+        "actual_pickups": 126653.0,
+        "mae": 193.86885245901638,
+        "rmse": 284.7567267732633,
+        "wape": 0.09337323237507204,
+        "bias": 39.114754098360656
+      }
+    ],
+    "nominal_interval_coverage": 0.9,
+    "capacity_scenario": {
+      "daily_pickup_slots": 102524,
+      "capacity_fraction": 0.95,
+      "basis": "mean daily accepted pickups in final 28 pre-calibration days",
+      "uncovered_unit_cost": 1.0,
+      "idle_unit_cost": 0.25,
+      "status": "illustrative allocation simulation; not vehicles, dispatch or measured savings"
+    },
+    "split": {
+      "selection_start": "2023-03-01",
+      "calibration_start": "2023-04-01",
+      "test_start": "2023-05-01",
+      "test_end": "2023-07-01"
+    },
+    "feature_columns": [
+      "lag_1",
+      "lag_7",
+      "lag_14",
+      "lag_28",
+      "mean_7",
+      "mean_28",
+      "weekday_sin",
+      "weekday_cos",
+      "month_sin",
+      "month_cos",
+      "weekend"
+    ],
+    "training_rows": 8153,
+    "selection_rows": 8153,
+    "refit_rows": 16306,
+    "calibration_rows": 7890,
+    "rolling_origin": "one-day-ahead replay; features updated daily, parameters frozen before calibration",
+    "availability_assumption": "previous-day pickup totals assumed available; monthly public TLC publication cannot supply this live",
+    "interval_limit": "per-zone absolute residual quantiles; temporal dependence/shift means no guaranteed future coverage",
+    "selection_rule": "lowest selection-month MAE, baseline on ties; no final-test tuning"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.1",
+      "scikit-learn": "1.9.1",
+      "duckdb": "2.0.0",
+      "matplotlib": "3.11.2"
+    }
+  },
+  "code": {
+    "base_git_revision": "b12d6784471a57225d2ab5cc31a53f4ea6424599",
+    "taxi_forecast_source_sha256": "05c518260bc69dfaa9403bd42846ed8aa5a3367aac56ae6b1bea537b9cfc8925",
+    "note": "module hash includes uncommitted source bytes; base revision alone is not build identity"
+  }
+}
