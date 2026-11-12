@@ -1,0 +1,3 @@
+# Optional deployment and IaC validation tools; no AWS account needed for local tests.
+boto3>=1.35,<2
+cfn-lint>=1,<2

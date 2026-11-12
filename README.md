@@ -6,11 +6,11 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 **Stack:** Python, SQL, Dagster, dbt, DuckDB, Docker, GitHub Actions.
 
-**Operating status:** Runs locally, in Docker and in CI. Cloud deployment and a continuously operated production service are outside the current scope.
+**Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.
 
-**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md)
+**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
 
-**Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py)
+**Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py) · [AWS access and cost controls](cloud/aws/template.json)
 
 ## Results at a glance
 
@@ -113,9 +113,13 @@ pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
 - This remains a single-writer local DuckDB warehouse, not a concurrent multi-process serving database. Readers needing one version across multiple queries must use a read transaction. Publication copies add storage and runtime overhead; it does not retain old table versions or provide a cloud serving layer.
 - CI uses the 30,000-row sample and retains its benchmark artifact for 14 days. The checked-in 31.6-million-row measurement is a separate full-data run.
 
-## Next improvement
+## Cloud controls and serving recovery
 
-A bounded cloud deployment with least-privilege access, measured costs and dated operating evidence. The measured local publisher and synthetic recovery exercises do not establish that operating history.
+The [cloud extension](docs/CLOUD_CONTROLS.md) provides private versioned S3, distinct release-publisher and aggregate-query roles, encrypted Athena results and an enforced per-query scan cutoff. An explicit byte-budgeted uploader verifies remote checksums before registering immutable release tables. A read-only collector records observed Athena scan/time counters without inventing billed costs. Infrastructure validation and SDK-boundary tests run in CI; **AWS deployment, live IAM denial tests and cloud query measurements remain unexecuted** pending an account and experiment spending ceiling.
+
+The executed [local backup exercise](docs/evidence/cloud-readiness-2026-11-12.json) restored all eight published tables plus their version record from a 3.76 MB Parquet bundle, with zero row differences, identical schemas and passing reconciliations over the 30,000-row sample. Failure tests cover corrupt bundles and abrupt process death during transactional restoration. This is a serving-data backup, not a backup of raw ingestion state or a full-data recovery benchmark.
+
+The next step is to run the documented bounded cloud experiment, verify actual denied permissions and record query costs and operating history. The prepared architecture and local recovery evidence do not establish those results.
 
 ## Extension: observed pickup forecasting and planning replay
 
