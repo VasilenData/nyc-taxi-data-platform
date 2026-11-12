@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-11-12T18:33:07.227125+00:00",
+  "scope": "local serving-backup exercise on bundled historical TLC sample",
+  "cloud_deployed": false,
+  "aws_iam_denial_tests": "not run",
+  "athena_query_measurements": "not run",
+  "cloud_billed_cost_usd": null,
+  "python": "3.12.14",
+  "duckdb": "2.0.0",
+  "operating_system": "Windows",
+  "implementation_sha256": {
+    "taxi_platform/release_bundle.py": "ca0a54e995f546b523730c70f18c6700bbbf9b87c92a135009d85dcc306254cb",
+    "scripts/cloud_readiness_exercise.py": "3264806e73ed2c00319fe1f92439389105d02a6b38222306dbbcf6d40c5e46ad"
+  },
+  "inputs": [
+    {
+      "file": "yellow_tripdata_2023-01.parquet",
+      "sha256": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558"
+    },
+    {
+      "file": "yellow_tripdata_2023-02.parquet",
+      "sha256": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd"
+    }
+  ],
+  "pipeline_exit_code": 0,
+  "pipeline_log_sha256": "801af99fc8e93c8716bd49e9d14c9106999b850f6b548f62da79e6014572b3d9",
+  "release": {
+    "release_id": "7fc5b0e4-5ca1-475f-978b-183b0d93b39c",
+    "total_bytes": 3756411,
+    "export_seconds": 0.23496
+  },
+  "restore": {
+    "release_id": "7fc5b0e4-5ca1-475f-978b-183b0d93b39c",
+    "relations_restored": 9,
+    "restore_seconds": 0.140995,
+    "scope": "published_consumer_relations_only",
+    "cloud_execution": false
+  },
+  "multiset_differences": {
+    "taxi_zone_lookup": 0,
+    "stg_trips_classified": 0,
+    "stg_trips": 0,
+    "trips_quarantine": 0,
+    "fct_trips": 0,
+    "mart_daily_borough": 0,
+    "mart_hourly_demand": 0,
+    "mart_data_quality": 0,
+    "publication": 0
+  },
+  "schemas_equal": {
+    "taxi_zone_lookup": true,
+    "stg_trips_classified": true,
+    "stg_trips": true,
+    "trips_quarantine": true,
+    "fct_trips": true,
+    "mart_daily_borough": true,
+    "mart_hourly_demand": true,
+    "mart_data_quality": true,
+    "publication": true
+  },
+  "row_counts": {
+    "taxi_zone_lookup": 265,
+    "stg_trips_classified": 30000,
+    "stg_trips": 29326,
+    "trips_quarantine": 674,
+    "fct_trips": 29326,
+    "mart_daily_borough": 265,
+    "mart_hourly_demand": 168,
+    "mart_data_quality": 9,
+    "publication": 1
+  },
+  "reconciliation": {
+    "classified_equals_valid_plus_quarantine": true,
+    "daily_trips_equal_facts": true,
+    "hourly_trips_equal_facts": true
+  },
+  "success": true
+}
