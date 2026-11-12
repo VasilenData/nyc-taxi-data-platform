@@ -11,7 +11,7 @@ import duckdb
 import pytest
 
 from taxi_platform import config, revision
-from taxi_platform.change_plan import create_plan, validate_plan
+from taxi_platform.change_plan import create_plan, digest, validate_plan
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -56,6 +56,48 @@ def test_reviewed_source_and_warehouse_cannot_change(initial, tmp_path):
     with duckdb.connect(str(database)) as con:
         con.execute("update raw.trips set _loaded_at = timestamp '2000-01-01' where _source_month='2023-02'")
     with pytest.raises(ValueError, match="Warehouse changed"):
+        validate_plan(plan)
+
+
+@pytest.mark.parametrize("relation", ["raw.trips", "build.stg_trips_classified", "main.fct_trips"])
+def test_same_count_value_edits_invalidate_reviewed_plan(initial, tmp_path, relation):
+    database = working_copy(initial, tmp_path)
+    plan = create_plan(database, config.SAMPLE_DIR, [])
+    with duckdb.connect(str(database)) as con:
+        con.execute(f"update {relation} set fare_amount = fare_amount + 0.01")
+    # These changes retain the publication UUID, every row count and all load
+    # timestamps. A plan bound only to those identifiers misses real drift.
+    with pytest.raises(ValueError, match="Warehouse changed"):
+        validate_plan(plan)
+
+
+def test_schema_only_change_invalidates_reviewed_plan(initial, tmp_path):
+    database = working_copy(initial, tmp_path)
+    plan = create_plan(database, config.SAMPLE_DIR, [])
+    with duckdb.connect(str(database)) as con:
+        con.execute("alter table raw.trips add column maintenance_note varchar")
+    with pytest.raises(ValueError, match="Warehouse changed"):
+        validate_plan(plan)
+
+
+def test_physical_row_reordering_does_not_invalidate_reviewed_plan(initial, tmp_path):
+    database = working_copy(initial, tmp_path)
+    plan = create_plan(database, config.SAMPLE_DIR, [])
+    with duckdb.connect(str(database)) as con:
+        con.execute("create or replace table raw.trips as select * from raw.trips order by fare_amount desc")
+    validate_plan(plan)
+
+
+def test_old_plan_and_changed_fingerprint_runtime_require_new_review(initial, tmp_path):
+    database = working_copy(initial, tmp_path)
+    plan = create_plan(database, config.SAMPLE_DIR, [])
+    old = copy.deepcopy(plan)
+    old["schema_version"] = 1
+    with pytest.raises(ValueError, match="Unsupported change plan version"):
+        validate_plan(old)
+    plan["fingerprint_duckdb_version"] = "old-runtime"
+    plan["plan_sha256"] = digest({key: value for key, value in plan.items() if key != "plan_sha256"})
+    with pytest.raises(ValueError, match="DuckDB version changed"):
         validate_plan(plan)
 
 
