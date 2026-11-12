@@ -56,28 +56,34 @@ Each JSON file records:
 - Independently queried output counts, rejection reasons, monthly totals and three
   reconciliation comparisons, plus the asset checks reported by the runner.
 - The accompanying normalized pipeline log and its SHA-256 hash.
+- Publication version and model revision; validation, copy and commit-path timing.
+- Sampled aggregate pipeline-process RSS, peak warehouse-directory bytes, and
+  checkpointed database bytes after independent inspection.
 
 `success: true` requires a zero pipeline exit code, all three named asset checks
 passing, and input/raw/valid/quarantine/fact reconciliation. A failed or timed-out
 pipeline produces a failure record and a non-zero exit code. Preparation failures,
 such as a missing input file, stop before a pipeline measurement is created.
 
-The checked-in measurements were made in a working tree based on the recorded
-commit. The source hashes identify the code used more precisely than the base
-commit alone. Their `scripts/benchmark.py` hash matches the exact
-[archived runner source](../measurements/benchmark-runner-2026-11-08.py.txt)
-used for those measurements. The current runner adds an output-filename guard
-after review; that change does not alter the timed pipeline. All recorded
-pipeline/SQL/configuration/seed hashes still match the current files. Use the
-current `scripts/benchmark.py` for new runs; the archive is provenance evidence.
+Measurements identify the executed working tree through source hashes as well
+as its Git base commit. The November 8 files predate atomic publication and
+retain their [archived runner](../measurements/benchmark-runner-2026-11-08.py.txt).
+They do not describe the current pipeline. The November 12 measurement uses the
+new publisher, source checksums and model-revision guard; its code hashes are
+the evidence for the implementation run. Use the current runner for new results.
+The source-file hashes identify exact checkout bytes, including line endings:
+unchanged files in the Windows measurement checkout can have CRLF where Git's
+stored blob uses LF. The separate published `model_sha256` normalizes line
+endings and is portable across Windows and Linux.
 
 ## Timing boundaries and cache conditions
 
 The timer includes Python/Dagster startup, monthly loading, `dbt build` (models,
-seeds and tests), and Dagster asset checks. If the dbt manifest is missing, its
+seeds and tests), Dagster asset checks and transactional publication. If the dbt manifest is missing, its
 initial parse is also included. The timer excludes source downloads, input
-inspection/checksums, environment inventory and the final independent SQL count
-queries. Those preparation conditions are recorded separately.
+preparation inspection/checksums, environment inventory and the final independent
+SQL count queries. The loader's before/after integrity checksums ARE included in
+pipeline timing. Those boundaries are recorded separately in schema version 2.
 
 Every run starts with a new warehouse. This is **not a cold OS-cache benchmark**:
 source files are read for their checksums before timing, and the runner does not
@@ -97,13 +103,29 @@ variable is set. dbt uses four worker threads.
 
 The [CI workflow](../.github/workflows/ci.yml) runs the bundled-sample benchmark
 and uploads its JSON and log as the `sample-benchmark` artifact, retained for
-14 days. CI does not download or run the full ten-month dataset. The repository's
-dated full-data measurement is separate from that sample CI evidence.
+14 days. Normal CI does not download the full ten-month dataset. The separate
+[manual full-data workflow](../.github/workflows/full-benchmark.yml) allows a
+bounded Linux run and retains exact-head JSON/log artifacts for 30 days. The
+checked-in November 12 full-data result was run locally on Windows, not by that
+hosted workflow. The dedicated `iceberg` CI job exercises its optional local
+snapshot semantics in a separate dependency environment.
 
 ## Publication-version timing
 
-The checked-in November 8 measurements predate the `build`-to-`main` publication
-step. New benchmark runs include validation and transactional copies of all
-managed consumer tables. Do not compare their wall time as an equal-workload
-regression without accounting for that additional work. Full-data timing for the
-new publication path has not been recorded.
+The November 12 full-data measurement includes the `build`-to-`main` publication
+step. `publication_seconds` measures entry through transaction commit;
+`validation_seconds` measures the repeated publication predicates;
+`copy_seconds` includes removal of legacy views and the eight table copies.
+Remaining time includes transaction setup, metadata and commit. These are
+instrumented phases within one run, not a baseline/optimized comparison.
+
+RSS is sampled every 0.1 seconds for the pipeline process and descendants.
+Summed RSS can count shared pages more than once; short peaks between samples
+can be missed. The supervisor is excluded. Warehouse-directory sampling includes
+the database, WAL and temporary spill files. Checkpointed final bytes include raw,
+build and consumer data: they are not solely publication overhead. Neither
+measurement is a hard resource limit.
+
+Hardware, operating system, dependency versions and pipeline work differ from
+November 8. No speedup or regression claim can be inferred by comparing those
+two wall times. Both use a warm input cache and a new warehouse.

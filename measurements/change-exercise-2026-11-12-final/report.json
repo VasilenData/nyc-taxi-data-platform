@@ -1,0 +1,1211 @@
+{
+  "schema_version": 1,
+  "completed_utc": "2026-11-12T17:31:52.581455+00:00",
+  "success": true,
+  "scope": "30,000 public sample rows; synthetic corrections and faults; single-writer local DuckDB",
+  "outcomes": [
+    {
+      "name": "initial",
+      "exit_code": 0,
+      "log": "initial.log",
+      "log_sha256": "103eca44d00fb8a9ded031458c3687dc3318c2661e21db9a12a37c4c0d2279d9"
+    },
+    {
+      "name": "corrected-month-and-compatible-extra-column",
+      "plan_execution": {
+        "exit_code": 0,
+        "log": "corrected-month-and-compatible-extra-column-plan.log",
+        "log_sha256": "53c72c8e8b82998e0436d1ff43eb84ec9c311d893114f637674d3aea0eae7898"
+      },
+      "apply_execution": {
+        "exit_code": 0,
+        "log": "corrected-month-and-compatible-extra-column-apply.log",
+        "log_sha256": "30da6efa9f384913582ca1c5420b9d33fda1ed318e2decd5ccb432ce6e3b3790"
+      },
+      "plan": {
+        "schema_version": 1,
+        "created_utc": "2026-11-12T17:30:55.592415+00:00",
+        "expected_publication": {
+          "version": "4b782ee0-1589-4a52-b867-56e7703e0ccc",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "expected_raw_state": [
+          [
+            "2023-01",
+            15000,
+            "2026-11-12 17:30:45.587741",
+            "2026-11-12 17:30:45.587741"
+          ],
+          [
+            "2023-02",
+            15000,
+            "2026-11-12 17:30:45.858394",
+            "2026-11-12 17:30:45.858394"
+          ]
+        ],
+        "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5",
+        "model_files": {
+          "dbt_project.yml": "968882cb308ccde3f45ecbbf4bb5bcda33b9baf6bc763e9045d2d2626db75fed",
+          "macros/accepted_range.sql": "79ca500eee537dd2d040880e2a52dd028fba83389b9cecb1ce3b42abd25e433d",
+          "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+          "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+          "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+          "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+          "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+          "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+          "models/staging/schema.yml": "8a52d469f7427e9672da1088c5d4637ba439df31176df5f48778ca65e64c20f7",
+          "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+          "models/staging/stg_trips_classified.sql": "6507b4fd0cb947e6c140c610c3afcf47acfaa4c97544451defdf374c14a6ce6d",
+          "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+          "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+          "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+          "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+          "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+          "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+        },
+        "sources": [
+          {
+            "month": "2023-01",
+            "file": "yellow_tripdata_2023-01.parquet",
+            "sha256": "7fda3cc8363ee7cf3dd4bb1cd6cdea6f1db39ac4d7242661c04f63fc66d7e529",
+            "rows": 15000,
+            "schema": [
+              {
+                "name": "VendorID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "passenger_count",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "trip_distance",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "RatecodeID",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "PULocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "payment_type",
+                "type": "BIGINT"
+              },
+              {
+                "name": "fare_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "extra",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "mta_tax",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tip_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tolls_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "total_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "airport_fee",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "source_note",
+                "type": "VARCHAR"
+              }
+            ],
+            "reload": true
+          }
+        ],
+        "changed_transformation_files": [],
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "affected_classification_months": [
+          "2023-01"
+        ],
+        "consumer_tables_rebuilt": [
+          "taxi_zone_lookup",
+          "stg_trips_classified",
+          "stg_trips",
+          "trips_quarantine",
+          "fct_trips",
+          "mart_daily_borough",
+          "mart_hourly_demand",
+          "mart_data_quality"
+        ],
+        "publication_boundary": "all eight consumer tables and current metadata, one DuckDB transaction",
+        "scope": "single writer; source-month incremental classification, full downstream fact/mart rebuild",
+        "plan_sha256": "71ef05a80b4a640ee67346430eb1567518299ebaaab36556d3db631634cc18ae"
+      },
+      "report": {
+        "schema_version": 1,
+        "completed_utc": "2026-11-12T17:31:08.625351+00:00",
+        "plan_sha256": "71ef05a80b4a640ee67346430eb1567518299ebaaab36556d3db631634cc18ae",
+        "success": true,
+        "pipeline_success": true,
+        "error": null,
+        "duration_seconds": 12.459,
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "unaffected_classifier_months": [
+          "2023-02"
+        ],
+        "unaffected_classifier_months_unchanged": true,
+        "consumer_output_preserved": false,
+        "publication": {
+          "version": "57b7eea2-035e-462b-9dfa-3ad5840c0769",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "before": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276778814088623786134877"
+            ],
+            "stg_trips": [
+              29326,
+              "270537349808043055601583"
+            ],
+            "trips_quarantine": [
+              674,
+              "6270597333972643850718"
+            ],
+            "fct_trips": [
+              29326,
+              "269992785344826014410639"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2447134520879249049385"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1496589537432292357209"
+            ],
+            "mart_data_quality": [
+              9,
+              "78300808615831434861"
+            ],
+            "publication": [
+              1,
+              "2278963493315702025"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "138096284153378424890602"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "after": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276863778846081119074140"
+            ],
+            "stg_trips": [
+              29327,
+              "269291826862437588446437"
+            ],
+            "trips_quarantine": [
+              673,
+              "6175097391391315389433"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2399692616414404932286"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1621605305126792454833"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "14333808494255718329"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "138181248910835757829865"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "limits": "Controlled single-writer maintenance; raw working data may contain a failed candidate. No old-version retention."
+      }
+    },
+    {
+      "name": "missing-required-column",
+      "rejected_before_apply": true,
+      "exit_code": 1,
+      "log": "missing-required-column.log",
+      "log_sha256": "ec383a257dd2ffdfc208dcb6042d2846c23bf2e4c96bdc65fae818864e6dee6f"
+    },
+    {
+      "name": "invalid-candidate",
+      "plan_execution": {
+        "exit_code": 0,
+        "log": "invalid-candidate-plan.log",
+        "log_sha256": "bafa5b800ab38c707c626bb5d404cd542e46e3113f7cb43547a17cdedcaa737d"
+      },
+      "apply_execution": {
+        "exit_code": 1,
+        "log": "invalid-candidate-apply.log",
+        "log_sha256": "905dde78e8967de23f03385cb73f7239e7061ceccfccbd254dfb62b286325536"
+      },
+      "plan": {
+        "schema_version": 1,
+        "created_utc": "2026-11-12T17:31:10.262997+00:00",
+        "expected_publication": {
+          "version": "57b7eea2-035e-462b-9dfa-3ad5840c0769",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "expected_raw_state": [
+          [
+            "2023-01",
+            15000,
+            "2026-11-12 17:30:56.238712",
+            "2026-11-12 17:30:56.238712"
+          ],
+          [
+            "2023-02",
+            15000,
+            "2026-11-12 17:30:45.858394",
+            "2026-11-12 17:30:45.858394"
+          ]
+        ],
+        "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5",
+        "model_files": {
+          "dbt_project.yml": "968882cb308ccde3f45ecbbf4bb5bcda33b9baf6bc763e9045d2d2626db75fed",
+          "macros/accepted_range.sql": "79ca500eee537dd2d040880e2a52dd028fba83389b9cecb1ce3b42abd25e433d",
+          "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+          "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+          "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+          "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+          "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+          "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+          "models/staging/schema.yml": "8a52d469f7427e9672da1088c5d4637ba439df31176df5f48778ca65e64c20f7",
+          "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+          "models/staging/stg_trips_classified.sql": "6507b4fd0cb947e6c140c610c3afcf47acfaa4c97544451defdf374c14a6ce6d",
+          "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+          "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+          "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+          "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+          "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+          "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+        },
+        "sources": [
+          {
+            "month": "2023-01",
+            "file": "yellow_tripdata_2023-01.parquet",
+            "sha256": "fc312418c95b9da5232439cb6ec400120e36f0d59c610ff408b0120924b32aa1",
+            "rows": 15000,
+            "schema": [
+              {
+                "name": "VendorID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "passenger_count",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "trip_distance",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "RatecodeID",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "PULocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "payment_type",
+                "type": "BIGINT"
+              },
+              {
+                "name": "fare_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "extra",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "mta_tax",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tip_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tolls_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "total_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "airport_fee",
+                "type": "DOUBLE"
+              }
+            ],
+            "reload": true
+          }
+        ],
+        "changed_transformation_files": [],
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "affected_classification_months": [
+          "2023-01"
+        ],
+        "consumer_tables_rebuilt": [
+          "taxi_zone_lookup",
+          "stg_trips_classified",
+          "stg_trips",
+          "trips_quarantine",
+          "fct_trips",
+          "mart_daily_borough",
+          "mart_hourly_demand",
+          "mart_data_quality"
+        ],
+        "publication_boundary": "all eight consumer tables and current metadata, one DuckDB transaction",
+        "scope": "single writer; source-month incremental classification, full downstream fact/mart rebuild",
+        "plan_sha256": "83edc8c6a397472fa1e498049c97f5e85592be6266e4ba519e662a95cddffdd1"
+      },
+      "report": {
+        "schema_version": 1,
+        "completed_utc": "2026-11-12T17:31:22.609483+00:00",
+        "plan_sha256": "83edc8c6a397472fa1e498049c97f5e85592be6266e4ba519e662a95cddffdd1",
+        "success": false,
+        "pipeline_success": false,
+        "error": null,
+        "duration_seconds": 11.792,
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "unaffected_classifier_months": [
+          "2023-02"
+        ],
+        "unaffected_classifier_months_unchanged": true,
+        "consumer_output_preserved": true,
+        "publication": {
+          "version": "57b7eea2-035e-462b-9dfa-3ad5840c0769",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "before": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276863778846081119074140"
+            ],
+            "stg_trips": [
+              29327,
+              "269291826862437588446437"
+            ],
+            "trips_quarantine": [
+              673,
+              "6175097391391315389433"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2399692616414404932286"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1621605305126792454833"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "14333808494255718329"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "138181248910835757829865"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "after": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276863778846081119074140"
+            ],
+            "stg_trips": [
+              29327,
+              "269291826862437588446437"
+            ],
+            "trips_quarantine": [
+              673,
+              "6175097391391315389433"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2399692616414404932286"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1621605305126792454833"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "14333808494255718329"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "138181248910835757829865"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "limits": "Controlled single-writer maintenance; raw working data may contain a failed candidate. No old-version retention."
+      }
+    },
+    {
+      "name": "recover-with-valid-source",
+      "plan_execution": {
+        "exit_code": 0,
+        "log": "recover-with-valid-source-plan.log",
+        "log_sha256": "91b2667c990ac906ec185ed4d8fa316638016eb799c4f95d9a807d4c641c5f46"
+      },
+      "apply_execution": {
+        "exit_code": 0,
+        "log": "recover-with-valid-source-apply.log",
+        "log_sha256": "4f51973cbfd8d64406c2b5d76572b01066f7485d7eb06682dd8190c0b3d1d0a0"
+      },
+      "plan": {
+        "schema_version": 1,
+        "created_utc": "2026-11-12T17:31:23.640944+00:00",
+        "expected_publication": {
+          "version": "57b7eea2-035e-462b-9dfa-3ad5840c0769",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "expected_raw_state": [
+          [
+            "2023-01",
+            15000,
+            "2026-11-12 17:31:10.876252",
+            "2026-11-12 17:31:10.876252"
+          ],
+          [
+            "2023-02",
+            15000,
+            "2026-11-12 17:30:45.858394",
+            "2026-11-12 17:30:45.858394"
+          ]
+        ],
+        "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5",
+        "model_files": {
+          "dbt_project.yml": "968882cb308ccde3f45ecbbf4bb5bcda33b9baf6bc763e9045d2d2626db75fed",
+          "macros/accepted_range.sql": "79ca500eee537dd2d040880e2a52dd028fba83389b9cecb1ce3b42abd25e433d",
+          "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+          "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+          "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+          "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+          "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+          "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+          "models/staging/schema.yml": "8a52d469f7427e9672da1088c5d4637ba439df31176df5f48778ca65e64c20f7",
+          "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+          "models/staging/stg_trips_classified.sql": "6507b4fd0cb947e6c140c610c3afcf47acfaa4c97544451defdf374c14a6ce6d",
+          "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+          "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+          "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+          "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+          "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+          "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+        },
+        "sources": [
+          {
+            "month": "2023-01",
+            "file": "yellow_tripdata_2023-01.parquet",
+            "sha256": "7fda3cc8363ee7cf3dd4bb1cd6cdea6f1db39ac4d7242661c04f63fc66d7e529",
+            "rows": 15000,
+            "schema": [
+              {
+                "name": "VendorID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "passenger_count",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "trip_distance",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "RatecodeID",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "PULocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "payment_type",
+                "type": "BIGINT"
+              },
+              {
+                "name": "fare_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "extra",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "mta_tax",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tip_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tolls_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "total_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "airport_fee",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "source_note",
+                "type": "VARCHAR"
+              }
+            ],
+            "reload": true
+          }
+        ],
+        "changed_transformation_files": [],
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "affected_classification_months": [
+          "2023-01"
+        ],
+        "consumer_tables_rebuilt": [
+          "taxi_zone_lookup",
+          "stg_trips_classified",
+          "stg_trips",
+          "trips_quarantine",
+          "fct_trips",
+          "mart_daily_borough",
+          "mart_hourly_demand",
+          "mart_data_quality"
+        ],
+        "publication_boundary": "all eight consumer tables and current metadata, one DuckDB transaction",
+        "scope": "single writer; source-month incremental classification, full downstream fact/mart rebuild",
+        "plan_sha256": "fe4670c49c3610c0416990aefd374736620b80023e968d740e294b7e32920937"
+      },
+      "report": {
+        "schema_version": 1,
+        "completed_utc": "2026-11-12T17:31:36.405278+00:00",
+        "plan_sha256": "fe4670c49c3610c0416990aefd374736620b80023e968d740e294b7e32920937",
+        "success": true,
+        "pipeline_success": true,
+        "error": null,
+        "duration_seconds": 12.205,
+        "reload_months": [
+          "2023-01"
+        ],
+        "full_reclassification": false,
+        "unaffected_classifier_months": [
+          "2023-02"
+        ],
+        "unaffected_classifier_months_unchanged": true,
+        "consumer_output_preserved": false,
+        "publication": {
+          "version": "f7f04937-8e10-4579-80ab-909b0127439f",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "before": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276863778846081119074140"
+            ],
+            "stg_trips": [
+              29327,
+              "269291826862437588446437"
+            ],
+            "trips_quarantine": [
+              673,
+              "6175097391391315389433"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2399692616414404932286"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1621605305126792454833"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "14333808494255718329"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "138181248910835757829865"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "after": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276635596510024086170603"
+            ],
+            "stg_trips": [
+              29327,
+              "271333828325849191507334"
+            ],
+            "trips_quarantine": [
+              673,
+              "6268218043290572404982"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2461602746179709652804"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1568897735827166069434"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "12417389533132766571"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "137953066574778724926328"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "limits": "Controlled single-writer maintenance; raw working data may contain a failed candidate. No old-version retention."
+      }
+    },
+    {
+      "name": "business-rule-change",
+      "plan_execution": {
+        "exit_code": 0,
+        "log": "business-rule-change-plan.log",
+        "log_sha256": "afda2a5b8a373b968f61b9822eeabc688846a4e48b4d162b58206f0b169df894"
+      },
+      "apply_execution": {
+        "exit_code": 0,
+        "log": "business-rule-change-apply.log",
+        "log_sha256": "62fa88c07fcc8359665262a089a9d99b3d0cba395b3f204577a6bb5f02db708a"
+      },
+      "plan": {
+        "schema_version": 1,
+        "created_utc": "2026-11-12T17:31:37.454645+00:00",
+        "expected_publication": {
+          "version": "f7f04937-8e10-4579-80ab-909b0127439f",
+          "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5"
+        },
+        "expected_raw_state": [
+          [
+            "2023-01",
+            15000,
+            "2026-11-12 17:31:24.260358",
+            "2026-11-12 17:31:24.260358"
+          ],
+          [
+            "2023-02",
+            15000,
+            "2026-11-12 17:30:45.858394",
+            "2026-11-12 17:30:45.858394"
+          ]
+        ],
+        "model_sha256": "62a25b3775c78670422cd686f100c4dd411bf6c51c66ad30d8c5fa48e2a8f657",
+        "model_files": {
+          "dbt_project.yml": "382b6faaaa3cd4bc9891d9062656411bd3deb0770e9e38a8c3a616c25051ddcb",
+          "macros/accepted_range.sql": "79ca500eee537dd2d040880e2a52dd028fba83389b9cecb1ce3b42abd25e433d",
+          "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+          "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+          "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+          "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+          "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+          "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+          "models/staging/schema.yml": "8a52d469f7427e9672da1088c5d4637ba439df31176df5f48778ca65e64c20f7",
+          "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+          "models/staging/stg_trips_classified.sql": "6507b4fd0cb947e6c140c610c3afcf47acfaa4c97544451defdf374c14a6ce6d",
+          "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+          "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+          "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+          "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+          "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+          "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+        },
+        "sources": [
+          {
+            "month": "2023-01",
+            "file": "yellow_tripdata_2023-01.parquet",
+            "sha256": "7fda3cc8363ee7cf3dd4bb1cd6cdea6f1db39ac4d7242661c04f63fc66d7e529",
+            "rows": 15000,
+            "schema": [
+              {
+                "name": "VendorID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "tpep_pickup_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "tpep_dropoff_datetime",
+                "type": "TIMESTAMP"
+              },
+              {
+                "name": "passenger_count",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "trip_distance",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "RatecodeID",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "store_and_fwd_flag",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "PULocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "DOLocationID",
+                "type": "BIGINT"
+              },
+              {
+                "name": "payment_type",
+                "type": "BIGINT"
+              },
+              {
+                "name": "fare_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "extra",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "mta_tax",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tip_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "tolls_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "improvement_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "total_amount",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "congestion_surcharge",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "airport_fee",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "source_note",
+                "type": "VARCHAR"
+              }
+            ],
+            "reload": false
+          }
+        ],
+        "changed_transformation_files": [
+          "dbt_project.yml"
+        ],
+        "reload_months": [],
+        "full_reclassification": true,
+        "affected_classification_months": [
+          "2023-01",
+          "2023-02"
+        ],
+        "consumer_tables_rebuilt": [
+          "taxi_zone_lookup",
+          "stg_trips_classified",
+          "stg_trips",
+          "trips_quarantine",
+          "fct_trips",
+          "mart_daily_borough",
+          "mart_hourly_demand",
+          "mart_data_quality"
+        ],
+        "publication_boundary": "all eight consumer tables and current metadata, one DuckDB transaction",
+        "scope": "single writer; source-month incremental classification, full downstream fact/mart rebuild",
+        "plan_sha256": "bac3d9396d73f10e72a43270a742d68e2ca971854808de4901406d2d5633e7c8"
+      },
+      "report": {
+        "schema_version": 1,
+        "completed_utc": "2026-11-12T17:31:51.969564+00:00",
+        "plan_sha256": "bac3d9396d73f10e72a43270a742d68e2ca971854808de4901406d2d5633e7c8",
+        "success": true,
+        "pipeline_success": true,
+        "error": null,
+        "duration_seconds": 13.869,
+        "reload_months": [],
+        "full_reclassification": true,
+        "unaffected_classifier_months": [],
+        "unaffected_classifier_months_unchanged": true,
+        "consumer_output_preserved": false,
+        "publication": {
+          "version": "45ba4b33-1105-4486-8dce-1cdc7db248f2",
+          "model_sha256": "62a25b3775c78670422cd686f100c4dd411bf6c51c66ad30d8c5fa48e2a8f657"
+        },
+        "before": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276635596510024086170603"
+            ],
+            "stg_trips": [
+              29327,
+              "271333828325849191507334"
+            ],
+            "trips_quarantine": [
+              673,
+              "6268218043290572404982"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2461602746179709652804"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1568897735827166069434"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "12417389533132766571"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "137953066574778724926328"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "after": {
+          "relations": {
+            "taxi_zone_lookup": [
+              265,
+              "2415402956036269489776"
+            ],
+            "stg_trips_classified": [
+              30000,
+              "276635596510024086170603"
+            ],
+            "stg_trips": [
+              29327,
+              "271333828325849191507334"
+            ],
+            "trips_quarantine": [
+              673,
+              "6268218043290572404982"
+            ],
+            "fct_trips": [
+              29327,
+              "268685914646685386972151"
+            ],
+            "mart_daily_borough": [
+              265,
+              "2499841053553877576903"
+            ],
+            "mart_hourly_demand": [
+              168,
+              "1564822854556117551169"
+            ],
+            "mart_data_quality": [
+              9,
+              "69513637950734180101"
+            ],
+            "publication": [
+              1,
+              "12569794138398291511"
+            ]
+          },
+          "classified_months": {
+            "2023-01": [
+              15000,
+              "137953066574778724926328"
+            ],
+            "2023-02": [
+              15000,
+              "138682529935245361244275"
+            ]
+          }
+        },
+        "limits": "Controlled single-writer maintenance; raw working data may contain a failed candidate. No old-version retention."
+      },
+      "new_rule_validated": {
+        "maximum_published_distance_miles": 100,
+        "violations": 0
+      }
+    }
+  ],
+  "source_sha256": {
+    "dbt/dbt_project.yml": "2e6facb4d4a8a16591b34d7005db8ccf2beaa938bb58d0c9af534728bc1833ab",
+    "dbt/macros/accepted_range.sql": "4006abb5b309392296aca3aedc7bfe47a9882b38694ba858f029431f6c000e86",
+    "dbt/models/marts/fct_trips.sql": "9879e872782f8b9697f51b67c2d0850fda1d4b80f98fc7aa79fd8c1b35700f24",
+    "dbt/models/marts/mart_daily_borough.sql": "07c95f82cd9b54f0540f77036f9fa10b6e8f81a725f03e4a8fd7139062af6a96",
+    "dbt/models/marts/mart_data_quality.sql": "9a631eaba187d3ed2f329046c209e8fd6e12278f4e20343c4ea15efcc23004b1",
+    "dbt/models/marts/mart_hourly_demand.sql": "e8f225188e0d35e6232787e4bbedadad0500f3fb6ddb967d38a392a7ba4658e5",
+    "dbt/models/marts/schema.yml": "32b2dcfd3d7aadf2dc81f02a7d5566281c490dbb634aa8f4c062a62af8eda281",
+    "dbt/models/sources.yml": "a664db7286be42df986d57b2e6586aa9605279df35d5afc8823347460e21434b",
+    "dbt/models/staging/schema.yml": "19fa4f7d0a39797b8d590252bc5c2965fc35b42d7165bc04b7dee4fd13e4bd6a",
+    "dbt/models/staging/stg_trips.sql": "e97e01bbeaa8973bf133b4f5f029fe98cbae7fafdbe5a1ae44096a2803a221f6",
+    "dbt/models/staging/stg_trips_classified.sql": "1847ac00978b46e0f36d86d85e9978a4f7f6e9ba0c143b88d96d4a77a7d72737",
+    "dbt/models/staging/trips_quarantine.sql": "ededd89207f056d43e0f46e451f6f0faf6c73e28e7c7f7447cddd11d987b6718",
+    "dbt/models/staging/unit_tests.yml": "16f7c85d48ba347a1b2196edc55e910f92b83686166162c0790eefeed1737bbf",
+    "dbt/profiles.yml": "91e633c496ddc7afb4f959cbe43a805852d0caeb7e6c0d9a59ff3f8ab770219a",
+    "dbt/seeds/taxi_zone_lookup.csv": "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed",
+    "dbt/tests/assert_fact_matches_valid.sql": "1b4fd0778b264e9f2890a11e19a6c193bc9f58d00fce5def02d9a5595394e7e4",
+    "dbt/tests/assert_raw_equals_valid_plus_rejected.sql": "fd90d1ad1c43f831976b1a870d65a253a34027df8a531371b6964fc513177040",
+    "dbt/tests/assert_trip_id_unique_per_month.sql": "ea1e5abcbb8b9f7c0c71f2d9d0fce3895f78d5c2f6b95294a8a94feaac8b43f2",
+    "scripts/benchmark.py": "a19e5e8d77b8e283d551b6b87fb457f5d09ae8b77fa110a9cc255438681dc4b6",
+    "scripts/change_exercise.py": "db64f0924e9e04e477747b58e92f2be11cd93a4e6f50050a29cd932a708d7a1b",
+    "scripts/iceberg_comparison.py": "24fa86c4cafabbf5e933e7f3af2f75f3ca3990ceee618a9b761a6740d104ebad",
+    "taxi_platform/__init__.py": "dbe359cbbecdefa65f4dfb249fe9195a45cd82f6b6fa15cc33675b9ad3546da9",
+    "taxi_platform/assets.py": "eaaac397efbcdb2219ce768c8a02d6969fdcc942caf5fc28de142b57f487ea34",
+    "taxi_platform/change_plan.py": "3981db1981bb0789e9c1904b93ee154addca0f616d48e84444a6fabcfda5a571",
+    "taxi_platform/checks.py": "4cf1eadf04acba028f139e17ca11662983dab6410306dc3f77abdcb953d05d24",
+    "taxi_platform/config.py": "f208819d40b7ebac58c223d0ec6b73f935aa2f31ae1ac31a040e74121b7aacd7",
+    "taxi_platform/definitions.py": "2fef7c01436e20481db8863bac7705df14eb5684c4288a0bf78a8ebf643bad6a",
+    "taxi_platform/ingest.py": "fff022cfb3b8fb3074878d29b87be56faead5cc12bcc95c5c350de269ca75fd8",
+    "taxi_platform/publication.py": "405ad6a11e54ed1caa4195664d1ecdb91f823e24929b856fee2fa2940b9b7283",
+    "taxi_platform/quality.py": "2913d91e393e6df5f78cd17139bf22730e7b754664d07acd542d43215e9bf722",
+    "taxi_platform/revision.py": "bca0edabc4aeecd71a9d95488fb4c6e16f83ffcc83976421cfc090a3dd1a4687"
+  }
+}

@@ -21,15 +21,72 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import urllib.request
 
 import duckdb
+import psutil
 
 ROOT = Path(__file__).resolve().parents[1]
 MONTH_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
 TLC_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+class ResourceSampler:
+    """Sample summed RSS and working-directory bytes, not an OS high-water mark.
+
+    Shared pages can be counted in more than one process; short-lived peaks between
+    observations can be missed. The benchmark supervisor itself is excluded.
+    """
+    def __init__(self, pid: int, work: Path, interval: float = 0.1):
+        self.pid, self.work, self.interval = pid, work, interval
+        self.stop = threading.Event()
+        self.peak_rss = self.peak_disk = self.samples = 0
+        self.thread = threading.Thread(target=self._run, daemon=True)
+
+    def sample(self):
+        processes = []
+        try:
+            parent = psutil.Process(self.pid)
+            processes = [parent, *parent.children(recursive=True)]
+        except psutil.Error:
+            pass
+        rss = 0
+        for process in processes:
+            try:
+                rss += process.memory_info().rss
+            except psutil.Error:
+                pass
+        disk = 0
+        for path in self.work.rglob("*"):
+            try:
+                if path.is_file():
+                    disk += path.stat().st_size
+            except OSError:
+                pass  # DuckDB may remove a temporary spill file during sampling.
+        self.peak_rss = max(self.peak_rss, rss)
+        self.peak_disk = max(self.peak_disk, disk)
+        self.samples += 1
+
+    def _run(self):
+        while not self.stop.is_set():
+            self.sample()
+            self.stop.wait(self.interval)
+
+    def start(self):
+        self.thread.start()
+
+    def finish(self):
+        self.stop.set()
+        self.thread.join()
+        self.sample()
+        return {"sample_interval_seconds": self.interval, "samples": self.samples,
+                "peak_summed_process_rss_bytes": self.peak_rss,
+                "peak_working_directory_bytes": self.peak_disk,
+                "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+                "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"}
 
 
 def sha256(path: Path) -> str:
@@ -57,7 +114,7 @@ def environment() -> dict:
         "cpu_model": cpu_model,
         "logical_cpus": os.cpu_count(),
         "cpu_affinity_count": len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
-        "host_memory_bytes": memory_kib * 1024 if memory_kib else None,
+        "host_memory_bytes": memory_kib * 1024 if memory_kib else psutil.virtual_memory().total,
         "cgroup_memory_max": read_text("/sys/fs/cgroup/memory.max"),
         "cgroup_cpu_max": read_text("/sys/fs/cgroup/cpu.max"),
         "packages": dict(sorted((dist.metadata["Name"], dist.version)
@@ -123,12 +180,15 @@ def inspect_warehouse(database: Path, expected_rows: int) -> dict:
             "select source_month, sum(rejected_rows), max(raw_rows) "
             "from main.mart_data_quality group by 1 order by 1"
         ).fetchall()
+        publication = con.execute("select version, model_sha256 from main.publication").fetchone()
     return {
         "rows": counts,
         "rejection_reasons": reasons,
         "rejected_share": counts["quarantined"] / counts["raw"] if counts["raw"] else None,
         "months": [{"month": month, "rejected_rows": rejected, "raw_rows": raw}
                    for month, rejected, raw in by_month],
+        "publication": {"version": publication[0], "model_sha256": publication[1]},
+        "checkpointed_database_bytes": database.stat().st_size,
         "reconciliation": {
             "raw_equals_input_rows": counts["raw"] == expected_rows,
             "raw_equals_valid_plus_quarantined": counts["raw"] == counts["valid"] + counts["quarantined"],
@@ -172,14 +232,15 @@ def main() -> int:
         inputs = list(pool.map(lambda month: prepare_input(month, data_dir, args.download), args.months))
     preparation_seconds = time.perf_counter() - prep_start
     record = {
-        "schema_version": 1, "prepared_at_utc": prepared_at,
+        "schema_version": 2, "prepared_at_utc": prepared_at,
         "dataset": args.dataset, "months": args.months, "inputs": inputs,
         "input_rows": sum(source["rows"] for source in inputs),
         "environment": environment(), "source": source_revision(),
         "conditions": {
             "warehouse": "new empty database for this run",
             "source_downloads_in_timing": False,
-            "source_checksums_in_timing": False,
+            "preparation_checksums_in_timing": False,
+            "ingestion_integrity_checksums_in_timing": True,
             "os_page_cache": "not cleared; inputs read for SHA-256 before timing",
             "dbt_manifest_present_at_start": (ROOT / "dbt" / "target" / "manifest.json").exists(),
             "duckdb_memory_limit": args.memory_limit,
@@ -206,6 +267,8 @@ def main() -> int:
             process = subprocess.Popen([sys.executable, "run_pipeline.py", *args.months], cwd=ROOT,
                                        env=env, stdout=log, stderr=subprocess.STDOUT,
                                        start_new_session=os.name == "posix")
+            sampler = ResourceSampler(process.pid, work)
+            sampler.start()
             try:
                 process.wait(timeout=args.timeout)
             except subprocess.TimeoutExpired:
@@ -222,6 +285,8 @@ def main() -> int:
                     else:
                         process.kill()
                     process.wait()
+            finally:
+                record["resources"] = sampler.finish()
         record.update({"finished_at_utc": datetime.now(timezone.utc).isoformat(),
                        "wall_seconds": round(time.perf_counter() - started, 3),
                        "exit_code": process.returncode, "timed_out": timed_out})
@@ -230,6 +295,8 @@ def main() -> int:
         log_path.write_text(log_text)
         record["log_sha256"] = sha256(log_path)
         record["asset_checks"] = dict(re.findall(r"^check\s+(\S+)\s+(PASS|FAIL)$", log_text, re.MULTILINE))
+        publications = re.findall(r"^publication (.+)$", log_text, re.MULTILINE)
+        record["publication"] = json.loads(publications[-1]) if publications else None
         try:
             record["warehouse"] = inspect_warehouse(database, record["input_rows"])
         except duckdb.Error as exc:

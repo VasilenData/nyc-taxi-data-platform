@@ -8,6 +8,7 @@ from dagster_dbt import DagsterDbtTranslator, DbtCliResource, DbtProject, dbt_as
 
 from . import config, ingest
 from .publication import TABLES, publish
+from .revision import model_signature, requires_full_refresh
 
 MONTHS = dg.MonthlyPartitionsDefinition(start_date="2023-01", end_offset=0, fmt="%Y-%m")
 
@@ -41,7 +42,14 @@ def raw_trips(context: dg.AssetExecutionContext) -> dg.MaterializeResult:
 @dbt_assets(manifest=dbt_project.manifest_path, dagster_dbt_translator=Translator())
 def taxi_dbt_assets(context: dg.AssetExecutionContext, dbt: DbtCliResource):
     # `build` = run + test + seed in dependency order; a failing test stops downstream models.
-    yield from dbt.cli(["build"], context=context).stream()
+    signature = model_signature()
+    with ingest.connect() as con:
+        full_refresh = requires_full_refresh(con)
+    arguments = ["build", "--full-refresh"] if full_refresh else ["build"]
+    context.log.info(f"Transformation signature {signature}; full_refresh={full_refresh}")
+    yield from dbt.cli(arguments, context=context).stream()
+    if model_signature() != signature:
+        raise ValueError("Transformation files changed during build; publication refused")
 
 
 @dg.asset(deps=[dg.AssetKey(name) for name in TABLES], group_name="publication",

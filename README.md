@@ -2,32 +2,29 @@
 
 [![CI](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml)
 
-A reproducible batch pipeline that turns public NYC taxi records into tested analytics tables and retains rejected records with an auditable reason.
+A reproducible batch pipeline that turns inconsistent public NYC taxi records into reconciled analytics tables. I implemented monthly source validation, an incremental dbt classifier, and an eight-table publication transaction so a failed candidate cannot replace the last good consumer dataset.
 
 **Stack:** Python, SQL, Dagster, dbt, DuckDB, Docker, GitHub Actions.
 
 **Operating status:** Runs locally, in Docker and in CI. Cloud deployment and a continuously operated production service are outside the current scope.
 
-## New: observed pickup forecasting and planning replay
+**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md)
 
-[Forecasting evidence and contract](docs/FORECASTING.md) · [Measured report](docs/forecast/index.html) · [Per-prediction CSV](docs/forecast/predictions.csv)
-
-A separate module aggregates **19.49 million records from six complete TLC files** into 263 zone/day series. A fixed Poisson boosting model competes with a weekly seasonal baseline, with March selection, April interval calibration and a **May–June holdout of 16,043 zone-days**. Observed MAE was **40.23 versus 45.35 pickups per zone-day (11.3% lower)**; learned interval coverage was **88.2% against a 90% target**. The report retains monthly/zone errors, source and artifact checksums, and an explicitly hypothetical capacity-allocation scenario.
-
-This is next-day **historical replay**, assuming prior-day counts are available; monthly public TLC publication cannot feed it live. It forecasts recorded pickups, not unmet demand. Run `python -m taxi_forecast --panel data/forecast/daily_pickups_2023_h1.csv --output /tmp/forecast` after installing `requirements-forecast.txt`. Existing pipeline measurements below remain separate from this new modeling run.
+**Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py)
 
 ## Results at a glance
 
-Historical measurements from **November 8, 2026**, before staged publication was added, using a new warehouse for each run:
+Measured **12 November 2026**, including staged validation and publication of all eight consumer tables, in a new warehouse:
 
 | Dataset | Input rows | Valid fact rows | Quarantined rows | Pipeline wall time | Evidence |
 |---|---:|---:|---:|---:|---|
-| Full January–October 2023 TLC files | 31,593,944 | 30,694,510 | 899,434 (2.85%) | 78.576 s | [JSON](measurements/full-2026-11-08.json) · [run log](measurements/full-2026-11-08.log) |
-| Bundled January/February sample | 30,000 | 29,326 | 674 (2.25%) | 20.735 s | [JSON](measurements/sample-2026-11-08.json) · [run log](measurements/sample-2026-11-08.log) |
+| Full January–October 2023 TLC files | 31,593,944 | 30,694,510 | 899,434 (2.85%) | 140.638 s | [JSON](measurements/full-2026-11-12-final.json) · [run log](measurements/full-2026-11-12-final.log) |
 
-These timings do not include the new transactional publication copies; that full-data implementation has not been remeasured. Both recorded runs passed the dbt tests, the three platform asset checks, and independent input/raw/valid/quarantine/fact reconciliation. These are public-data project results, not employer production or customer-usage metrics.
+The publication phase took **33.074 s**, including **31.976 s** copying the eight tables and **0.196 s** revalidating publication predicates. Sampled aggregate pipeline RSS peaked at **4.58 GiB**; the final checkpointed warehouse was **8.55 GiB** (raw, build and consumer tables together). The run passed dbt tests, all three platform asset checks and independent input/raw/valid/quarantine/fact reconciliation. These are historical public-data project results, not employer production or customer-usage metrics.
 
-The full-data measurement used an AMD EPYC host with an **8-CPU container quota**, **8 GiB container memory limit**, a **4 GB DuckDB limit for ingestion and dbt**, and four dbt threads. That DuckDB setting is not a total process-memory cap; asset-check connections keep their default setting. Input downloads and checksums are excluded from pipeline timing; the OS file cache was not cleared. The sample included the initial dbt parse, while the full run reused the manifest. Complete versions, input checksums and timing conditions are in the JSON files. See [how to reproduce and interpret the benchmarks](docs/BENCHMARKS.md).
+This was a local Windows run, with a **4 GB DuckDB budget separately for ingestion and dbt**, four dbt threads, an existing manifest and a warm input cache. The budget is not a total RSS cap; sampling can miss short peaks or double-count shared pages. Source preparation and downloads are outside the timer; ingestion's integrity checksums are inside it. The [November 8 measurement](measurements/full-2026-11-08.json) used different code and a Linux environment, so the two timings do not establish a speedup or regression. See [measurement boundaries and reproduction](docs/BENCHMARKS.md).
+
+The [six-scenario maintenance exercise](docs/CHANGE_MANAGEMENT.md) additionally demonstrates a January-only correction without changing February's classifier output, rejected schema and quality failures, preserved consumer tables, recovery, and an actual rule change reclassifying both months without reloading their sources. An optional [Iceberg comparison](docs/ICEBERG.md) executes snapshot time travel, rollback and aborted publication on a clearly labelled five-row fixture; its single-table scope is separate from the main eight-table transaction.
 
 ## The problem
 
@@ -53,7 +50,7 @@ flowchart TD
 ```
 
 - **Ingestion:** reloads a month transactionally without accumulating a second copy; empty or failed replacements roll back to the previous data. Requires the top-level fields used by trip identity, classification and published metrics before replacing a month; historical optional fee fields remain nullable. Records source month, filename and timestamp, plus an append-only `audit.source_loads` entry with the source SHA-256, byte size, logical schema and absent optional fields in the same transaction. Failed schema checks, changed source bytes or failed audit writes preserve the previous rows and successful load history. Hashing before and after ingestion detects ordinary file changes; use immutable input files and a single loader. Older loads are not retroactively fingerprinted.
-- **Transformation:** an incremental dbt classifier compares load versions per month, including corrected versions with older timestamps. The fact table has an enforced column/type contract and joins the zone lookup seed.
+- **Transformation:** an incremental dbt classifier compares load versions per month, including corrected versions with older timestamps. A changed model revision forces full reclassification of loaded history, preventing old rules from persisting behind unchanged source timestamps. The fact table has an enforced column/type contract and joins the zone lookup seed.
 - **Consumption:** marts summarize daily borough activity, hourly demand and data quality.
 - **Quality:** reconciliation includes output-only months as well as raw months, so stale valid or quarantined data cannot hide behind a raw-side join. Reconciliation, rejection-rate and coverage checks validate the candidate `build` schema. A downstream publication asset repeats those gates within its snapshot, checks fact/mart totals, then copies the eight managed tables and publication metadata to `main` in one DuckDB transaction. CLI, UI and scheduled transform jobs use this same path.
 
@@ -98,6 +95,8 @@ For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-jan
 | Can the results be reproduced? | [Benchmark runner](scripts/benchmark.py), [measurement guide](docs/BENCHMARKS.md), [CI workflow](.github/workflows/ci.yml) and [Dockerfile](Dockerfile) |
 | Can a failed candidate replace consumer tables? | [Transactional publisher](taxi_platform/publication.py), [rollback/process-exit tests](tests/test_publication.py) and poisoned-month integration test |
 | Can another engineer operate it? | [Runbook: failed checks, backfills and corrected files](docs/RUNBOOK.md) |
+| Can a SQL rule change leave stale history? | [Model revision guard](taxi_platform/revision.py), [plan/apply tests](tests/test_change_plan.py) and [executed change exercise](docs/CHANGE_MANAGEMENT.md) |
+| What does table-format rollback actually cover? | [Optional Iceberg comparison and measured limits](docs/ICEBERG.md) |
 
 The failure-injection test corrupts roughly 40% of a sample month's fares and requires a non-zero pipeline exit:
 
@@ -116,7 +115,15 @@ pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
 
 ## Next improvement
 
-Measure the staged publication overhead on full data. Required source fields are already validated before a month is replaced, while optional historical fee fields remain nullable; schema diagnostics and source fingerprints are recorded in the load audit.
+A bounded cloud deployment with least-privilege access, measured costs and dated operating evidence. The measured local publisher and synthetic recovery exercises do not establish that operating history.
+
+## Extension: observed pickup forecasting and planning replay
+
+[Forecasting evidence and contract](docs/FORECASTING.md) · [Measured report](docs/forecast/index.html) · [Per-prediction CSV](docs/forecast/predictions.csv)
+
+A separate module aggregates **19.49 million records from six complete TLC files** into 263 zone/day series. A fixed Poisson boosting model competes with a weekly seasonal baseline, with March selection, April interval calibration and a **May–June holdout of 16,043 zone-days**. Observed MAE was **40.23 versus 45.35 pickups per zone-day (11.3% lower)**; learned interval coverage was **88.2% against a 90% target**. The report retains monthly/zone errors, source and artifact checksums, and an explicitly hypothetical capacity-allocation scenario.
+
+This is next-day **historical replay**, assuming prior-day counts are available; monthly public TLC publication cannot feed it live. It forecasts recorded pickups, not unmet demand. Run `python -m taxi_forecast --panel data/forecast/daily_pickups_2023_h1.csv --output /tmp/forecast` after installing `requirements-forecast.txt`. Pipeline measurements above are separate from this modeling run.
 
 ## Author
 

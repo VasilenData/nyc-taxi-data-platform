@@ -18,7 +18,8 @@ diagnosis; they are not consumer tables.
 
 Inspect the current version with `select * from main.publication` and successful
 publication history with `select * from audit.publications order by published_at`.
-The history records source filenames/load timestamps and row counts, not retained
+The history records source filenames/load timestamps, row counts, model revision
+and individual transformation-file hashes, not retained
 old table snapshots. Retry `transform_and_check` after correcting the candidate;
 use the full job, not a manually selected publication asset, so dbt tests also run.
 Direct `dbt build` updates only `build` and never publishes.
@@ -46,6 +47,13 @@ power failure or a corrupt storage device.
 
 Dagster UI, asset `raw_trips`, select the month, Materialize. Then run job `transform_and_check`. CLI: `python run_pipeline.py 2023-05`.
 
+For reviewed corrections to an existing publication, use the
+[plan/apply workflow](CHANGE_MANAGEMENT.md). It binds the approved source bytes,
+model revision and current warehouse state; stale plans fail before replacement.
+The report records affected months, before/after consumer checksums and recovery
+outcomes. Its executed six-scenario exercise includes a source correction,
+breaking schema, rejected candidate, successful recovery and model-rule change.
+
 ## Late or corrected file from the TLC
 
 Replace the parquet in `TAXI_DATA_DIR` and load the month again. The loader deletes
@@ -59,6 +67,14 @@ version rather than a global timestamp. This also reprocesses a corrected month
 whose timestamp is older after a clock correction or warehouse restore. Use the
 loader to make corrections; manually changing raw values without changing their
 load timestamp is outside this versioning contract.
+
+Changes to SQL, project variables, macros, tests or seed content now trigger an
+automatic full dbt refresh, including unchanged source months. Each publication
+records its model hash. This prevents the incremental classifier from retaining
+an old rule merely because raw load timestamps did not change. A model-only plan
+can omit `--months`; all loaded months are reclassified conservatively. Revert a
+bad accepted rule in source and rebuild to publish the corrected result; audit
+history is not an old-data snapshot store.
 
 ## Look at rejected rows
 

@@ -61,3 +61,9 @@ def test_sample_benchmark_records_verifiable_pipeline_result(tmp_path):
     assert record["environment"]["packages"]["duckdb"]
     assert len(record["source"]["source_sha256"]["run_pipeline.py"]) == 64
     assert all(len(source["sha256"]) == 64 for source in record["inputs"])
+    assert record["publication"]["tables"] == 8
+    assert 0 <= record["publication"]["copy_seconds"] <= record["publication"]["publication_seconds"]
+    assert record["resources"]["peak_summed_process_rss_bytes"] > 0
+    assert record["resources"]["samples"] > 1
+    assert record["resources"]["peak_working_directory_bytes"] >= record["warehouse"]["checkpointed_database_bytes"]
+    assert len(record["warehouse"]["publication"]["model_sha256"]) == 64

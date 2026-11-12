@@ -1,0 +1,140 @@
+{
+  "scope": "Five synthetic rows, local SQLite catalog and Parquet, single-table fixture comparison; no cloud or full TLC run",
+  "measured_at": "2026-11-12T17:30:56.788461+00:00",
+  "implementation_sha256": "24fa86c4cafabbf5e933e7f3af2f75f3ca3990ceee618a9b761a6740d104ebad",
+  "repository_head_at_run": "819fffd5c3a0a17beac648133af738b31c708223",
+  "runtime": {
+    "python": "3.12.14",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "cpu_count": 20,
+    "pyiceberg": "0.12.0",
+    "pyarrow": "26.0.1",
+    "duckdb": "2.0.0"
+  },
+  "input_sha256": "15865a6088e8f98be976a38260388df93514976d8b46d31d974f915de9934da1",
+  "final_rows": [
+    {
+      "trip_id": 1,
+      "fare_cents": 1200,
+      "source_month": "2023-01"
+    },
+    {
+      "trip_id": 2,
+      "fare_cents": 2000,
+      "source_month": "2023-01"
+    },
+    {
+      "trip_id": 3,
+      "fare_cents": 3000,
+      "source_month": "2023-02"
+    },
+    {
+      "trip_id": 4,
+      "fare_cents": 4000,
+      "source_month": "2023-02"
+    },
+    {
+      "trip_id": 5,
+      "fare_cents": 5000,
+      "source_month": "2023-03"
+    }
+  ],
+  "final_row_count": 5,
+  "final_fare_cents": 15200,
+  "checks": {
+    "unaffected_february_files_reused": true,
+    "schema_add_preserves_field_ids_and_old_rows": true,
+    "aborted_write_preserves_catalog_snapshot_and_rows": true,
+    "aborted_candidate_file_observed": true,
+    "time_travel_reads_prior_rows": true,
+    "rollback_restores_previous_data_snapshot": true,
+    "restore_corrected_snapshot": true,
+    "duckdb_current_rows_and_abort_match_oracle": true
+  },
+  "passed": true,
+  "operation_timings": [
+    {
+      "engine": "iceberg",
+      "operation": "initial_append",
+      "seconds": 0.052322
+    },
+    {
+      "engine": "iceberg",
+      "operation": "append_second_batch",
+      "seconds": 0.018966
+    },
+    {
+      "engine": "iceberg",
+      "operation": "correct_january_only",
+      "seconds": 0.033937
+    },
+    {
+      "engine": "iceberg",
+      "operation": "add_nullable_column",
+      "seconds": 0.015323
+    },
+    {
+      "engine": "iceberg",
+      "operation": "abort_candidate_before_commit",
+      "seconds": 0.009255
+    },
+    {
+      "engine": "iceberg",
+      "operation": "rollback_to_append_snapshot",
+      "seconds": 0.006081
+    },
+    {
+      "engine": "iceberg",
+      "operation": "restore_corrected_snapshot",
+      "seconds": 0.005612
+    },
+    {
+      "engine": "duckdb",
+      "operation": "initial_insert",
+      "seconds": 0.004337
+    },
+    {
+      "engine": "duckdb",
+      "operation": "append_second_batch",
+      "seconds": 0.002409
+    },
+    {
+      "engine": "duckdb",
+      "operation": "correct_january_only",
+      "seconds": 0.002954
+    },
+    {
+      "engine": "duckdb",
+      "operation": "add_nullable_column",
+      "seconds": 0.000795
+    },
+    {
+      "engine": "duckdb",
+      "operation": "abort_candidate_before_commit",
+      "seconds": 0.000896
+    }
+  ],
+  "snapshots": {
+    "initial": 6716528972684389225,
+    "appended": 1290533821345379898,
+    "corrected": 687944182777640268,
+    "retained_count": 4
+  },
+  "physical_bytes": {
+    "iceberg_current_referenced_data": 5524,
+    "iceberg_all_data_files_including_history_and_aborted": 8607,
+    "iceberg_metadata_files": 66705,
+    "iceberg_sqlite_catalog": 20480,
+    "iceberg_aborted_candidate_data": 1690,
+    "duckdb_current_table_database": 798720,
+    "standalone_current_parquet": 1399
+  },
+  "limits": [
+    "One observation per operation; no repeated/warm-cache benchmark or throughput claim",
+    "Iceberg bytes retain history and aborted files; DuckDB/standalone Parquet figures retain only current state",
+    "Aborted Iceberg writes can leave unreferenced files; no cleanup executed in this exercise",
+    "Iceberg commit/rollback is per table, not an atomic version across the main pipeline's eight consumer tables",
+    "Schema is current table metadata; rolling back a data snapshot does not undo the added column",
+    "Injected Python exception before catalog commit, not a host power loss or distributed concurrent-writer test"
+  ]
+}

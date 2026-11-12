@@ -5,6 +5,7 @@
 Same assets and checks as `dagster dev`. Exits non-zero if a load, a dbt model/test or a check fails (CI uses this).
 """
 import sys
+import json
 
 
 from taxi_platform.definitions import defs
@@ -19,6 +20,11 @@ def run(months: list[str]) -> bool:
     result = transform.execute_in_process(raise_on_error=False)
     for ev in result.get_asset_check_evaluations():
         print(f"check {ev.check_name[:48]:48s} {'PASS' if ev.passed else 'FAIL'}")
+    for event in result.get_asset_materialization_events():
+        materialization = event.event_specific_data.materialization
+        if materialization.asset_key.path == ["published_warehouse"]:
+            print("publication " + json.dumps({key: value.value
+                  for key, value in materialization.metadata.items()}, sort_keys=True))
     checks_ok = all(ev.passed for ev in result.get_asset_check_evaluations())
     return result.success and checks_ok
 
