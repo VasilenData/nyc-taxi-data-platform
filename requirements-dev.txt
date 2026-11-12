@@ -2,3 +2,4 @@
 -r requirements-forecast.txt
 pytest>=8
 ruff>=0.6
+psutil>=6,<8
