@@ -27,17 +27,30 @@ python -m taxi_platform.change_plan apply \
 
 Use the actual warehouse and input paths for your installation. Evidence files
 are never overwritten. A plan records required-field validation, source SHA-256
-hashes, monthly row counts, the current publication and raw load versions,
+hashes, monthly row counts/content fingerprints, the current publication and raw load versions,
 changed transformation files, affected classification months and all rebuilt
 consumer tables. Unchanged source files are skipped. Missing required columns or
 empty corrections are rejected before application.
 
-Apply refuses a changed plan, source file, model revision or warehouse version.
+Version 2 plans also record schemas and order-independent content fingerprints
+for raw input, the persisted incremental classifier and all nine serving
+relations. Apply refuses a changed plan, source file, model revision or warehouse
+state, including edits that retain row counts, load timestamps and publication
+IDs. Physical row reordering alone is accepted. Missing tables and nullable-column
+additions invalidate the plan. Old version 1 plans and plans created under a
+different DuckDB version must be recreated; row-hash behavior is not promised to
+remain stable across runtime versions.
+
 The loader checks the reviewed checksum again before replacement. These are
 controlled single-writer maintenance safeguards, not a distributed lock or a
 cryptographic signature authenticating an approver. Recreate a stale plan rather
-than editing its checksum. Do not manually edit raw values without using the
-loader; load timestamps are part of the change contract.
+than editing its checksum. The fingerprints add full content scans during both
+planning and validation; this trades review latency for stronger drift detection.
+Their collision risk means they are not an authenticity or malicious-tampering
+proof. Do not manually edit raw values without using the loader: detecting a
+stale plan does not automatically repair existing inconsistent data. These
+guards compare the reviewed state; they do not certify arbitrary preexisting
+state as correct or lock out a competing writer after validation.
 
 ## Corrected source versus changed business rule
 
@@ -81,6 +94,23 @@ comparison, not cryptographic integrity. Reproduce with a new output directory:
 ```bash
 python scripts/change_exercise.py --output measurements/local-change-exercise
 ```
+
+### Stale-state regression exercise
+
+[Seven-scenario evidence](change-plan-drift-2026-11-12.json) uses a fresh
+30,000-row historical TLC sample publication. Before the fix, four regression
+tests showed that value edits in raw input, the incremental classifier and
+published facts, plus a schema-only change, passed validation. The version 2
+guard rejects all four and a dropped serving table, while accepting an unchanged
+warehouse and a row-order-only rewrite. Every validation leaves database bytes
+unchanged. Mutations are controlled exercises, not observed TLC incidents.
+
+```bash
+python scripts/change_plan_drift_exercise.py --output measurements/local-plan-drift.json
+```
+
+The dated record includes input and implementation hashes and each injected SQL
+change. It does not establish a full-data planning runtime or cloud behavior.
 
 ## What changes downstream?
 

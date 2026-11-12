@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-11-12T19:48:40.409677+00:00",
+  "scope": "controlled local changes to the 30,000-row historical TLC sample",
+  "cloud_execution": false,
+  "python": "3.12.14",
+  "duckdb": "2.0.0",
+  "implementation_sha256": {
+    "taxi_platform/change_plan.py": "0d06559d5ad2560cbe21d7ecaf51e5fa95030c89c9b19e9bf497ea5299d02bb4",
+    "scripts/change_plan_drift_exercise.py": "0e6b796231c36ee06818b4f787b2a3db950a2d923c00de3774d946408c6cfd2a"
+  },
+  "source_sha256": {
+    "yellow_tripdata_2023-01.parquet": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558",
+    "yellow_tripdata_2023-02.parquet": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd"
+  },
+  "limits": "Single-writer exercise. Commutative row hashes detect accidental drift, not malicious tampering. No full-data timing or cloud claim.",
+  "scenarios": [
+    {
+      "name": "unchanged",
+      "sql": null,
+      "expected_rejection": false,
+      "rejected": false,
+      "error": null,
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "raw_value_edit_same_count_and_load_time",
+      "sql": "update raw.trips set fare_amount = fare_amount + 0.01",
+      "expected_rejection": true,
+      "rejected": true,
+      "error": "Warehouse changed since planning; create a new plan",
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "incremental_classifier_edit",
+      "sql": "update build.stg_trips_classified set fare_amount = fare_amount + 0.01",
+      "expected_rejection": true,
+      "rejected": true,
+      "error": "Warehouse changed since planning; create a new plan",
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "published_fact_edit_same_version",
+      "sql": "update main.fct_trips set fare_amount = fare_amount + 0.01",
+      "expected_rejection": true,
+      "rejected": true,
+      "error": "Warehouse changed since planning; create a new plan",
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "nullable_column_added",
+      "sql": "alter table raw.trips add column maintenance_note varchar",
+      "expected_rejection": true,
+      "rejected": true,
+      "error": "Warehouse changed since planning; create a new plan",
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "published_table_removed",
+      "sql": "drop table main.fct_trips",
+      "expected_rejection": true,
+      "rejected": true,
+      "error": "Warehouse changed since planning; create a new plan",
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    },
+    {
+      "name": "row_order_only",
+      "sql": "create or replace table raw.trips as select * from raw.trips order by fare_amount desc",
+      "expected_rejection": false,
+      "rejected": false,
+      "error": null,
+      "validation_left_database_bytes_unchanged": true,
+      "passed": true
+    }
+  ],
+  "raw_rows": 30000,
+  "fact_rows": 29326,
+  "success": true
+}

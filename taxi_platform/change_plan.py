@@ -19,6 +19,8 @@ from . import config, ingest
 from .publication import TABLES
 from .revision import model_files, model_signature, published_revision
 
+PLAN_VERSION = 2
+
 
 def digest(value) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
@@ -26,8 +28,35 @@ def digest(value) -> str:
 
 def raw_state(con) -> list:
     return [list(row) for row in con.execute("""select _source_month, count(*),
-        cast(min(_loaded_at) as varchar), cast(max(_loaded_at) as varchar)
-        from raw.trips group by 1 order by 1""").fetchall()]
+        cast(min(_loaded_at) as varchar), cast(max(_loaded_at) as varchar),
+        cast(coalesce(sum(hash(t)), 0) as varchar)
+        from raw.trips t group by 1 order by 1""").fetchall()]
+
+
+def relation_state(con) -> dict:
+    """Order-independent drift guards, not cryptographic/tamper-proof hashes.
+
+    The persisted classifier can affect a future incremental build even when the
+    publication ID and raw load timestamps have not changed. Schema guards also
+    detect added nullable columns, which row counts alone cannot identify.
+    """
+    existing = {tuple(row) for row in con.execute("""select table_schema, table_name
+        from information_schema.tables where table_catalog = current_database()
+        """).fetchall()}
+    relations = [("raw", "trips"), ("build", "stg_trips_classified"),
+                 *(("main", name) for name in (*TABLES, "publication"))]
+    result = {}
+    for namespace, name in relations:
+        key = f"{namespace}.{name}"
+        if (namespace, name) not in existing:
+            result[key] = None
+            continue
+        query_name = f'"{namespace}"."{name}"'
+        result[key] = {
+            "schema": [list(row[:2]) for row in con.execute(f"describe {query_name}").fetchall()],
+            "rows_and_fingerprint": list(con.execute(f"""select count(*),
+                cast(coalesce(sum(hash(t)), 0) as varchar) from {query_name} t""").fetchone())}
+    return result
 
 
 def consumer_state(con) -> dict:
@@ -54,6 +83,7 @@ def create_plan(database: Path, data_dir: Path, months: list[str]) -> dict:
         if publication["version"] is None:
             raise ValueError("Create an initial successful publication before planning a correction")
         existing = raw_state(con)
+        relations = relation_state(con)
         published_columns = {r[0] for r in con.execute("describe main.publication").fetchall()}
         old_files_json = con.execute("select model_files from main.publication").fetchone()[0] \
             if "model_files" in published_columns else None
@@ -73,9 +103,10 @@ def create_plan(database: Path, data_dir: Path, months: list[str]) -> dict:
                             "reload": previous is None or previous[0] != checksum})
     signature = model_signature()
     full_refresh = publication["model_sha256"] != signature
-    plan = {"schema_version": 1, "created_utc": datetime.now(timezone.utc).isoformat(),
+    plan = {"schema_version": PLAN_VERSION, "created_utc": datetime.now(timezone.utc).isoformat(),
             "database": str(database), "data_dir": str(data_dir),
             "expected_publication": publication, "expected_raw_state": existing,
+            "expected_relation_state": relations, "fingerprint_duckdb_version": duckdb.__version__,
             "model_sha256": signature, "model_files": model_files(), "sources": sources,
             "changed_transformation_files": sorted(name for name in set(old_files) | set(model_files())
                                                     if old_files.get(name) != model_files().get(name)),
@@ -91,12 +122,18 @@ def create_plan(database: Path, data_dir: Path, months: list[str]) -> dict:
 
 
 def validate_plan(plan: dict) -> None:
+    if plan.get("schema_version") != PLAN_VERSION:
+        raise ValueError("Unsupported change plan version; create a new plan")
     unsigned = {k: v for k, v in plan.items() if k != "plan_sha256"}
     if digest(unsigned) != plan.get("plan_sha256"):
         raise ValueError("Change plan checksum does not match")
     if model_signature() != plan["model_sha256"]:
         raise ValueError("Transformation changed since planning; create a new plan")
+    if duckdb.__version__ != plan["fingerprint_duckdb_version"]:
+        raise ValueError("DuckDB version changed since planning; create a new plan")
     with duckdb.connect(plan["database"], read_only=True) as con:
+        if relation_state(con) != plan["expected_relation_state"]:
+            raise ValueError("Warehouse changed since planning; create a new plan")
         if published_revision(con) != plan["expected_publication"] or raw_state(con) != plan["expected_raw_state"]:
             raise ValueError("Warehouse changed since planning; create a new plan")
         for source in plan["sources"]:
