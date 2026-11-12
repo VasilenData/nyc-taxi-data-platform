@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "<REPOSITORY>\taxi_platform\change_plan.py", line 187, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "<REPOSITORY>\taxi_platform\change_plan.py", line 171, in main
+    record = create_plan(args.database, args.data_dir, args.months)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>\taxi_platform\change_plan.py", line 52, in create_plan
+    with duckdb.connect(str(database), read_only=True) as con:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>\taxi_platform\change_plan.py", line 64, in create_plan
+    _, schema = ingest.inspect_source(con, path)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>\taxi_platform\ingest.py", line 72, in inspect_source
+    raise ValueError(f"Source schema missing required columns: {', '.join(missing)}; "
+ValueError: Source schema missing required columns: fare_amount; previous month preserved
