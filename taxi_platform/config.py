@@ -9,7 +9,7 @@ DB_PATH = Path(os.environ.get("TAXI_DB", ROOT / "data" / "warehouse.duckdb"))
 DATA_DIR = Path(os.environ.get("TAXI_DATA_DIR", ROOT / "data" / "raw"))
 SAMPLE_DIR = ROOT / "data" / "sample"
 TLC_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
-DBT_DIR = ROOT / "dbt"
+DBT_DIR = Path(os.environ.get("TAXI_DBT_DIR", ROOT / "dbt"))
 # Keep ingestion and dbt on the same optional memory budget. DuckDB's default is 80%.
 DUCKDB_MEMORY_LIMIT = os.environ.get("TAXI_DUCKDB_MEMORY_LIMIT", "80%")
 

@@ -126,7 +126,8 @@ def ensure_schema(con: duckdb.DuckDBPyConnection) -> None:
         missing_optional_columns json, rows bigint, loaded_at timestamp)""")
 
 
-def load_month(month: str, con: duckdb.DuckDBPyConnection | None = None) -> dict:
+def load_month(month: str, con: duckdb.DuckDBPyConnection | None = None,
+               expected_sha256: str | None = None) -> dict:
     """Load one month. Returns {'month', 'rows', 'file'} for the Dagster asset metadata."""
     validate_month(month)
     own = con is None
@@ -136,6 +137,8 @@ def load_month(month: str, con: duckdb.DuckDBPyConnection | None = None) -> dict
         src = resolve_source(month)
         available, source_schema = inspect_source(con, src)
         fingerprint = source_fingerprint(src)
+        if expected_sha256 is not None and fingerprint != expected_sha256:
+            raise ValueError("Source no longer matches reviewed change plan; previous month preserved")
         source_bytes = src.stat().st_size
         load_id = str(uuid4())
         missing_optional = sorted((set(c.lower() for c in COLUMNS) | {"airport_fee"}) - available.keys())
