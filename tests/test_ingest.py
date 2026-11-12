@@ -18,6 +18,14 @@ def test_month_validation_rejects_path_tricks():
             ingest.validate_month(bad)
 
 
+def test_reviewed_hash_is_checked_before_replacing_rows(con):
+    ingest.load_month("2023-01", con)
+    before = con.execute("select * from raw.trips order by all").fetchall()
+    with pytest.raises(ValueError, match="reviewed change plan"):
+        ingest.load_month("2023-01", con, expected_sha256="0" * 64)
+    assert con.execute("select * from raw.trips order by all").fetchall() == before
+
+
 def test_load_is_idempotent(con):
     first = ingest.load_month("2023-01", con)
     second = ingest.load_month("2023-01", con)
