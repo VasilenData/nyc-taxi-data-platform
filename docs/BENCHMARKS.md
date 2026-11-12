@@ -71,6 +71,10 @@ retain their [archived runner](../measurements/benchmark-runner-2026-11-08.py.tx
 They do not describe the current pipeline. The November 12 measurement uses the
 new publisher, source checksums and model-revision guard; its code hashes are
 the evidence for the implementation run. Use the current runner for new results.
+The source-file hashes identify exact checkout bytes, including line endings:
+unchanged files in the Windows measurement checkout can have CRLF where Git's
+stored blob uses LF. The separate published `model_sha256` normalizes line
+endings and is portable across Windows and Linux.
 
 ## Timing boundaries and cache conditions
 
