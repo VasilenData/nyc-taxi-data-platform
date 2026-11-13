@@ -78,7 +78,7 @@ def test_read_only_acceptance_matches_actual_bundle_and_uploaded_catalog(accepta
 
 @pytest.mark.parametrize("damage", ["operator_role", "foreign_account", "disabled_group", "unenforced",
     "unbounded", "result_location", "result_owner", "encryption", "metrics", "engine", "manifest",
-    "extra_object", "truncated_listing", "checksum", "catalog_location", "catalog_schema", "catalog_format", "partition_keys"])
+    "extra_object", "truncated_listing", "checksum", "catalog_location", "catalog_schema", "catalog_format", "serde_parameters", "partition_keys"])
 def test_acceptance_rejects_drift_before_issuing_any_query(acceptance, damage):
     config = acceptance["group"]["Configuration"]
     result = config["ResultConfiguration"]
@@ -117,6 +117,8 @@ def test_acceptance_rejects_drift_before_issuing_any_query(acceptance, damage):
         descriptor["Columns"][0]["Type"] = "string"
     elif damage == "catalog_format":
         descriptor["InputFormat"] = "org.apache.hadoop.mapred.TextInputFormat"
+    elif damage == "serde_parameters":
+        descriptor["SerdeInfo"]["Parameters"] = {"parquet.column.index.access": "true"}
     else:
         next(iter(acceptance["tables"].values()))["PartitionKeys"] = [{"Name": "year", "Type": "int"}]
     with pytest.raises(ValueError):
