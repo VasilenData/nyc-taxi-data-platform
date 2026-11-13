@@ -1,0 +1,55 @@
+1. Reproduce the failure
+A deliberately broken teaching copy commits each table separately. Stop the child immediately after the fact-table write.
+Synthetic contract: raw = valid + rejected; marts sum to fact rows.
+Published: 4 valid rows. Candidate: 7 valid rows. Rejected: 0.
+Child: fact table copy completed; calling os._exit(37).
+After reopen: fact rows = 7; hourly mart trips = 4.
+Unchanged consumer relations (including metadata): 5/9.
+Changed relations: taxi_zone_lookup, stg_trips_classified, stg_trips, fct_trips
+FAIL: previous complete dataset was not preserved.
+
+Exit status: 1
+
+2. Restore the transaction
+This actual file edit restores BEGIN, COMMIT and ROLLBACK in the isolated copy. The repository publisher already contains this fix.
+--- teaching_publication.py (broken)
++++ teaching_publication.py (fixed)
+@@ -25,5 +25,5 @@
+     started = time.perf_counter()
+     try:
+-        con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++        con.execute("begin")
+         try:
+             failed = [name for name, (passed, _) in evaluate(con, config.MAX_REJECT_RATE).items() if not passed]
+@@ -61,7 +61,7 @@
+             con.execute("""create or replace table main.publication as
+                 select * from audit.publications where version = ?""", [version])
+-            con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++            con.execute("commit")
+         except BaseException:
+-            con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++            con.execute("rollback")
+             raise
+         return {"version": version, "fact_rows": counts["fct_trips"], "tables": len(TABLES),
+
+Exit status: 0
+
+3. Crash again, then recover
+The same crash now rolls back all eight tables and publication metadata. Reopen, compare every row, then retry successfully.
+Synthetic contract: raw = valid + rejected; marts sum to fact rows.
+Published: 4 valid rows. Candidate: 7 valid rows. Rejected: 0.
+Child: fact table copy completed; calling os._exit(37).
+After reopen: fact rows = 4; hourly mart trips = 4.
+Unchanged consumer relations (including metadata): 9/9.
+Changed relations: none
+PASS: previous complete dataset survived abrupt process exit.
+PASS: retry published 7 fact rows / 7 mart trips; 2 successful versions.
+
+Exit status: 0
+
+4. Run the publisher regressions
+The existing suite also checks invalid candidates, exceptions during copy and before commit, and upgrade from old views.
+..........                                                               [100%]
+10 passed in 2.29s
+
+Exit status: 0
