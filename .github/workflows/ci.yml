@@ -32,6 +32,16 @@ jobs:
           if-no-files-found: warn
       - name: Tests
         run: pytest -q --junitxml="${{ runner.temp }}/tests/results.xml"
+      - name: Reproduce the teaching failure, transaction repair and recovery
+        run: python scripts/record_publication_demo.py --output "${{ runner.temp }}/recovery-demo"
+      - name: Retain the recovery walkthrough evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-walkthrough
+          path: ${{ runner.temp }}/recovery-demo/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Retain test evidence including offline cloud acceptance
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,0 +1,19 @@
+{
+  "duration_seconds": 74,
+  "format": "captioned rendered replay from actual command output; no human screen recording or narration",
+  "evidence_sha256": "9f6a4a0a7fd4ca3247794cbef12464d9d93dd3ac3b624abc9adc9a78d183f374",
+  "files": {
+    "recovery-walkthrough.mp4": {
+      "bytes": 803344,
+      "sha256": "21be258e6b5be083edc08997e3522f92b5cf647f86e5ad83e4ee5bd48e408242"
+    },
+    "poster.png": {
+      "bytes": 67421,
+      "sha256": "0ed755615acb1e5987ff77100ba2073944b0d422a06b9a1fe6b3bd36e9751a30"
+    },
+    "captions.vtt": {
+      "bytes": 1157,
+      "sha256": "eae9eb155be3ee785d2c544a475090520f298623261029450f7bb6d4df8c2761"
+    }
+  }
+}

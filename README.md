@@ -4,6 +4,8 @@
 
 A reproducible batch pipeline that turns inconsistent public NYC taxi records into reconciled analytics tables. I implemented monthly source validation, an incremental dbt classifier, and an eight-table publication transaction so a failed candidate cannot replace the last good consumer dataset.
 
+**Watch the failure and recovery in 74 seconds:** [captioned walkthrough](https://vasilendata.github.io/demos/nyc-recovery/) · [reproduce the experiment](docs/RECOVERY_WALKTHROUGH.md). A deliberately broken teaching copy leaves the fact table and mart inconsistent after an abrupt exit. Restoring the transaction preserves all nine consumer relations; a retry succeeds. This is an AI-assisted synthetic capture, not a historical incident or a recording of unaided interview performance.
+
 **Stack:** Python, SQL, Dagster, dbt, DuckDB, Docker, GitHub Actions.
 
 **Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.

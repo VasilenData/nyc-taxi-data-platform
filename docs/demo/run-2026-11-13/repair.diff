@@ -1,0 +1,19 @@
+--- teaching_publication.py (broken)
++++ teaching_publication.py (fixed)
+@@ -25,5 +25,5 @@
+     started = time.perf_counter()
+     try:
+-        con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++        con.execute("begin")
+         try:
+             failed = [name for name, (passed, _) in evaluate(con, config.MAX_REJECT_RATE).items() if not passed]
+@@ -61,7 +61,7 @@
+             con.execute("""create or replace table main.publication as
+                 select * from audit.publications where version = ?""", [version])
+-            con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++            con.execute("commit")
+         except BaseException:
+-            con.execute("select 1")  # TEACHING DEFECT: transaction boundary removed
++            con.execute("rollback")
+             raise
+         return {"version": version, "fact_rows": counts["fct_trips"], "tables": len(TABLES),
