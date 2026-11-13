@@ -53,9 +53,37 @@ def test_measurement_records_observed_counters_without_inventing_a_bill():
     assert result["billed_cost_usd"] is None
     with pytest.raises(ValueError, match="workgroup"):
         query_measurement(query, "other")
-    query["Status"]["State"] = "FAILED"
-    with pytest.raises(ValueError, match="successful"):
-        query_measurement(query, "taxi-dev")
+
+
+def test_cancelled_query_scan_usage_is_not_lost():
+    query = {"QueryExecutionId": "cancelled-id", "WorkGroup": "taxi-dev", "Query": "select * from trips",
+             "Status": {"State": "CANCELLED"}, "Statistics": {"DataScannedInBytes": 104857601}}
+    result = query_measurement(query, "taxi-dev")
+    assert result["data_scanned_bytes"] == 104857601
+    assert result["state"] == "CANCELLED"
+    assert result["eligible_for_scan_comparison"] is False
+
+
+def test_analyst_can_read_the_commit_manifest_for_its_release():
+    template = json.loads(TEMPLATE.read_text())
+    policy = template["Resources"]["QueryRole"]["Properties"]["Policies"][0]["PolicyDocument"]["Statement"]
+    resources = [resource for statement in policy if "s3:GetObject" in statement["Action"]
+                 for resource in (statement["Resource"] if isinstance(statement["Resource"], list)
+                                  else [statement["Resource"]])]
+    assert {"Fn::Sub": "${DataBucket.Arn}/releases/${ReleaseId}/manifest.json"} in resources
+
+
+@pytest.mark.parametrize("role", ["PublisherRole", "QueryRole"])
+def test_catalog_permissions_are_exactly_two_tables_in_the_selected_release(role):
+    template = json.loads(TEMPLATE.read_text())
+    policy = template["Resources"][role]["Properties"]["Policies"][0]["PolicyDocument"]["Statement"]
+    resources = [resource for statement in policy if any(action.startswith("glue:") for action in statement["Action"])
+                 for resource in statement["Resource"] if ":table/" in json.dumps(resource)]
+    assert len(resources) == 2
+    for resource in resources:
+        assert "release_*" not in json.dumps(resource)
+        assert resource["Fn::Sub"][1]["ReleaseToken"] == {
+            "Fn::Join": ["", {"Fn::Split": ["-", {"Ref": "ReleaseId"}]}]}
 
 
 class FakeS3:
@@ -112,3 +140,29 @@ def test_interrupted_upload_cannot_expose_a_commit_marker_or_catalog(tmp_path):
         upload_release(s3, glue, bundle, "private", "taxi_dev", "123456789012", 1000000)
     assert not any(key.endswith("manifest.json") for key in s3.calls)
     assert not glue.tables
+
+
+@pytest.mark.parametrize("partitioned", [False, True])
+def test_resumed_catalog_registration_cannot_accept_partitioned_aggregates(tmp_path, partitioned):
+    source, bundle = tmp_path / "source.duckdb", tmp_path / "release"
+    warehouse(source)
+    export_release(source, bundle)
+    s3, original = FakeS3(), {}
+
+    class ExistingCatalog:
+        def create_table(self, **kwargs):
+            table = kwargs["TableInput"]
+            assert table["PartitionKeys"] == []
+            original[table["Name"]] = {**table, "PartitionKeys": [{"Name": "year", "Type": "int"}] if partitioned else []}
+            error = RuntimeError("already registered")
+            error.response = {"Error": {"Code": "AlreadyExistsException"}}
+            raise error
+
+        def get_table(self, **kwargs):
+            return {"Table": original[kwargs["Name"]]}
+
+    if partitioned:
+        with pytest.raises(ValueError, match="catalog table differs"):
+            upload_release(s3, ExistingCatalog(), bundle, "private", "taxi_dev", "123456789012", 1000000)
+    else:
+        assert len(upload_release(s3, ExistingCatalog(), bundle, "private", "taxi_dev", "123456789012", 1000000)["catalog_tables"]) == 2
