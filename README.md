@@ -8,9 +8,9 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 **Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.
 
-**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
+**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) Â· [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) Â· [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
 
-**Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py) · [AWS access and cost controls](cloud/aws/template.json)
+**Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) Â· [reviewable change plans](taxi_platform/change_plan.py) Â· [failure tests](tests/test_publication.py) Â· [AWS access and cost controls](cloud/aws/template.json)
 
 ## Results at a glance
 
@@ -18,7 +18,7 @@ Measured **12 November 2026**, including staged validation and publication of al
 
 | Dataset | Input rows | Valid fact rows | Quarantined rows | Pipeline wall time | Evidence |
 |---|---:|---:|---:|---:|---|
-| Full January–October 2023 TLC files | 31,593,944 | 30,694,510 | 899,434 (2.85%) | 140.638 s | [JSON](measurements/full-2026-11-12-final.json) · [run log](measurements/full-2026-11-12-final.log) |
+| Full Januaryâ€“October 2023 TLC files | 31,593,944 | 30,694,510 | 899,434 (2.85%) | 140.638 s | [JSON](measurements/full-2026-11-12-final.json) Â· [run log](measurements/full-2026-11-12-final.log) |
 
 The publication phase took **33.074 s**, including **31.976 s** copying the eight tables and **0.196 s** revalidating publication predicates. Sampled aggregate pipeline RSS peaked at **4.58 GiB**; the final checkpointed warehouse was **8.55 GiB** (raw, build and consumer tables together). The run passed dbt tests, all three platform asset checks and independent input/raw/valid/quarantine/fact reconciliation. These are historical public-data project results, not employer production or customer-usage metrics.
 
@@ -115,22 +115,24 @@ pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
 
 ## Cloud controls and serving recovery
 
-The [cloud extension](docs/CLOUD_CONTROLS.md) provides private versioned S3, distinct release-publisher and aggregate-query roles, encrypted Athena results and an enforced per-query scan cutoff. An explicit byte-budgeted uploader verifies remote checksums before registering immutable release tables. A read-only collector records observed Athena scan/time counters without inventing billed costs. Infrastructure validation and SDK-boundary tests run in CI; **AWS deployment, live IAM denial tests and cloud query measurements remain unexecuted** pending an account and experiment spending ceiling.
+The [cloud extension](docs/CLOUD_CONTROLS.md) provides private versioned S3, distinct release-publisher and aggregate-query roles, encrypted Athena results and an enforced per-query scan cutoff. Both catalog roles are scoped to the selected release's two aggregate tables; the analyst can also read its commit manifest. An explicit byte-budgeted uploader verifies remote checksums before registering immutable release tables.
+
+A [read-only acceptance verifier](taxi_platform/cloud_acceptance.py) checks the assumed query role, enforced workgroup settings, trusted manifest, aggregate object hashes and exact catalog definitions without starting a query. The usage ledger includes failed/cancelled query scans and preserves missing counters as unknown. The [dated offline evidence](docs/cloud-controls-2026-11-13.json) records four baseline regressions and a partition-drift finding resolved after AI cross-review. Infrastructure validation and SDK-boundary tests run in CI; **AWS deployment, live IAM denial tests and cloud query measurements remain unexecuted**. Mocked service responses establish program behavior, not effective AWS access or operating history.
 
 The executed [local backup exercise](docs/cloud-readiness-2026-11-12.json) restored all eight published tables plus their version record from a 3.76 MB Parquet bundle, with zero row differences, identical schemas and passing reconciliations over the 30,000-row sample. Failure tests cover corrupt bundles and abrupt process death during transactional restoration. This is a serving-data backup, not a backup of raw ingestion state or a full-data recovery benchmark.
 
-The next step is to run the documented bounded cloud experiment, verify actual denied permissions and record query costs and operating history. The prepared architecture and local recovery evidence do not establish those results.
+The next step, after account and spending approval, is to run the documented bounded cloud experiment, verify actual denied permissions and record query usage, actual charges and operating history. The prepared architecture and local recovery evidence do not establish those results.
 
 ## Extension: observed pickup forecasting and planning replay
 
-[Forecasting evidence and contract](docs/FORECASTING.md) · [Measured report](docs/forecast/index.html) · [Per-prediction CSV](docs/forecast/predictions.csv)
+[Forecasting evidence and contract](docs/FORECASTING.md) Â· [Measured report](docs/forecast/index.html) Â· [Per-prediction CSV](docs/forecast/predictions.csv)
 
-A separate module aggregates **19.49 million records from six complete TLC files** into 263 zone/day series. A fixed Poisson boosting model competes with a weekly seasonal baseline, with March selection, April interval calibration and a **May–June holdout of 16,043 zone-days**. Observed MAE was **40.23 versus 45.35 pickups per zone-day (11.3% lower)**; learned interval coverage was **88.2% against a 90% target**. The report retains monthly/zone errors, source and artifact checksums, and an explicitly hypothetical capacity-allocation scenario.
+A separate module aggregates **19.49 million records from six complete TLC files** into 263 zone/day series. A fixed Poisson boosting model competes with a weekly seasonal baseline, with March selection, April interval calibration and a **Mayâ€“June holdout of 16,043 zone-days**. Observed MAE was **40.23 versus 45.35 pickups per zone-day (11.3% lower)**; learned interval coverage was **88.2% against a 90% target**. The report retains monthly/zone errors, source and artifact checksums, and an explicitly hypothetical capacity-allocation scenario.
 
 This is next-day **historical replay**, assuming prior-day counts are available; monthly public TLC publication cannot feed it live. It forecasts recorded pickups, not unmet demand. Run `python -m taxi_forecast --panel data/forecast/daily_pickups_2023_h1.csv --output /tmp/forecast` after installing `requirements-forecast.txt`. Pipeline measurements above are separate from this modeling run.
 
 ## Author
 
-[Vasilen Kanchev](https://github.com/VasilenData) · [Portfolio](https://vasilendata.github.io) · [LinkedIn](https://www.linkedin.com/in/vasilenkanchev/)
+[Vasilen Kanchev](https://github.com/VasilenData) Â· [Portfolio](https://vasilendata.github.io) Â· [LinkedIn](https://www.linkedin.com/in/vasilenkanchev/)
 
 Data source: public NYC Taxi and Limousine Commission trip records. Code: [MIT license](LICENSE).
