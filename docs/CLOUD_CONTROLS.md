@@ -90,7 +90,7 @@ python -m taxi_platform.cloud_release --profile taxi-query --region eu-west-1 me
 
 Do not promise scan savings: this small aggregate can fit a single Parquet row group and may show little change. A useful full-data experiment should compare partitioned layouts on observed service counters, including cold and reused queries.
 
-Include failed and cancelled query IDs when collecting usage. The ledger accepts 1â€“100 distinct IDs; it is not workgroup-wide accounting, and omitted executions are not discovered automatically. `known_scanned_bytes` is a subtotal, not a completeness claim: inspect `unknown_scan_query_count` and `all_terminal_scan_counters_present`. Running/queued executions need collection again after completion. `eligible_for_scan_comparison` does not mean the example queries answer the same question; compare equivalent SQL when evaluating a storage/layout change. No dollar estimate or invoiced charge is generated from scan counters.
+Include failed and cancelled query IDs when collecting usage. The ledger accepts 1–100 distinct IDs; it is not workgroup-wide accounting, and omitted executions are not discovered automatically. `known_scanned_bytes` is a subtotal, not a completeness claim: inspect `unknown_scan_query_count` and `all_terminal_scan_counters_present`. Running/queued executions need collection again after completion. `eligible_for_scan_comparison` does not mean the example queries answer the same question; compare equivalent SQL when evaluating a storage/layout change. No dollar estimate or invoiced charge is generated from scan counters.
 
 ## Costs, teardown and limits
 
