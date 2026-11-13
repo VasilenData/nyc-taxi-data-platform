@@ -87,8 +87,13 @@ def upload_release(s3, glue, bundle, bucket, database, owner, max_bytes):
             existing = glue.get_table(CatalogId=owner, DatabaseName=database, Name=table["Name"])["Table"]
             expected = table["StorageDescriptor"]
             actual = existing["StorageDescriptor"]
-            if (actual["Location"] != expected["Location"] or actual["Columns"] != expected["Columns"]
-                    or existing.get("PartitionKeys") != []):
+            if (existing.get("Name") != table["Name"] or existing.get("TableType") != table["TableType"]
+                    or existing.get("Parameters", {}).get("release_id") != manifest["release_id"]
+                    or existing.get("PartitionKeys") != []
+                    or any(actual.get(key) != expected[key] for key in
+                           ("Location", "Columns", "InputFormat", "OutputFormat"))
+                    or actual.get("SerdeInfo", {}).get("SerializationLibrary") != expected["SerdeInfo"]["SerializationLibrary"]
+                    or actual.get("SerdeInfo", {}).get("Parameters") not in (None, {})):
                 raise ValueError("Existing catalog table differs from the immutable release")
     return {"release_id": manifest["release_id"], "verified_bytes": manifest["total_bytes"],
             "catalog_tables": [table["Name"] for table in tables], "cloud_execution": True,

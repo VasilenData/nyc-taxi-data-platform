@@ -10,6 +10,7 @@
 - [Cloud publisher](../taxi_platform/cloud_release.py): explicit byte budget; conditional S3 writes; remote checksum verification; commit manifest uploaded last; only then are release-specific aggregate catalog tables registered. Interrupted upload can be resumed. A catalog interruption may leave one of the two new tables registered; there is **no atomic cross-table Glue catalog switch** and no mutable `latest` alias. Consumers must select both tables from the same complete manifest/release ID.
 - [Read-only acceptance](../taxi_platform/cloud_acceptance.py) checks the expected assumed query role, enabled/enforced workgroup, approved scan cutoff, owned/encrypted result destination, metrics and effective engine version. It verifies the remote manifest against a trusted local bundle, lists each aggregate prefix to reject extra files, checks remote SHA-256/size/encryption and matches catalog schema, empty partition keys, format and location. It reads a bounded manifest and object metadata; it does not download the fact dataset, start queries or change access.
 - Read-only Athena measurement collection records **all supplied query states**, including failed and cancelled work. Its bounded ledger rejects duplicate IDs, preserves absent counters as `null`, flags provisional running-query data, and totals only known scan bytes. Successful DML with known non-reused results and scan counters is eligible for comparison; SQL equivalence still requires review. It never starts a query or computes an invented invoice. SQL text is hashed, not included in the report.
+- The [two-query experiment](CLOUD_EXPERIMENT.md) binds a trusted sample, account/region, explicit budget declaration and expiry to exact SQL. Its opt-in runner repeats acceptance, verifies one scoped read denial, reconciles Athena totals against local Parquet and preserves query IDs/counters across failures. It is tested offline, not an observed AWS run. Resumed catalog registration now rejects altered release/type/format/SerDe definitions; acceptance also rejects nonempty SerDe parameters that could change interpretation.
 
 ## Observed evidence
 
@@ -72,23 +73,15 @@ python -m taxi_platform.cloud_acceptance .cloud-work/release \
 
 Then verify the negative cases before publishing access: reading `fct_trips`, writing a data object, deleting an object, querying another workgroup, reading another release's catalog tables, and reading another environment's bucket must fail. Under the publisher role, overwrite without `If-None-Match`, writes to another release, and creating another release's catalog table must fail. Record actual errors and identities; successful read-only acceptance and static policy tests do **not** establish effective denied permissions. Do not run mutating denial probes unless their account/resource scope is explicitly authorized: unexpectedly broad permissions can allow them to succeed.
 
-5. Explicitly run a baseline and filtered/column-pruned query against the release-specific daily aggregate through the bounded workgroup. Disable result reuse for the scan comparison. Keep both query IDs and query texts with the evidence, then collect the service counters:
-
-```sql
-SELECT * FROM "CATALOG_DATABASE"."release_UUIDWITHOUTDASHES_mart_daily_borough";
-SELECT pickup_date, sum(trips) AS trips
-FROM "CATALOG_DATABASE"."release_UUIDWITHOUTDASHES_mart_daily_borough"
-WHERE pickup_date >= DATE '2023-02-01'
-GROUP BY pickup_date;
-```
+5. Use the [reviewed two-query plan](CLOUD_EXPERIMENT.md) for the first experiment. It checks both aggregates against a local oracle rather than claiming performance gains from queries with different answers. It also performs the bounded fact-read denial probe above; other denied operations remain a separately authorized exercise. Keep its plan and journal, then collect final counters for any query left running or cancelled:
 
 ```bash
 python -m taxi_platform.cloud_release --profile taxi-query --region eu-west-1 measure \
-  --workgroup WORKGROUP --query-id BASELINE_QUERY_ID --query-id FILTERED_QUERY_ID \
+  --workgroup WORKGROUP --query-id FIRST_QUERY_ID --query-id SECOND_QUERY_ID \
   --output .cloud-work/athena-measurements.json
 ```
 
-Do not promise scan savings: this small aggregate can fit a single Parquet row group and may show little change. A useful full-data experiment should compare partitioned layouts on observed service counters, including cold and reused queries.
+Performance/layout comparisons are a separate later experiment with additional queries and budget review. Do not promise scan savings: this small aggregate can fit a single Parquet row group and may show little change. Compare equivalent answers across layouts on observed service counters, including cold and reused queries.
 
 Include failed and cancelled query IDs when collecting usage. The ledger accepts 1–100 distinct IDs; it is not workgroup-wide accounting, and omitted executions are not discovered automatically. `known_scanned_bytes` is a subtotal, not a completeness claim: inspect `unknown_scan_query_count` and `all_terminal_scan_counters_present`. Running/queued executions need collection again after completion. `eligible_for_scan_comparison` does not mean the example queries answer the same question; compare equivalent SQL when evaluating a storage/layout change. No dollar estimate or invoiced charge is generated from scan counters.
 

@@ -121,7 +121,7 @@ A [read-only acceptance verifier](taxi_platform/cloud_acceptance.py) checks the 
 
 The executed [local backup exercise](docs/cloud-readiness-2026-11-12.json) restored all eight published tables plus their version record from a 3.76 MB Parquet bundle, with zero row differences, identical schemas and passing reconciliations over the 30,000-row sample. Failure tests cover corrupt bundles and abrupt process death during transactional restoration. This is a serving-data backup, not a backup of raw ingestion state or a full-data recovery benchmark.
 
-The next step, after account and spending approval, is to run the documented bounded cloud experiment, verify actual denied permissions and record query usage, actual charges and operating history. The prepared architecture and local recovery evidence do not establish those results.
+The [two-query experiment](docs/CLOUD_EXPERIMENT.md) now has an offline plan generator and explicit execution runner: exact account/region/release binding, a bounded fact-read denial probe, local-Parquet reconciliation, idempotent submission and failure journals. Catalog resume checks also reject altered release metadata and formats. These behaviors are verified with local fixtures and mocked SDK responses. The next step still requires an actual account, region and numeric budget: execute the reviewed plan, verify real permissions and record usage, charges and maintenance. **No cloud run or operating history is claimed.**
 
 ## Extension: observed pickup forecasting and planning replay
 

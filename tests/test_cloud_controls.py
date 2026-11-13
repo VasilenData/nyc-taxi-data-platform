@@ -3,6 +3,7 @@ import base64
 import hashlib
 import json
 from pathlib import Path
+from copy import deepcopy
 
 import pytest
 
@@ -154,6 +155,8 @@ def test_resumed_catalog_registration_cannot_accept_partitioned_aggregates(tmp_p
             table = kwargs["TableInput"]
             assert table["PartitionKeys"] == []
             original[table["Name"]] = {**table, "PartitionKeys": [{"Name": "year", "Type": "int"}] if partitioned else []}
+            # Empty SDK maps and a descriptive SerDe name do not change semantics.
+            original[table["Name"]]["StorageDescriptor"]["SerdeInfo"].update({"Name": "parquet", "Parameters": {}})
             error = RuntimeError("already registered")
             error.response = {"Error": {"Code": "AlreadyExistsException"}}
             raise error
@@ -166,3 +169,36 @@ def test_resumed_catalog_registration_cannot_accept_partitioned_aggregates(tmp_p
             upload_release(s3, ExistingCatalog(), bundle, "private", "taxi_dev", "123456789012", 1000000)
     else:
         assert len(upload_release(s3, ExistingCatalog(), bundle, "private", "taxi_dev", "123456789012", 1000000)["catalog_tables"]) == 2
+
+
+@pytest.mark.parametrize("damage", ["release_id", "table_type", "input_format", "output_format", "serde", "serde_parameters"])
+def test_resumed_registration_rejects_changed_catalog_semantics(tmp_path, damage):
+    source, bundle = tmp_path / "source.duckdb", tmp_path / "release"
+    warehouse(source)
+    export_release(source, bundle)
+    s3, original = FakeS3(), {}
+
+    class ExistingCatalog:
+        def create_table(self, **kwargs):
+            table = deepcopy(kwargs["TableInput"])
+            if damage == "release_id":
+                table["Parameters"]["release_id"] = "another-release"
+            elif damage == "table_type":
+                table["TableType"] = "VIRTUAL_VIEW"
+            elif damage == "serde":
+                table["StorageDescriptor"]["SerdeInfo"]["SerializationLibrary"] = "wrong.SerDe"
+            elif damage == "serde_parameters":
+                table["StorageDescriptor"]["SerdeInfo"]["Parameters"] = {"parquet.column.index.access": "true"}
+            else:
+                field = "InputFormat" if damage == "input_format" else "OutputFormat"
+                table["StorageDescriptor"][field] = "wrong.Format"
+            original[table["Name"]] = table
+            error = RuntimeError("already registered")
+            error.response = {"Error": {"Code": "AlreadyExistsException"}}
+            raise error
+
+        def get_table(self, **kwargs):
+            return {"Table": original[kwargs["Name"]]}
+
+    with pytest.raises(ValueError, match="catalog table differs"):
+        upload_release(s3, ExistingCatalog(), bundle, "private", "taxi_dev", "123456789012", 1000000)
