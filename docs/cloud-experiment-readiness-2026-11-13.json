@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-13T02:00:30.587945+00:00",
+  "scope": "Offline code, real local Parquet fixtures, mocked AWS SDK responses and a historical 30,000-row sample pipeline. No AWS deployment or API execution.",
+  "base_commit": "4fcb6b7c5844234eb494421d0faa34b4c0700459",
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "duckdb": "2.0.0",
+      "pytest": "9.2.0",
+      "ruff": "0.17.4",
+      "dbt-core": "1.12.7",
+      "dbt-duckdb": "1.11.1",
+      "cfn-lint": "1.60.1"
+    }
+  },
+  "reproduced_before_fixes": [
+    {
+      "test": "test_resumed_registration_rejects_changed_catalog_semantics",
+      "cases": [
+        "release_id",
+        "table_type",
+        "input_format",
+        "output_format",
+        "serde"
+      ],
+      "observed": "Five assertions failed: changed Glue catalog semantics were accepted on upload resume."
+    },
+    {
+      "test": "test_acceptance_rejects_drift_before_issuing_any_query[serde_parameters]",
+      "observed": "Assertion failed: nonempty Parquet SerDe parameters passed read-only acceptance."
+    }
+  ],
+  "verification": {
+    "focused_cloud_tests": {
+      "passed": 66,
+      "failed": 0,
+      "seconds": 19.49
+    },
+    "full_pytest": {
+      "passed": 150,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 282.472,
+      "skip_reason": "Optional local Iceberg dependency unavailable; existing separate CI job remains unchanged."
+    },
+    "unexpected_read_regression": "Passed; closes Body once and asserts Body.read is never called.",
+    "ruff": "passed",
+    "dbt_parse": "passed",
+    "cfn_lint": "passed",
+    "initial_environment_correction": "Initial test collection could not locate the existing dbt executable. Adding the existing venv Scripts directory to PATH resolved it; no test expectation was weakened."
+  },
+  "sample_pipeline": {
+    "success": true,
+    "source_months": [
+      "2023-01",
+      "2023-02"
+    ],
+    "input_rows": 30000,
+    "rows": {
+      "raw": 30000,
+      "valid": 29326,
+      "quarantined": 674,
+      "fact": 29326
+    },
+    "reconciliation": {
+      "raw_equals_input_rows": true,
+      "raw_equals_valid_plus_quarantined": true,
+      "valid_equals_fact": true
+    },
+    "asset_checks": {
+      "not_null_stg_trips_classified_trip_id": "PASS",
+      "accepted_values_stg_trips_classified_reject_reas": "PASS",
+      "accepted_range_mart_data_quality_raw_rows__1": "PASS",
+      "accepted_range_fct_trips_duration_min__False__36": "PASS",
+      "accepted_range_fct_trips_fare_amount__0": "PASS",
+      "accepted_range_fct_trips_pickup_dow__7__1": "PASS",
+      "accepted_range_fct_trips_distance_miles__False__": "PASS",
+      "accepted_range_fct_trips_pickup_hour__23__0": "PASS",
+      "accepted_range_fct_trips_total_amount__False__0": "PASS",
+      "assert_trip_id_unique_per_month": "PASS",
+      "not_null_fct_trips_pickup_at": "PASS",
+      "not_null_fct_trips_source_month": "PASS",
+      "not_null_fct_trips_trip_id": "PASS",
+      "relationships_fct_trips_dropoff_zone_id__Locatio": "PASS",
+      "relationships_fct_trips_pickup_zone_id__Location": "PASS",
+      "accepted_range_mart_hourly_demand_trips__1": "PASS",
+      "accepted_range_mart_daily_borough_trips__1": "PASS",
+      "not_null_mart_daily_borough_pickup_date": "PASS",
+      "coverage": "PASS",
+      "reconciliation": "PASS",
+      "reject_rate": "PASS"
+    },
+    "wall_seconds": 18.978,
+    "inputs": [
+      {
+        "month": "2023-01",
+        "rows": 15000,
+        "sha256": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558"
+      },
+      {
+        "month": "2023-02",
+        "rows": 15000,
+        "sha256": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd"
+      }
+    ],
+    "limit": "Existing historical sample validation, not a full-data/cloud rerun or performance comparison; tests ran concurrently."
+  },
+  "behavior_proved_offline": [
+    "Plan binds exact source hash, account/region/roles, explicit budget declaration, UTC expiry, two queries and local oracle.",
+    "Altered/expired plans and failed acceptance/denial probes cannot start queries.",
+    "Publisher confirms fact object size/checksum before query-role one-byte probe. Missing-key responses are inconclusive; unexpected allowed reads fail without consuming the body.",
+    "Idempotency tokens are persisted before submission and stable on restart. Prior known IDs/measurements survive a failed restart.",
+    "Failed/cancelled queries retain known scan counters; timeout retains provisional counters and requests cancellation without claiming terminal state.",
+    "Result mismatch or malformed responses stop further submission. Network failure after submission retains query ID and avoids persisting SDK error text.",
+    "Resumed catalog registration and read-only acceptance reject changed parsing semantics."
+  ],
+  "synthetic_oracle": {
+    "fact_rows": 3,
+    "daily_rows": 2,
+    "daily_trips": 3,
+    "hourly_rows": 3,
+    "hourly_trips": 3,
+    "fixture_scanned_bytes": 160,
+    "limit": "Hand-calculated fixture and mocked service counters, not AWS measurements."
+  },
+  "cloud_execution": false,
+  "cloud_billed_cost_usd": null,
+  "human_review": null,
+  "not_demonstrated": [
+    "Authenticated account/region and approved numeric spending cap",
+    "Effective AWS permissions or actual denied requests",
+    "Real Athena execution and result reconciliation",
+    "Cloud restoration, measured charges or sustained operation",
+    "Independent human review"
+  ],
+  "source_sha256": {
+    "taxi_platform/cloud_acceptance.py": "eaa900cb9bffd7299f04fac4c60a47876d55e29fad821480e388fa1a9d518792",
+    "taxi_platform/cloud_release.py": "c28b1e93d6127f1d9b77b7d13750c9acfa2ba79e21abe01e27b186d756287593",
+    "taxi_platform/cloud_experiment.py": "7d41365d453708c19b78e9915c95730044580b29ecee742bac05c83e9755c1de",
+    "tests/test_cloud_acceptance.py": "6af1f9964b64eafe65a41902d83c1da56706f795fa73ebab5f79c9b2c9d8ea7f",
+    "tests/test_cloud_controls.py": "a7f2141702650f29bbfacc67d066c9eaeefc0629a4ecc69ee5b00c618c6bc4ff",
+    "tests/test_cloud_experiment.py": "5aee2ddf42e0e2451865e63da197e167253c8d8d9c6464587ee843e4fc6b11f4"
+  }
+}
