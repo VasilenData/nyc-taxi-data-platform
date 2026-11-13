@@ -115,11 +115,13 @@ pytest -q tests/test_pipeline.py::test_poisoned_month_trips_the_quality_gate
 
 ## Cloud controls and serving recovery
 
-The [cloud extension](docs/CLOUD_CONTROLS.md) provides private versioned S3, distinct release-publisher and aggregate-query roles, encrypted Athena results and an enforced per-query scan cutoff. An explicit byte-budgeted uploader verifies remote checksums before registering immutable release tables. A read-only collector records observed Athena scan/time counters without inventing billed costs. Infrastructure validation and SDK-boundary tests run in CI; **AWS deployment, live IAM denial tests and cloud query measurements remain unexecuted** pending an account and experiment spending ceiling.
+The [cloud extension](docs/CLOUD_CONTROLS.md) provides private versioned S3, distinct release-publisher and aggregate-query roles, encrypted Athena results and an enforced per-query scan cutoff. Both catalog roles are scoped to the selected release's two aggregate tables; the analyst can also read its commit manifest. An explicit byte-budgeted uploader verifies remote checksums before registering immutable release tables.
+
+A [read-only acceptance verifier](taxi_platform/cloud_acceptance.py) checks the assumed query role, enforced workgroup settings, trusted manifest, aggregate object hashes and exact catalog definitions without starting a query. The usage ledger includes failed/cancelled query scans and preserves missing counters as unknown. The [dated offline evidence](docs/cloud-controls-2026-11-13.json) records four baseline regressions and a partition-drift finding resolved after AI cross-review. Infrastructure validation and SDK-boundary tests run in CI; **AWS deployment, live IAM denial tests and cloud query measurements remain unexecuted**. Mocked service responses establish program behavior, not effective AWS access or operating history.
 
 The executed [local backup exercise](docs/cloud-readiness-2026-11-12.json) restored all eight published tables plus their version record from a 3.76 MB Parquet bundle, with zero row differences, identical schemas and passing reconciliations over the 30,000-row sample. Failure tests cover corrupt bundles and abrupt process death during transactional restoration. This is a serving-data backup, not a backup of raw ingestion state or a full-data recovery benchmark.
 
-The next step is to run the documented bounded cloud experiment, verify actual denied permissions and record query costs and operating history. The prepared architecture and local recovery evidence do not establish those results.
+The next step, after account and spending approval, is to run the documented bounded cloud experiment, verify actual denied permissions and record query usage, actual charges and operating history. The prepared architecture and local recovery evidence do not establish those results.
 
 ## Extension: observed pickup forecasting and planning replay
 

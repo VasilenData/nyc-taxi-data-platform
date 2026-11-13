@@ -31,7 +31,15 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
       - name: Tests
-        run: pytest -q
+        run: pytest -q --junitxml="${{ runner.temp }}/tests/results.xml"
+      - name: Retain test evidence including offline cloud acceptance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ runner.temp }}/tests/
+          retention-days: 14
+          if-no-files-found: warn
   docker:
     runs-on: ubuntu-latest
     needs: test

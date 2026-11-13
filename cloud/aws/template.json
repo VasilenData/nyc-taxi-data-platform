@@ -17,7 +17,7 @@
     },
     "ReleaseId": {
       "Type": "String",
-      "AllowedPattern": "[a-f0-9-]{36}",
+      "AllowedPattern": "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
       "Description": "UUID from a verified immutable serving bundle."
     },
     "PerQueryScanLimitBytes": {
@@ -286,7 +286,44 @@
                       "Fn::Sub": "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:database/${CatalogDatabase}"
                     },
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_*"
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_${ReleaseToken}_mart_daily_borough",
+                        {
+                          "ReleaseToken": {
+                            "Fn::Join": [
+                              "",
+                              {
+                                "Fn::Split": [
+                                  "-",
+                                  {
+                                    "Ref": "ReleaseId"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_${ReleaseToken}_mart_hourly_demand",
+                        {
+                          "ReleaseToken": {
+                            "Fn::Join": [
+                              "",
+                              {
+                                "Fn::Split": [
+                                  "-",
+                                  {
+                                    "Ref": "ReleaseId"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -343,6 +380,9 @@
                     },
                     {
                       "Fn::Sub": "${DataBucket.Arn}/releases/${ReleaseId}/tables/mart_hourly_demand/*"
+                    },
+                    {
+                      "Fn::Sub": "${DataBucket.Arn}/releases/${ReleaseId}/manifest.json"
                     }
                   ]
                 },
@@ -439,7 +479,44 @@
                       "Fn::Sub": "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:database/${CatalogDatabase}"
                     },
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_*"
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_${ReleaseToken}_mart_daily_borough",
+                        {
+                          "ReleaseToken": {
+                            "Fn::Join": [
+                              "",
+                              {
+                                "Fn::Split": [
+                                  "-",
+                                  {
+                                    "Ref": "ReleaseId"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/${CatalogDatabase}/release_${ReleaseToken}_mart_hourly_demand",
+                        {
+                          "ReleaseToken": {
+                            "Fn::Join": [
+                              "",
+                              {
+                                "Fn::Split": [
+                                  "-",
+                                  {
+                                    "Ref": "ReleaseId"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     }
                   ]
                 }

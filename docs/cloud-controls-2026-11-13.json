@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-13T01:12:21.036288+00:00",
+  "scope": "Local code/configuration validation and synthetic SDK fixtures. No AWS deployment or API calls.",
+  "base_commit": "219ff33042c33a5078c1c6304bb564a6c1c8227a",
+  "working_tree_dirty": true,
+  "cloud_deployed": false,
+  "aws_queries_started": 0,
+  "cloud_billed_cost_usd": null,
+  "source_sha256": {
+    "cloud/aws/template.json": "89c1cd761abe8443298ec19ebcbb953da2cbdf5d461dab550876928ce842763f",
+    "taxi_platform/cloud_release.py": "390405467c3aee12a36eb1ed13f081c337b7ad3eb0ba15abddf9caa320159a42",
+    "taxi_platform/cloud_acceptance.py": "694fcd970ec8e1cdf9a1111a6ff01daff3bb2bee3dbe3a6741378b8d7ff56eaa",
+    "tests/test_cloud_controls.py": "3907dbc203a3ac1f8ebc168c062a9b6a1a0e44b01262401ccc08a65cb20ce6a8",
+    "tests/test_cloud_acceptance.py": "4bfc2ffa0425a3b83fefdecefbf9a8c8bd8e653826341d6c6ecd850f9390a9ec",
+    ".github/workflows/ci.yml": "6c54e80ecee6018793fdeb854d6d8754df6ae1f9e45ded4a64a12de70e3cb5b2"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "pytest": "9.2.0",
+      "ruff": "0.17.4",
+      "cfn-lint": "1.60.1",
+      "duckdb": "2.0.0",
+      "boto3": "1.44.1"
+    }
+  },
+  "reproduced_regressions": [
+    {
+      "case": "cancelled query usage",
+      "before": "ValueError: Only completed successful queries are comparable",
+      "after": "CANCELLED status and its reported scan bytes retained; not eligible for scan comparison"
+    },
+    {
+      "case": "analyst commit-manifest access",
+      "before": "Expected selected-release manifest GetObject resource absent",
+      "after": "Exact selected-release manifest resource present"
+    },
+    {
+      "case": "PublisherRole catalog scope",
+      "before": "One wildcard release_* table ARN instead of two exact table ARNs",
+      "after": "Two aggregate table ARNs derived from the selected canonical release UUID"
+    },
+    {
+      "case": "QueryRole catalog scope",
+      "before": "One wildcard release_* table ARN instead of two exact table ARNs",
+      "after": "Two aggregate table ARNs derived from the selected canonical release UUID"
+    }
+  ],
+  "baseline_regression_run": {
+    "command": "python -m pytest -q tests/test_cloud_controls.py -k 'cancelled_query or analyst_can_read or catalog_permissions'",
+    "observed_failures_before_fix": 4,
+    "deselected": 4
+  },
+  "focused_tests": {
+    "command": "python -m pytest -q tests/test_cloud_controls.py tests/test_cloud_acceptance.py --junitxml=.cloud-work/cloud-controls.xml",
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 6.182,
+    "started_at_utc": "2026-11-13T01:03:40.147162+00:00",
+    "cases": [
+      {
+        "name": "tests.test_cloud_controls.test_cloud_template_is_private_scoped_encrypted_and_scan_bounded",
+        "seconds": 0.007
+      },
+      {
+        "name": "tests.test_cloud_controls.test_measurement_records_observed_counters_without_inventing_a_bill",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_controls.test_cancelled_query_scan_usage_is_not_lost",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_controls.test_analyst_can_read_the_commit_manifest_for_its_release",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_controls.test_catalog_permissions_are_exactly_two_tables_in_the_selected_release[PublisherRole]",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_controls.test_catalog_permissions_are_exactly_two_tables_in_the_selected_release[QueryRole]",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_controls.test_upload_checks_budget_and_remote_checksums_before_registering_tables",
+        "seconds": 0.224
+      },
+      {
+        "name": "tests.test_cloud_controls.test_interrupted_upload_cannot_expose_a_commit_marker_or_catalog",
+        "seconds": 0.173
+      },
+      {
+        "name": "tests.test_cloud_controls.test_resumed_catalog_registration_cannot_accept_partitioned_aggregates[False]",
+        "seconds": 0.169
+      },
+      {
+        "name": "tests.test_cloud_controls.test_resumed_catalog_registration_cannot_accept_partitioned_aggregates[True]",
+        "seconds": 0.172
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_read_only_acceptance_matches_actual_bundle_and_uploaded_catalog",
+        "seconds": 0.205
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[operator_role]",
+        "seconds": 0.203
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[foreign_account]",
+        "seconds": 0.197
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[disabled_group]",
+        "seconds": 0.201
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[unenforced]",
+        "seconds": 0.203
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[unbounded]",
+        "seconds": 0.199
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[result_location]",
+        "seconds": 0.274
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[result_owner]",
+        "seconds": 0.314
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[encryption]",
+        "seconds": 0.313
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[metrics]",
+        "seconds": 0.328
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[engine]",
+        "seconds": 0.309
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[manifest]",
+        "seconds": 0.311
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[extra_object]",
+        "seconds": 0.328
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[truncated_listing]",
+        "seconds": 0.314
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[checksum]",
+        "seconds": 0.314
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[catalog_location]",
+        "seconds": 0.321
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[catalog_schema]",
+        "seconds": 0.324
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[catalog_format]",
+        "seconds": 0.311
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_acceptance_rejects_drift_before_issuing_any_query[partition_keys]",
+        "seconds": 0.325
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_ledger_retains_failed_and_cancelled_usage_without_zero_filling_unknowns",
+        "seconds": 0.001
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_duplicate_query_ids_cannot_inflate_observed_usage",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_invalid_usage_counter_fails_closed[-1]",
+        "seconds": 0.001
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_invalid_usage_counter_fails_closed[True]",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_invalid_usage_counter_fails_closed[100]",
+        "seconds": 0.0
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_invalid_usage_counter_fails_closed[1.5]",
+        "seconds": 0.001
+      },
+      {
+        "name": "tests.test_cloud_acceptance.test_unknown_result_reuse_cannot_be_compared_as_a_cold_query",
+        "seconds": 0.0
+      }
+    ]
+  },
+  "full_suite": {
+    "command": "python -m pytest -q --junitxml=.cloud-work/full-suite.xml",
+    "tests": 121,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "seconds": 194.885,
+    "started_at_utc": "2026-11-13T01:03:40.147162+00:00",
+    "passed": 120,
+    "skip_reason": "Optional local Iceberg comparison: pyiceberg is not installed in this environment; separate CI job installs it."
+  },
+  "other_checks": [
+    {
+      "command": "ruff check .",
+      "result": "passed"
+    },
+    {
+      "command": "cfn-lint cloud/aws/template.json",
+      "result": "passed"
+    },
+    {
+      "command": "dbt parse --profiles-dir . (from dbt/)",
+      "result": "passed"
+    },
+    {
+      "command": "python -m taxi_platform.cloud_acceptance --help",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "sample_pipeline": {
+    "command": "python scripts/benchmark.py --dataset sample --output .cloud-work/sample-20261113.json",
+    "scope": "Existing bundled 30,000-row TLC sample, single local validation run; not a repeat of the 31.6M-row benchmark.",
+    "started_at_utc": "2026-11-13T00:55:31.772933+00:00",
+    "finished_at_utc": "2026-11-13T00:55:47.542643+00:00",
+    "success": true,
+    "rows": {
+      "raw": 30000,
+      "valid": 29326,
+      "quarantined": 674,
+      "fact": 29326
+    },
+    "reconciliation": {
+      "raw_equals_input_rows": true,
+      "raw_equals_valid_plus_quarantined": true,
+      "valid_equals_fact": true
+    },
+    "asset_checks": {
+      "not_null_stg_trips_classified_trip_id": "PASS",
+      "accepted_values_stg_trips_classified_reject_reas": "PASS",
+      "accepted_range_mart_data_quality_raw_rows__1": "PASS",
+      "accepted_range_fct_trips_distance_miles__False__": "PASS",
+      "accepted_range_fct_trips_pickup_dow__7__1": "PASS",
+      "accepted_range_fct_trips_fare_amount__0": "PASS",
+      "accepted_range_fct_trips_duration_min__False__36": "PASS",
+      "accepted_range_fct_trips_pickup_hour__23__0": "PASS",
+      "assert_trip_id_unique_per_month": "PASS",
+      "accepted_range_fct_trips_total_amount__False__0": "PASS",
+      "not_null_fct_trips_pickup_at": "PASS",
+      "not_null_fct_trips_source_month": "PASS",
+      "relationships_fct_trips_dropoff_zone_id__Locatio": "PASS",
+      "not_null_fct_trips_trip_id": "PASS",
+      "relationships_fct_trips_pickup_zone_id__Location": "PASS",
+      "accepted_range_mart_hourly_demand_trips__1": "PASS",
+      "not_null_mart_daily_borough_pickup_date": "PASS",
+      "accepted_range_mart_daily_borough_trips__1": "PASS",
+      "coverage": "PASS",
+      "reconciliation": "PASS",
+      "reject_rate": "PASS"
+    },
+    "input_sha256": {
+      "yellow_tripdata_2023-01.parquet": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558",
+      "yellow_tripdata_2023-02.parquet": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd"
+    },
+    "measurement_sha256": "64244728713567f2c1af1c5aa06c45d5423c187234fe6be150b0ec0cc7764a7c",
+    "change_boundary": "This sample validation preceded the final cloud-only partition-key fix. Pipeline code is unchanged; the final full suite reran sample benchmark and pipeline integration tests."
+  },
+  "acceptance_fixture": {
+    "input": "Real local nine-relation Parquet export, three synthetic rows per relation; all AWS clients are read-only mocks.",
+    "read_calls_on_success": {
+      "STS": 1,
+      "Athena": 1,
+      "S3": 5,
+      "Glue": 2
+    },
+    "injected_drift_cases_rejected": 18,
+    "effective_iam_denials_verified": false
+  },
+  "usage_fixture": {
+    "input": "Five synthetic query responses, not measured AWS execution.",
+    "states": {
+      "SUCCEEDED": 2,
+      "FAILED": 1,
+      "CANCELLED": 1,
+      "RUNNING": 1
+    },
+    "known_scanned_bytes": 200,
+    "unknown_scan_query_count": 1,
+    "eligible_comparison_query_count": 1,
+    "billed_cost_usd": null
+  },
+  "limitations": [
+    "No cloud resources, live access denials, Athena query results, actual cloud cost or sustained operating history were demonstrated.",
+    "Read-only acceptance checks are point-in-time observations and cannot prove denied permissions.",
+    "The ledger covers only supplied query IDs; missing counters are unknown and running counters provisional.",
+    "The historical 31.6M-row local measurement remains dated 12 November 2026; it was not rerun for this cloud-only upgrade.",
+    "No external human review or real customer use is asserted."
+  ],
+  "review_resolution": {
+    "review_type": "AI cross-review, not independent human review",
+    "finding": "Unexpected Glue partition keys changed query semantics but passed the new acceptance verifier.",
+    "reproduced_before_fix": {
+      "command": "python -m pytest -q tests/test_cloud_acceptance.py -k partition_keys",
+      "failures": 1,
+      "deselected": 25,
+      "error": "DID NOT RAISE ValueError"
+    },
+    "fix": "Create tables with PartitionKeys: []; reject partitioned tables both during resumed registration and read-only acceptance.",
+    "verification": "Partition-drift regression and both resumed-registration cases pass in the focused and full suites.",
+    "primary_reference": "https://docs.aws.amazon.com/glue/latest/webapi/API_Table.html"
+  }
+}

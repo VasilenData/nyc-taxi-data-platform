@@ -5,10 +5,11 @@
 ## What is implemented
 
 - [CloudFormation](../cloud/aws/template.json): private, encrypted, versioned S3 buckets; distinct publisher and analyst roles trusted only by a named operator; a Glue database; an Athena workgroup with enforced encrypted results and a default **100 MiB per-query scan cutoff**. Deploy separate stacks for `dev` and `prod`; no production stack has been deployed.
-- The publisher can upload only the selected release prefix and register release tables. The analyst can read **only the two aggregate Parquet tables** and write query results, with no data-bucket write or delete permissions. Bucket policies reject unencrypted transport and require conditional create-only release writes. This is static policy intent; effective account permissions, SCPs and live denials still need verification.
+- The publisher can upload only the selected release prefix and register its **two exact aggregate catalog tables**. The analyst can read those two aggregate Parquet prefixes **and that release's commit manifest**, and write query results, with no data-bucket write or delete permissions. Both Glue policies name the two tables plus required catalog/database ancestors, rather than a `release_*` table wildcard. Bucket policies reject unencrypted transport and require conditional create-only release writes. This is static policy intent; effective account permissions, SCPs and live denials still need verification.
 - [Serving backups](../taxi_platform/release_bundle.py): one read transaction exports eight tables plus the publication record; SHA-256, sizes, row counts, schemas and release identity are checked before an immutable local bundle becomes visible. Restoration replaces all nine consumer relations in one transaction.
 - [Cloud publisher](../taxi_platform/cloud_release.py): explicit byte budget; conditional S3 writes; remote checksum verification; commit manifest uploaded last; only then are release-specific aggregate catalog tables registered. Interrupted upload can be resumed. A catalog interruption may leave one of the two new tables registered; there is **no atomic cross-table Glue catalog switch** and no mutable `latest` alias. Consumers must select both tables from the same complete manifest/release ID.
-- Read-only Athena measurement collection records AWS-reported scan bytes, engine/total duration, SQL hash and result reuse. It never starts a query, computes an invented invoice, or labels local measurements as cloud results.
+- [Read-only acceptance](../taxi_platform/cloud_acceptance.py) checks the expected assumed query role, enabled/enforced workgroup, approved scan cutoff, owned/encrypted result destination, metrics and effective engine version. It verifies the remote manifest against a trusted local bundle, lists each aggregate prefix to reject extra files, checks remote SHA-256/size/encryption and matches catalog schema, empty partition keys, format and location. It reads a bounded manifest and object metadata; it does not download the fact dataset, start queries or change access.
+- Read-only Athena measurement collection records **all supplied query states**, including failed and cancelled work. Its bounded ledger rejects duplicate IDs, preserves absent counters as `null`, flags provisional running-query data, and totals only known scan bytes. Successful DML with known non-reused results and scan counters is eligible for comparison; SQL equivalence still requires review. It never starts a query or computes an invented invoice. SQL text is hashed, not included in the report.
 
 ## Observed evidence
 
@@ -16,10 +17,12 @@
 
 The tests also interrupt restoration after relation 1, 5 and 9 and before commit; kill a child process with `os._exit(37)` after copying facts; and verify that the previous complete dataset survives before a successful retry. Corrupt, missing, extra and path-tampered bundle files are rejected. An interrupted mocked AWS upload cannot create its commit marker or catalog tables. Mocked SDK tests establish sequencing, **not** AWS behavior.
 
+The [13 November offline regression record](cloud-controls-2026-11-13.json) documents four assertions that failed before this upgrade and pass afterward: cancelled-query scan usage was rejected, analysts lacked commit-manifest access, and each role allowed all `release_*` catalog tables. The expanded tests use a real local Parquet bundle with synthetic three-row relations and mocked service responses. They reject 18 injected identity/configuration/object/catalog changes. Their synthetic five-query ledger totals 200 known scan bytes, including failed/cancelled work, while one running query remains unknown. Those bytes are **fixture values, not an AWS measurement**. An AI cross-review then identified a fifth counterexample: unexpected catalog partition keys passed acceptance despite changing query semantics. The new regression failed before the follow-up fix; catalog creation and acceptance now explicitly require an unpartitioned table. This is recorded as AI review, not an independent human endorsement. The [review prompt](CLOUD_REVIEW_PROMPT.md) makes deployment and evidence boundaries explicit for future changes.
+
 ```bash
 pip install -r requirements-dev.txt -r requirements-cloud.txt
 cfn-lint cloud/aws/template.json
-pytest -q tests/test_release_bundle.py tests/test_cloud_controls.py
+pytest -q tests/test_release_bundle.py tests/test_cloud_controls.py tests/test_cloud_acceptance.py
 python scripts/cloud_readiness_exercise.py --output .cloud-work/local-proof.json
 ```
 
@@ -56,7 +59,18 @@ python -m taxi_platform.cloud_release --profile taxi-publisher --region eu-west-
   --account-id ACCOUNT_ID --max-bytes 16777216
 ```
 
-4. Under the query role, verify the negative cases before publishing access: reading `fct_trips`, writing a data object, deleting an object, querying another workgroup, and reading another environment's bucket must fail. Under the publisher role, overwrite without `If-None-Match` and writes to another release must fail. Record actual errors and identities; static policy tests are not a substitute.
+4. First perform read-only acceptance under the scoped query role. Substitute the actual stack outputs and preserve the original verified local bundle; substituting an untrusted downloaded manifest would remove the trust anchor. This command uses only `GetCallerIdentity`, `GetWorkGroup`, `GetObject`, `ListObjectsV2`, `HeadObject` and `GetTable`. The list reads are bounded to two keys per aggregate prefix, enough to reject an unexpected second file; a truncated response also fails.
+
+```bash
+python -m taxi_platform.cloud_acceptance .cloud-work/release \
+  --profile taxi-query --region eu-west-1 --environment dev \
+  --data-bucket DATA_BUCKET --results-bucket RESULTS_BUCKET \
+  --database CATALOG_DATABASE --workgroup WORKGROUP --account-id ACCOUNT_ID \
+  --query-role-arn QUERY_ROLE_ARN --max-scan-bytes 104857600 \
+  --output .cloud-work/aws-acceptance.json
+```
+
+Then verify the negative cases before publishing access: reading `fct_trips`, writing a data object, deleting an object, querying another workgroup, reading another release's catalog tables, and reading another environment's bucket must fail. Under the publisher role, overwrite without `If-None-Match`, writes to another release, and creating another release's catalog table must fail. Record actual errors and identities; successful read-only acceptance and static policy tests do **not** establish effective denied permissions. Do not run mutating denial probes unless their account/resource scope is explicitly authorized: unexpectedly broad permissions can allow them to succeed.
 
 5. Explicitly run a baseline and filtered/column-pruned query against the release-specific daily aggregate through the bounded workgroup. Disable result reuse for the scan comparison. Keep both query IDs and query texts with the evidence, then collect the service counters:
 
@@ -76,10 +90,12 @@ python -m taxi_platform.cloud_release --profile taxi-query --region eu-west-1 me
 
 Do not promise scan savings: this small aggregate can fit a single Parquet row group and may show little change. A useful full-data experiment should compare partitioned layouts on observed service counters, including cold and reused queries.
 
+Include failed and cancelled query IDs when collecting usage. The ledger accepts 1–100 distinct IDs; it is not workgroup-wide accounting, and omitted executions are not discovered automatically. `known_scanned_bytes` is a subtotal, not a completeness claim: inspect `unknown_scan_query_count` and `all_terminal_scan_counters_present`. Running/queued executions need collection again after completion. `eligible_for_scan_comparison` does not mean the example queries answer the same question; compare equivalent SQL when evaluating a storage/layout change. No dollar estimate or invoiced charge is generated from scan counters.
+
 ## Costs, teardown and limits
 
 The cutoff applies **per query**, not across an hour/month. AWS can charge for bytes scanned by a canceled query; S3 storage/requests, catalog operations and result retention are separate. The uploader's byte cap constrains one release, not repeated releases. A budget alert is not a hard spending ceiling. Choose a total experiment budget, a small fixed query count and an end time; inspect actual charges afterward. This template does not deploy running VMs, clusters, NAT gateways or scheduled jobs.
 
 Results expire after seven days, including noncurrent versions. Data versions are deliberately retained for recovery. Both buckets have `DeletionPolicy: Retain`: deleting the stack leaves the storage and its costs. After verified recovery and approval to discard experiment data, an account operator must separately empty/delete retained bucket versions. Least-privilege publisher/query roles cannot delete backups. No automatic cleanup is scheduled.
 
-References: [Athena workgroup controls](https://docs.aws.amazon.com/athena/latest/ug/workgroups-manage-queries-control-costs.html), [workgroup configuration](https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroupConfiguration.html), [S3 conditional-write enforcement](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes-enforce.html).
+References: [Glue unpartitioned-table requirements](https://docs.aws.amazon.com/glue/latest/webapi/API_Table.html), [Athena query limits and cancelled-query charges](https://docs.aws.amazon.com/athena/latest/ug/workgroups-setting-control-limits-cloudwatch.html), [execution statistics and optional counters](https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecutionStatistics.html), [Glue table and ancestor permissions](https://docs.aws.amazon.com/athena/latest/ug/fine-grained-access-to-glue-resources.html), [workgroup configuration](https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroupConfiguration.html), [S3 conditional-write enforcement](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes-enforce.html).
