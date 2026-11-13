@@ -93,7 +93,8 @@ def inspect_release(sts, athena, s3, glue, bundle, *, data_bucket, results_bucke
         _require(descriptor.get("InputFormat") == "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
                  and descriptor.get("OutputFormat") == "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
                  and descriptor.get("SerdeInfo", {}).get("SerializationLibrary") ==
-                 "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe", f"Catalog format mismatch: {name}")
+                 "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+                 and descriptor.get("SerdeInfo", {}).get("Parameters") in (None, {}), f"Catalog format mismatch: {name}")
         observed_tables.append({"table": table_name, "rows_in_local_verified_bundle": item["rows"],
                                 "verified_object_bytes": item["bytes"], "sha256": item["sha256"]})
     return {"schema_version": 1, "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
