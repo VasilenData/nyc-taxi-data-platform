@@ -122,3 +122,55 @@ def test_upgrade_replaces_old_dependent_views_transactionally(tmp_path):
         con.execute('create view main.trips_quarantine as select * from main.stg_trips_classified where false')
         publish(con)
         assert con.execute('select count(*) from main.stg_trips').fetchone()[0] == 3
+
+
+@pytest.mark.parametrize('original_order', [True, False])
+@pytest.mark.parametrize('failure', ['none', 'validation', 'copy'])
+def test_copy_tuning_restores_callers_setting_and_preserves_rows(tmp_path, original_order, failure):
+    with duckdb.connect(str(tmp_path / 'warehouse.duckdb')) as con:
+        candidate(con, 9, 5)
+        publish(con)
+        before = snapshot(con)
+        candidate(con, 17, 8)
+        if failure == 'validation':
+            con.execute('update build.mart_hourly_demand set trips = 0')
+        con.execute('set preserve_insertion_order = ?', [original_order])
+
+        class FailingCopy:
+            def execute(self, sql, parameters=None):
+                result = con.execute(sql, parameters) if parameters is not None else con.execute(sql)
+                if failure == 'copy' and sql.startswith('create or replace table main."fct_trips"'):
+                    raise OSError('copy interrupted')
+                return result
+
+        if failure == 'none':
+            publish(FailingCopy())
+            # Exact bidirectional multiset comparison, preserving duplicate rows.
+            for table in TABLES:
+                differences = con.execute(f'''select * from (
+                    (select * from main."{table}" except all select * from build."{table}")
+                    union all
+                    (select * from build."{table}" except all select * from main."{table}")
+                )''').fetchall()
+                assert not differences
+        else:
+            with pytest.raises((ValueError, OSError)):
+                publish(FailingCopy())
+            assert snapshot(con) == before
+        assert con.execute("select current_setting('preserve_insertion_order')").fetchone()[0] is original_order
+
+
+def test_existing_reader_keeps_complete_version_across_publication(tmp_path):
+    database = str(tmp_path / 'warehouse.duckdb')
+    with duckdb.connect(database) as writer:
+        candidate(writer, 4, 1)
+        publish(writer)
+        with duckdb.connect(database) as reader:
+            reader.execute('begin')
+            before = snapshot(reader)
+            candidate(writer, 7, 2)
+            publish(writer)
+            assert snapshot(reader) == before
+            reader.execute('commit')
+            assert reader.execute('select count(*) from main.fct_trips').fetchone()[0] == 7
+            assert reader.execute('select sum(trips) from main.mart_hourly_demand').fetchone()[0] == 7
