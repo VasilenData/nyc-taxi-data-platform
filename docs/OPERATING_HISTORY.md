@@ -1,9 +1,17 @@
 # Dated operating evidence for a historical replay
 
 **Status on 14 November 2026: implemented and exercised locally. The scheduled
-workflows are prepared in code, not published or active.** No multiweek service
+workflows activate from the default branch for the window below.** No multiweek service
 history, outbound email delivery, persistent cloud warehouse or live taxi feed is
 claimed. AWS remains offline-only.
+
+Hosted Linux CI exposed a timeout-reporting defect: `psutil.wait_procs` reaped
+the direct child before `subprocess.Popen` could collect its exit status, allowing
+a killed process to be reported with exit code zero. The supervisor now gives
+`Popen.wait` sole ownership of the direct child's status and uses psutil to confirm
+the descendants stopped. The existing timeout and descendant-writer regressions
+cover this boundary. The dated local record below remains unchanged; hosted run
+artifacts retain their own source fingerprints.
 
 The operating exercise replays the bundled **30,000 January–February 2023 input
 rows**, using the actual loader, dbt models/tests and atomic publisher. Freshness
