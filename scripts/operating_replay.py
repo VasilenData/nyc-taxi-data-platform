@@ -41,7 +41,7 @@ def source_identity():
             for path in paths}
 
 
-def terminate_tree(pid):
+def terminate_tree(pid, *, wait_for_root=None):
     """Freeze trusted child trees before killing them, including Windows launchers."""
     processes = {}
     try:
@@ -66,7 +66,13 @@ def terminate_tree(pid):
                 process.kill()
             except psutil.NoSuchProcess:
                 pass
-    _, alive = psutil.wait_procs(list(processes.values()), timeout=10)
+    # Popen owns the direct child's wait status. On POSIX, allowing psutil to
+    # reap it first makes Popen observe ECHILD and substitute a false zero exit.
+    if wait_for_root is not None:
+        wait_for_root(timeout=10)
+    remaining = [child for child in processes.values()
+                 if wait_for_root is None or child.pid != pid]
+    _, alive = psutil.wait_procs(remaining, timeout=10)
     if alive:
         raise RuntimeError("Timed-out worker tree could not be confirmed stopped")
     return sorted(processes)
@@ -94,7 +100,7 @@ def bounded_command(command, log, env, timeout):
             process.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
             timed_out = True
-            terminated = terminate_tree(process.pid)
+            terminated = terminate_tree(process.pid, wait_for_root=process.wait)
             process.wait(timeout=10)
         thread.join(timeout=10)
         if thread.is_alive():
