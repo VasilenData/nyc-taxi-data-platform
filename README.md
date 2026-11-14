@@ -10,11 +10,13 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 **Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.
 
-**View the result:** [full-data measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
+**View the result:** [measured publication optimization](docs/PUBLICATION_PERFORMANCE.md) · [full-data pipeline measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
 
 **Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py) · [AWS access and cost controls](cloud/aws/template.json)
 
 ## Results at a glance
+
+**14 November publication comparison:** on the same prepared 31.6-million-row workload, allowing unordered table copies reduced median publication wall time from **31.311 s to 24.165 s (22.8%)** across three alternating measured pairs. All eight tables and version metadata passed checks after every run, and rollback/reader-snapshot protections remain tested. The trade-off was **4.5% more CPU time, 0.8% more sampled peak RSS and 1.8% larger checkpointed files**. This is a local publication-only result, not an end-to-end or cloud speedup. [Repeated measurements, ranges and method](docs/PUBLICATION_PERFORMANCE.md) · [raw evidence](measurements/publication-order-2026-11-14.json).
 
 Measured **12 November 2026**, including staged validation and publication of all eight consumer tables, in a new warehouse:
 
@@ -96,6 +98,7 @@ For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-jan
 | Does a failed check actually fail the CLI run? | [Quality checks](taxi_platform/checks.py), [runner](run_pipeline.py) and the poisoned-month test in [integration tests](tests/test_pipeline.py) |
 | Can the results be reproduced? | [Benchmark runner](scripts/benchmark.py), [measurement guide](docs/BENCHMARKS.md), [CI workflow](.github/workflows/ci.yml) and [Dockerfile](Dockerfile) |
 | Can a failed candidate replace consumer tables? | [Transactional publisher](taxi_platform/publication.py), [rollback/process-exit tests](tests/test_publication.py) and poisoned-month integration test |
+| Can publication be faster without weakening recovery? | [Repeated full-data comparison and trade-offs](docs/PUBLICATION_PERFORMANCE.md), [source-hashed measurements](measurements/publication-order-2026-11-14.json) and reader-snapshot tests |
 | Can another engineer operate it? | [Runbook: failed checks, backfills and corrected files](docs/RUNBOOK.md) |
 | Can a SQL rule change leave stale history? | [Model revision guard](taxi_platform/revision.py), [plan/apply tests](tests/test_change_plan.py) and [executed change exercise](docs/CHANGE_MANAGEMENT.md) |
 | What does table-format rollback actually cover? | [Optional Iceberg comparison and measured limits](docs/ICEBERG.md) |

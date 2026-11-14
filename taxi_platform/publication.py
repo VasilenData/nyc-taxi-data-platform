@@ -23,7 +23,13 @@ def publish(con=None) -> dict:
     con = con or ingest.connect()
     version = str(uuid4())
     started = time.perf_counter()
+    original_order = None
     try:
+        # No consumer contract promises physical row order. Let CTAS stream rows
+        # without preserving insertion order, but do not leak this global setting
+        # into a caller's later work (including after a refused publication).
+        original_order = con.execute("select current_setting('preserve_insertion_order')").fetchone()[0]
+        con.execute("set preserve_insertion_order = false")
         con.execute("begin")
         try:
             failed = [name for name, (passed, _) in evaluate(con, config.MAX_REJECT_RATE).items() if not passed]
@@ -69,5 +75,9 @@ def publish(con=None) -> dict:
                 "validation_seconds": round(validated_at - started, 6),
                 "copy_seconds": round(copied_at - validated_at, 6)}
     finally:
-        if own:
-            con.close()
+        try:
+            if original_order is not None:
+                con.execute("set preserve_insertion_order = ?", [original_order])
+        finally:
+            if own:
+                con.close()
