@@ -1,0 +1,4471 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-14T00:32:15.176551+00:00",
+  "scope": "local single-writer publication only; same checkpointed database copied before every run",
+  "baseline_commit": "5a8003f3d4c9c9f2ceea9340c9a4484f1f1cf246",
+  "baseline_publisher_sha256": "efc6b43de8abc5e33b510ddcd5330be7d92c161595733935cac0fad32afa2cff",
+  "candidate_publisher_sha256": "4777f974c6977e232fded273148ae486aef1cfde38b897d4985c12720691dd0a",
+  "runner_sha256": "c64488d87cf3ee535347d928841dd2ee8682d587c7a7a3f0cd38dca98de234c4",
+  "dependency_sha256": {
+    "taxi_platform/config.py": "f208819d40b7ebac58c223d0ec6b73f935aa2f31ae1ac31a040e74121b7aacd7",
+    "taxi_platform/ingest.py": "fff022cfb3b8fb3074878d29b87be56faead5cc12bcc95c5c350de269ca75fd8",
+    "taxi_platform/quality.py": "2913d91e393e6df5f78cd17139bf22730e7b754664d07acd542d43215e9bf722",
+    "taxi_platform/revision.py": "c8508b27c216f460a4234348b51bd7170b4a14102fe217e3cb816e1e7fb1406c"
+  },
+  "source_inputs": [
+    {
+      "month": "2023-01",
+      "file": "yellow_tripdata_2023-01.parquet",
+      "sha256": "32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572",
+      "bytes": 47673370,
+      "rows": 3066766
+    },
+    {
+      "month": "2023-02",
+      "file": "yellow_tripdata_2023-02.parquet",
+      "sha256": "4809e6aaac64f05a62d16a25d55713be1537ad64fc261e895eaf2d2120fe750a",
+      "bytes": 47748012,
+      "rows": 2913955
+    },
+    {
+      "month": "2023-03",
+      "file": "yellow_tripdata_2023-03.parquet",
+      "sha256": "e7d44943111b007bf0e7084863511886e0db29f862f9a96239383a1f86c6c26e",
+      "bytes": 56127762,
+      "rows": 3403766
+    },
+    {
+      "month": "2023-04",
+      "file": "yellow_tripdata_2023-04.parquet",
+      "sha256": "95c01c53c865e06489179bdecce3a59603697a1557c4d5d183c20ae13a144dc6",
+      "bytes": 54222699,
+      "rows": 3288250
+    },
+    {
+      "month": "2023-05",
+      "file": "yellow_tripdata_2023-05.parquet",
+      "sha256": "9bd7d1c557bb9d0413619ba296b4828b884852a70bd07f2230b83f080d9a8591",
+      "bytes": 58654627,
+      "rows": 3513649
+    },
+    {
+      "month": "2023-06",
+      "file": "yellow_tripdata_2023-06.parquet",
+      "sha256": "3e60e29b5df45683948b68acbfb503aa459d14162c610622585c6580fdbfc73a",
+      "bytes": 54999465,
+      "rows": 3307234
+    },
+    {
+      "month": "2023-07",
+      "file": "yellow_tripdata_2023-07.parquet",
+      "sha256": "98504ae351d920e9e0b61241f5707f90ee1588cfb199c378459234b5035805ab",
+      "bytes": 48361828,
+      "rows": 2907108
+    },
+    {
+      "month": "2023-08",
+      "file": "yellow_tripdata_2023-08.parquet",
+      "sha256": "84ce36a2f84fa14c12fd976c79a7d4f30c871f1782b08ca7c27bb76ab946e66b",
+      "bytes": 48152353,
+      "rows": 2824209
+    },
+    {
+      "month": "2023-09",
+      "file": "yellow_tripdata_2023-09.parquet",
+      "sha256": "091bf156bea5bb10bd217f5f12375f966f8789349af45d5ee4153e3e1e077a87",
+      "bytes": 47895515,
+      "rows": 2846722
+    },
+    {
+      "month": "2023-10",
+      "file": "yellow_tripdata_2023-10.parquet",
+      "sha256": "dc5f069476d350df802ed8120f3b39ec321c34cfa905381e87f608c78ca0c645",
+      "bytes": 59009059,
+      "rows": 3522285
+    }
+  ],
+  "prepared_database": {
+    "sha256": "1508e17d8a532da7072c4ba4b3731dce0c56103db5d2b9d540bc151660a6f819",
+    "bytes": 9438769152,
+    "build_fingerprints": {
+      "taxi_zone_lookup": {
+        "columns": [
+          [
+            "LocationID",
+            "INTEGER"
+          ],
+          [
+            "Borough",
+            "VARCHAR"
+          ],
+          [
+            "Zone",
+            "VARCHAR"
+          ],
+          [
+            "service_zone",
+            "VARCHAR"
+          ]
+        ],
+        "rows": 265,
+        "row_hash_sum": "2415402956036269489776",
+        "row_hash_xor": "8948828762469294114"
+      },
+      "stg_trips_classified": {
+        "columns": [
+          [
+            "trip_id",
+            "VARCHAR"
+          ],
+          [
+            "_source_month",
+            "VARCHAR"
+          ],
+          [
+            "_source_file",
+            "VARCHAR"
+          ],
+          [
+            "_loaded_at",
+            "TIMESTAMP"
+          ],
+          [
+            "vendor_id",
+            "BIGINT"
+          ],
+          [
+            "pickup_at",
+            "TIMESTAMP"
+          ],
+          [
+            "dropoff_at",
+            "TIMESTAMP"
+          ],
+          [
+            "passenger_count",
+            "DOUBLE"
+          ],
+          [
+            "distance_miles",
+            "DOUBLE"
+          ],
+          [
+            "pickup_zone_id",
+            "BIGINT"
+          ],
+          [
+            "dropoff_zone_id",
+            "BIGINT"
+          ],
+          [
+            "payment_type",
+            "BIGINT"
+          ],
+          [
+            "fare_amount",
+            "DOUBLE"
+          ],
+          [
+            "tip_amount",
+            "DOUBLE"
+          ],
+          [
+            "tolls_amount",
+            "DOUBLE"
+          ],
+          [
+            "total_amount",
+            "DOUBLE"
+          ],
+          [
+            "reject_reason",
+            "VARCHAR"
+          ]
+        ],
+        "rows": 31593944,
+        "row_hash_sum": "291413354445262094700429624",
+        "row_hash_xor": "6813641290035334800"
+      },
+      "stg_trips": {
+        "columns": [
+          [
+            "trip_id",
+            "VARCHAR"
+          ],
+          [
+            "_source_month",
+            "VARCHAR"
+          ],
+          [
+            "_source_file",
+            "VARCHAR"
+          ],
+          [
+            "_loaded_at",
+            "TIMESTAMP"
+          ],
+          [
+            "vendor_id",
+            "BIGINT"
+          ],
+          [
+            "pickup_at",
+            "TIMESTAMP"
+          ],
+          [
+            "dropoff_at",
+            "TIMESTAMP"
+          ],
+          [
+            "passenger_count",
+            "DOUBLE"
+          ],
+          [
+            "distance_miles",
+            "DOUBLE"
+          ],
+          [
+            "pickup_zone_id",
+            "BIGINT"
+          ],
+          [
+            "dropoff_zone_id",
+            "BIGINT"
+          ],
+          [
+            "payment_type",
+            "BIGINT"
+          ],
+          [
+            "fare_amount",
+            "DOUBLE"
+          ],
+          [
+            "tip_amount",
+            "DOUBLE"
+          ],
+          [
+            "tolls_amount",
+            "DOUBLE"
+          ],
+          [
+            "total_amount",
+            "DOUBLE"
+          ]
+        ],
+        "rows": 30694510,
+        "row_hash_sum": "283092004134216505854573464",
+        "row_hash_xor": "5013015383643740292"
+      },
+      "trips_quarantine": {
+        "columns": [
+          [
+            "trip_id",
+            "VARCHAR"
+          ],
+          [
+            "_source_month",
+            "VARCHAR"
+          ],
+          [
+            "_source_file",
+            "VARCHAR"
+          ],
+          [
+            "_loaded_at",
+            "TIMESTAMP"
+          ],
+          [
+            "vendor_id",
+            "BIGINT"
+          ],
+          [
+            "pickup_at",
+            "TIMESTAMP"
+          ],
+          [
+            "dropoff_at",
+            "TIMESTAMP"
+          ],
+          [
+            "passenger_count",
+            "DOUBLE"
+          ],
+          [
+            "distance_miles",
+            "DOUBLE"
+          ],
+          [
+            "pickup_zone_id",
+            "BIGINT"
+          ],
+          [
+            "dropoff_zone_id",
+            "BIGINT"
+          ],
+          [
+            "payment_type",
+            "BIGINT"
+          ],
+          [
+            "fare_amount",
+            "DOUBLE"
+          ],
+          [
+            "tip_amount",
+            "DOUBLE"
+          ],
+          [
+            "tolls_amount",
+            "DOUBLE"
+          ],
+          [
+            "total_amount",
+            "DOUBLE"
+          ],
+          [
+            "reject_reason",
+            "VARCHAR"
+          ]
+        ],
+        "rows": 899434,
+        "row_hash_sum": "8294512641561992484209232",
+        "row_hash_xor": "8448675213315571054"
+      },
+      "fct_trips": {
+        "columns": [
+          [
+            "trip_id",
+            "VARCHAR"
+          ],
+          [
+            "source_month",
+            "VARCHAR"
+          ],
+          [
+            "pickup_at",
+            "TIMESTAMP"
+          ],
+          [
+            "dropoff_at",
+            "TIMESTAMP"
+          ],
+          [
+            "pickup_date",
+            "DATE"
+          ],
+          [
+            "pickup_hour",
+            "INTEGER"
+          ],
+          [
+            "pickup_dow",
+            "INTEGER"
+          ],
+          [
+            "pickup_zone_id",
+            "INTEGER"
+          ],
+          [
+            "dropoff_zone_id",
+            "INTEGER"
+          ],
+          [
+            "pickup_borough",
+            "VARCHAR"
+          ],
+          [
+            "pickup_zone",
+            "VARCHAR"
+          ],
+          [
+            "dropoff_borough",
+            "VARCHAR"
+          ],
+          [
+            "passenger_count",
+            "DOUBLE"
+          ],
+          [
+            "distance_miles",
+            "DOUBLE"
+          ],
+          [
+            "duration_min",
+            "DOUBLE"
+          ],
+          [
+            "avg_speed_mph",
+            "DOUBLE"
+          ],
+          [
+            "fare_amount",
+            "DOUBLE"
+          ],
+          [
+            "tip_amount",
+            "DOUBLE"
+          ],
+          [
+            "total_amount",
+            "DOUBLE"
+          ],
+          [
+            "tip_pct",
+            "DOUBLE"
+          ]
+        ],
+        "rows": 30694510,
+        "row_hash_sum": "283102614729740387973711910",
+        "row_hash_xor": "743207141969677412"
+      },
+      "mart_daily_borough": {
+        "columns": [
+          [
+            "pickup_date",
+            "DATE"
+          ],
+          [
+            "pickup_borough",
+            "VARCHAR"
+          ],
+          [
+            "trips",
+            "BIGINT"
+          ],
+          [
+            "revenue",
+            "DOUBLE"
+          ],
+          [
+            "avg_fare",
+            "DOUBLE"
+          ],
+          [
+            "avg_distance_miles",
+            "DOUBLE"
+          ],
+          [
+            "avg_duration_min",
+            "DOUBLE"
+          ],
+          [
+            "avg_tip_pct",
+            "DOUBLE"
+          ]
+        ],
+        "rows": 2375,
+        "row_hash_sum": "21313746678362589734742",
+        "row_hash_xor": "4333215516911400166"
+      },
+      "mart_hourly_demand": {
+        "columns": [
+          [
+            "pickup_dow",
+            "INTEGER"
+          ],
+          [
+            "pickup_hour",
+            "INTEGER"
+          ],
+          [
+            "trips",
+            "BIGINT"
+          ],
+          [
+            "avg_speed_mph",
+            "DOUBLE"
+          ],
+          [
+            "avg_fare",
+            "DOUBLE"
+          ]
+        ],
+        "rows": 168,
+        "row_hash_sum": "1500618168706214296288",
+        "row_hash_xor": "3451022527924167904"
+      },
+      "mart_data_quality": {
+        "columns": [
+          [
+            "source_month",
+            "VARCHAR"
+          ],
+          [
+            "raw_rows",
+            "BIGINT"
+          ],
+          [
+            "reject_reason",
+            "VARCHAR"
+          ],
+          [
+            "rejected_rows",
+            "BIGINT"
+          ],
+          [
+            "share_of_month",
+            "DOUBLE"
+          ]
+        ],
+        "rows": 50,
+        "row_hash_sum": "469824673931489268672",
+        "row_hash_xor": "17239628921781472092"
+      }
+    },
+    "previous_version": "823dccdd-b983-4615-866f-2d782e5f42d8",
+    "model_sha256": "1342c166742aecf45b2a1e2b7d909ba533c81f4a559b06e06a0c2e65a6c358e5",
+    "source_loads": [
+      [
+        "2023-01",
+        "yellow_tripdata_2023-01.parquet",
+        "2026-11-14 00:29:33.694317",
+        3066766
+      ],
+      [
+        "2023-02",
+        "yellow_tripdata_2023-02.parquet",
+        "2026-11-14 00:29:37.788693",
+        2913955
+      ],
+      [
+        "2023-03",
+        "yellow_tripdata_2023-03.parquet",
+        "2026-11-14 00:29:41.479976",
+        3403766
+      ],
+      [
+        "2023-04",
+        "yellow_tripdata_2023-04.parquet",
+        "2026-11-14 00:29:45.695565",
+        3288250
+      ],
+      [
+        "2023-05",
+        "yellow_tripdata_2023-05.parquet",
+        "2026-11-14 00:29:49.764442",
+        3513649
+      ],
+      [
+        "2023-06",
+        "yellow_tripdata_2023-06.parquet",
+        "2026-11-14 00:29:54.058519",
+        3307234
+      ],
+      [
+        "2023-07",
+        "yellow_tripdata_2023-07.parquet",
+        "2026-11-14 00:29:58.02217",
+        2907108
+      ],
+      [
+        "2023-08",
+        "yellow_tripdata_2023-08.parquet",
+        "2026-11-14 00:30:01.586659",
+        2824209
+      ],
+      [
+        "2023-09",
+        "yellow_tripdata_2023-09.parquet",
+        "2026-11-14 00:30:03.225148",
+        2846722
+      ],
+      [
+        "2023-10",
+        "yellow_tripdata_2023-10.parquet",
+        "2026-11-14 00:30:04.834329",
+        3522285
+      ]
+    ],
+    "audit_versions": 1,
+    "raw_rows": 31593944
+  },
+  "conditions": {
+    "duckdb_memory_limit": "4GB",
+    "threads": 20,
+    "initial_preserve_insertion_order": true,
+    "repeats_per_variant": 3,
+    "warmups_per_variant": 1,
+    "os_cache": "not cleared; file copy warms OS cache",
+    "excluded_from_timing": [
+      "database preparation/copy/hash",
+      "result verification",
+      "explicit checkpoint"
+    ],
+    "host": "shared local workstation; not a dedicated or guaranteed idle benchmark host"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "duckdb": "2.0.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "logical_cpus": 20,
+    "host_memory_bytes": 34182266880
+  },
+  "fingerprint_limit": "count/schema plus sum and XOR of DuckDB row hashes: order-insensitive, noncryptographic; same engine version only",
+  "success": true,
+  "runs": [
+    {
+      "pair": 0,
+      "warmup": true,
+      "variant": "baseline",
+      "publication_wall_seconds": 38.35109899999952,
+      "publication": {
+        "version": "77f98ab3-571d-4033-a9ba-2c0eb3442700",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 38.351055,
+        "validation_seconds": 0.127729,
+        "copy_seconds": 36.114856
+      },
+      "copy_seconds": 36.114856,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.005411299998741015,
+        "stg_trips_classified": 4.814765200000693,
+        "stg_trips": 15.186465400000088,
+        "trips_quarantine": 1.6966974999995728,
+        "fct_trips": 14.395939199999702,
+        "mart_daily_borough": 0.0021295000005920883,
+        "mart_hourly_demand": 0.0008387999987462536,
+        "mart_data_quality": 0.00102100000003702
+      },
+      "cpu_seconds": 156.640625,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.8913873000001331,
+      "checkpointed_database_bytes": 14137962496,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 257,
+        "peak_summed_process_rss_bytes": 4288028672,
+        "peak_working_directory_bytes": 14088480454,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4288028672,
+      "peak_run_directory_bytes": 14088480454
+    },
+    {
+      "pair": 0,
+      "warmup": true,
+      "variant": "candidate",
+      "publication_wall_seconds": 28.23158709999916,
+      "publication": {
+        "version": "80611362-adab-433d-a0cb-24ca0ae7401b",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 28.231136,
+        "validation_seconds": 0.118131,
+        "copy_seconds": 26.958446
+      },
+      "copy_seconds": 26.958446,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.003497300000162795,
+        "stg_trips_classified": 6.502974200000608,
+        "stg_trips": 8.253785799999605,
+        "trips_quarantine": 1.2438079999992624,
+        "fct_trips": 10.939711799999714,
+        "mart_daily_borough": 0.002493200001481455,
+        "mart_hourly_demand": 0.000908500000150525,
+        "mart_data_quality": 0.0010750000001280569
+      },
+      "cpu_seconds": 174.234375,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.8031482000005781,
+      "checkpointed_database_bytes": 14390407168,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 208,
+        "peak_summed_process_rss_bytes": 4321120256,
+        "peak_working_directory_bytes": 14352702988,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4321120256,
+      "peak_run_directory_bytes": 14352702988
+    },
+    {
+      "pair": 1,
+      "warmup": false,
+      "variant": "candidate",
+      "publication_wall_seconds": 28.30839779999951,
+      "publication": {
+        "version": "c1b4d328-9282-47f6-bac3-4808915bdbbd",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 28.307946,
+        "validation_seconds": 0.114854,
+        "copy_seconds": 27.045362
+      },
+      "copy_seconds": 27.045362,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.002558499998485786,
+        "stg_trips_classified": 6.405772199999774,
+        "stg_trips": 8.516117099999974,
+        "trips_quarantine": 1.179795699999886,
+        "fct_trips": 10.926514400000087,
+        "mart_daily_borough": 0.002423300000373274,
+        "mart_hourly_demand": 0.0012454000006982824,
+        "mart_data_quality": 0.0012239999996381812
+      },
+      "cpu_seconds": 176.703125,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.8697955999996339,
+      "checkpointed_database_bytes": 14390407168,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 209,
+        "peak_summed_process_rss_bytes": 4326588416,
+        "peak_working_directory_bytes": 14351392604,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4326588416,
+      "peak_run_directory_bytes": 14351392604
+    },
+    {
+      "pair": 1,
+      "warmup": false,
+      "variant": "baseline",
+      "publication_wall_seconds": 31.310514500000863,
+      "publication": {
+        "version": "4d3c943b-13e1-4ea3-ba53-b90de861ee7f",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 31.310466,
+        "validation_seconds": 0.112688,
+        "copy_seconds": 29.91828
+      },
+      "copy_seconds": 29.91828,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.00239529999998922,
+        "stg_trips_classified": 7.0043697000000975,
+        "stg_trips": 12.721263800000088,
+        "trips_quarantine": 1.3599331000004895,
+        "fct_trips": 8.817644600001586,
+        "mart_daily_borough": 0.00210989999868616,
+        "mart_hourly_demand": 0.000968400001511327,
+        "mart_data_quality": 0.000983599999017315
+      },
+      "cpu_seconds": 162.734375,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.8214127999999619,
+      "checkpointed_database_bytes": 14130360320,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 235,
+        "peak_summed_process_rss_bytes": 4279472128,
+        "peak_working_directory_bytes": 14080877525,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4279472128,
+      "peak_run_directory_bytes": 14080877525
+    },
+    {
+      "pair": 2,
+      "warmup": false,
+      "variant": "baseline",
+      "publication_wall_seconds": 39.04985210000086,
+      "publication": {
+        "version": "c57e01bb-c29c-4ac5-a529-69683afbe1e1",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 39.049805,
+        "validation_seconds": 0.112049,
+        "copy_seconds": 37.038339
+      },
+      "copy_seconds": 37.038339,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.0022681000009470154,
+        "stg_trips_classified": 4.662739499999589,
+        "stg_trips": 22.04482250000001,
+        "trips_quarantine": 1.0923601999984385,
+        "fct_trips": 9.223119599999336,
+        "mart_daily_borough": 0.0020772999996552244,
+        "mart_hourly_demand": 0.0010648999996192288,
+        "mart_data_quality": 0.0009862999995675636
+      },
+      "cpu_seconds": 160.5625,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.7427705000009155,
+      "checkpointed_database_bytes": 14138486784,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 237,
+        "peak_summed_process_rss_bytes": 4297748480,
+        "peak_working_directory_bytes": 14089002794,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4297748480,
+      "peak_run_directory_bytes": 14089002794
+    },
+    {
+      "pair": 2,
+      "warmup": false,
+      "variant": "candidate",
+      "publication_wall_seconds": 24.108153200000743,
+      "publication": {
+        "version": "b1dd61f5-61c5-465d-8206-26463ab239e1",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 24.107717,
+        "validation_seconds": 0.110093,
+        "copy_seconds": 22.986547
+      },
+      "copy_seconds": 22.986547,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.0022107999993750127,
+        "stg_trips_classified": 5.609177500000442,
+        "stg_trips": 7.2458151999999245,
+        "trips_quarantine": 0.727935000000798,
+        "fct_trips": 9.387153399999079,
+        "mart_daily_borough": 0.0024242999988928204,
+        "mart_hourly_demand": 0.0017989999996643746,
+        "mart_data_quality": 0.0015724999993835809
+      },
+      "cpu_seconds": 169.234375,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.6567359999990003,
+      "checkpointed_database_bytes": 14387523584,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 166,
+        "peak_summed_process_rss_bytes": 4318121984,
+        "peak_working_directory_bytes": 14350079117,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4318121984,
+      "peak_run_directory_bytes": 14350079117
+    },
+    {
+      "pair": 3,
+      "warmup": false,
+      "variant": "candidate",
+      "publication_wall_seconds": 24.16496730000108,
+      "publication": {
+        "version": "9db5a37f-6f23-4158-a98b-b45b70f9f74b",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 24.164552,
+        "validation_seconds": 0.112066,
+        "copy_seconds": 23.133716
+      },
+      "copy_seconds": 23.133716,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.002186499999879743,
+        "stg_trips_classified": 5.402455499999633,
+        "stg_trips": 7.473892199999682,
+        "trips_quarantine": 0.706632699999318,
+        "fct_trips": 9.536143700001048,
+        "mart_daily_borough": 0.0021593000001303153,
+        "mart_hourly_demand": 0.000865699999849312,
+        "mart_data_quality": 0.0011888000008184463
+      },
+      "cpu_seconds": 166.359375,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.7136264000000665,
+      "checkpointed_database_bytes": 14389882880,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 165,
+        "peak_summed_process_rss_bytes": 4327317504,
+        "peak_working_directory_bytes": 14352438677,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4327317504,
+      "peak_run_directory_bytes": 14352438677
+    },
+    {
+      "pair": 3,
+      "warmup": false,
+      "variant": "baseline",
+      "publication_wall_seconds": 31.05133290000049,
+      "publication": {
+        "version": "3aec923b-3cfa-4f65-b99a-756a5dfdf1e5",
+        "fact_rows": 30694510,
+        "tables": 8,
+        "publication_seconds": 31.051292,
+        "validation_seconds": 0.119021,
+        "copy_seconds": 28.938932
+      },
+      "copy_seconds": 28.938932,
+      "per_table_copy_seconds": {
+        "taxi_zone_lookup": 0.0020433999998203944,
+        "stg_trips_classified": 4.885404200000266,
+        "stg_trips": 12.307014699999854,
+        "trips_quarantine": 1.142305999999735,
+        "fct_trips": 10.589753399999609,
+        "mart_daily_borough": 0.002014699999563163,
+        "mart_hourly_demand": 0.0008092999996733852,
+        "mart_data_quality": 0.0010662000004231231
+      },
+      "cpu_seconds": 162.015625,
+      "checks": {
+        "all_eight_relation_fingerprints_match_candidate": true,
+        "setting_restored": true,
+        "one_current_version": true,
+        "new_publication_version": true,
+        "model_signature_matches": true,
+        "metadata_counts_match": true,
+        "source_loads_unchanged": true,
+        "one_audit_version_appended": true
+      },
+      "published_fingerprints": {
+        "taxi_zone_lookup": {
+          "columns": [
+            [
+              "LocationID",
+              "INTEGER"
+            ],
+            [
+              "Borough",
+              "VARCHAR"
+            ],
+            [
+              "Zone",
+              "VARCHAR"
+            ],
+            [
+              "service_zone",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 265,
+          "row_hash_sum": "2415402956036269489776",
+          "row_hash_xor": "8948828762469294114"
+        },
+        "stg_trips_classified": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 31593944,
+          "row_hash_sum": "291413354445262094700429624",
+          "row_hash_xor": "6813641290035334800"
+        },
+        "stg_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283092004134216505854573464",
+          "row_hash_xor": "5013015383643740292"
+        },
+        "trips_quarantine": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "_source_month",
+              "VARCHAR"
+            ],
+            [
+              "_source_file",
+              "VARCHAR"
+            ],
+            [
+              "_loaded_at",
+              "TIMESTAMP"
+            ],
+            [
+              "vendor_id",
+              "BIGINT"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "pickup_zone_id",
+              "BIGINT"
+            ],
+            [
+              "dropoff_zone_id",
+              "BIGINT"
+            ],
+            [
+              "payment_type",
+              "BIGINT"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "tolls_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ]
+          ],
+          "rows": 899434,
+          "row_hash_sum": "8294512641561992484209232",
+          "row_hash_xor": "8448675213315571054"
+        },
+        "fct_trips": {
+          "columns": [
+            [
+              "trip_id",
+              "VARCHAR"
+            ],
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "pickup_at",
+              "TIMESTAMP"
+            ],
+            [
+              "dropoff_at",
+              "TIMESTAMP"
+            ],
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_zone_id",
+              "INTEGER"
+            ],
+            [
+              "dropoff_zone_id",
+              "INTEGER"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "pickup_zone",
+              "VARCHAR"
+            ],
+            [
+              "dropoff_borough",
+              "VARCHAR"
+            ],
+            [
+              "passenger_count",
+              "DOUBLE"
+            ],
+            [
+              "distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "fare_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_amount",
+              "DOUBLE"
+            ],
+            [
+              "total_amount",
+              "DOUBLE"
+            ],
+            [
+              "tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 30694510,
+          "row_hash_sum": "283102614729740387973711910",
+          "row_hash_xor": "743207141969677412"
+        },
+        "mart_daily_borough": {
+          "columns": [
+            [
+              "pickup_date",
+              "DATE"
+            ],
+            [
+              "pickup_borough",
+              "VARCHAR"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "revenue",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ],
+            [
+              "avg_distance_miles",
+              "DOUBLE"
+            ],
+            [
+              "avg_duration_min",
+              "DOUBLE"
+            ],
+            [
+              "avg_tip_pct",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 2375,
+          "row_hash_sum": "21313746678362589734742",
+          "row_hash_xor": "4333215516911400166"
+        },
+        "mart_hourly_demand": {
+          "columns": [
+            [
+              "pickup_dow",
+              "INTEGER"
+            ],
+            [
+              "pickup_hour",
+              "INTEGER"
+            ],
+            [
+              "trips",
+              "BIGINT"
+            ],
+            [
+              "avg_speed_mph",
+              "DOUBLE"
+            ],
+            [
+              "avg_fare",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 168,
+          "row_hash_sum": "1500618168706214296288",
+          "row_hash_xor": "3451022527924167904"
+        },
+        "mart_data_quality": {
+          "columns": [
+            [
+              "source_month",
+              "VARCHAR"
+            ],
+            [
+              "raw_rows",
+              "BIGINT"
+            ],
+            [
+              "reject_reason",
+              "VARCHAR"
+            ],
+            [
+              "rejected_rows",
+              "BIGINT"
+            ],
+            [
+              "share_of_month",
+              "DOUBLE"
+            ]
+          ],
+          "rows": 50,
+          "row_hash_sum": "469824673931489268672",
+          "row_hash_xor": "17239628921781472092"
+        }
+      },
+      "checkpoint_seconds_outside_timer": 0.8865967000001547,
+      "checkpointed_database_bytes": 14129573888,
+      "resources": {
+        "sample_interval_seconds": 0.1,
+        "samples": 220,
+        "peak_summed_process_rss_bytes": 4291293184,
+        "peak_working_directory_bytes": 14080091109,
+        "scope": "pipeline process and descendants; database, WAL and spill files in isolated work directory",
+        "limitations": "sampled peaks; summed RSS can double-count shared pages; supervisor excluded"
+      },
+      "peak_process_rss_bytes": 4291293184,
+      "peak_run_directory_bytes": 14080091109
+    }
+  ],
+  "prepared_database_unchanged": true,
+  "dependencies_unchanged": true,
+  "summary": {
+    "baseline": {
+      "publication_wall_seconds": {
+        "median": 31.310514500000863,
+        "min": 31.05133290000049,
+        "max": 39.04985210000086
+      },
+      "cpu_seconds": {
+        "median": 162.015625,
+        "min": 160.5625,
+        "max": 162.734375
+      },
+      "copy_seconds": {
+        "median": 29.91828,
+        "min": 28.938932,
+        "max": 37.038339
+      },
+      "peak_process_rss_bytes": {
+        "median": 4291293184,
+        "min": 4279472128,
+        "max": 4297748480
+      },
+      "peak_run_directory_bytes": {
+        "median": 14080877525,
+        "min": 14080091109,
+        "max": 14089002794
+      },
+      "checkpointed_database_bytes": {
+        "median": 14130360320,
+        "min": 14129573888,
+        "max": 14138486784
+      }
+    },
+    "candidate": {
+      "publication_wall_seconds": {
+        "median": 24.16496730000108,
+        "min": 24.108153200000743,
+        "max": 28.30839779999951
+      },
+      "cpu_seconds": {
+        "median": 169.234375,
+        "min": 166.359375,
+        "max": 176.703125
+      },
+      "copy_seconds": {
+        "median": 23.133716,
+        "min": 22.986547,
+        "max": 27.045362
+      },
+      "peak_process_rss_bytes": {
+        "median": 4326588416,
+        "min": 4318121984,
+        "max": 4327317504
+      },
+      "peak_run_directory_bytes": {
+        "median": 14351392604,
+        "min": 14350079117,
+        "max": 14352438677
+      },
+      "checkpointed_database_bytes": {
+        "median": 14389882880,
+        "min": 14387523584,
+        "max": 14390407168
+      }
+    },
+    "publication_median_reduction_percent": 22.822
+  },
+  "finished_at_utc": "2026-11-14T00:40:21.656213+00:00"
+}
