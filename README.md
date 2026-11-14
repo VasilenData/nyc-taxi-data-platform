@@ -10,7 +10,7 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 **Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.
 
-**Operating evidence:** A [dated 30,000-row local replay](docs/OPERATING_HISTORY.md) records a refused candidate, preservation of all nine consumer relations, independent read-only detection, verified local inbox notices and recovery. The bounded daily replay and separate schedule monitor are prepared in code; they are **not published or active**, and no multiweek operating history or email delivery is claimed.
+**Operating evidence:** A [dated 30,000-row local replay](docs/OPERATING_HISTORY.md) records a refused candidate, preservation of all nine consumer relations, independent read-only detection, verified local inbox notices and recovery. The bounded daily replay and separate schedule monitor target **15 November–14 December 2026** from the default branch. [Actual workflow runs](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/operating-replay.yml) establish the history; no multiweek operation or email delivery is inferred from the configured schedule.
 
 **View the result:** [measured publication optimization](docs/PUBLICATION_PERFORMANCE.md) · [full-data pipeline measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
 
