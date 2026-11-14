@@ -10,6 +10,8 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 **Operating status:** Runs locally, in Docker and in CI. An AWS sandbox with scoped roles and query scan controls is prepared and statically validated; actual cloud deployment and a continuously operated production service have not been demonstrated.
 
+**Operating evidence:** A [dated 30,000-row local replay](docs/OPERATING_HISTORY.md) records a refused candidate, preservation of all nine consumer relations, independent read-only detection, verified local inbox notices and recovery. The bounded daily replay and separate schedule monitor are prepared in code; they are **not published or active**, and no multiweek operating history or email delivery is claimed.
+
 **View the result:** [measured publication optimization](docs/PUBLICATION_PERFORMANCE.md) · [full-data pipeline measurement](measurements/full-2026-11-12-final.json) · [correction and recovery exercise](docs/CHANGE_MANAGEMENT.md) · [verified serving-backup restoration](docs/CLOUD_CONTROLS.md)
 
 **Inspect the engineering:** [atomic publisher](taxi_platform/publication.py) · [reviewable change plans](taxi_platform/change_plan.py) · [failure tests](tests/test_publication.py) · [AWS access and cost controls](cloud/aws/template.json)
@@ -99,6 +101,7 @@ For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-jan
 | Can the results be reproduced? | [Benchmark runner](scripts/benchmark.py), [measurement guide](docs/BENCHMARKS.md), [CI workflow](.github/workflows/ci.yml) and [Dockerfile](Dockerfile) |
 | Can a failed candidate replace consumer tables? | [Transactional publisher](taxi_platform/publication.py), [rollback/process-exit tests](tests/test_publication.py) and poisoned-month integration test |
 | Can publication be faster without weakening recovery? | [Repeated full-data comparison and trade-offs](docs/PUBLICATION_PERFORMANCE.md), [source-hashed measurements](measurements/publication-order-2026-11-14.json) and reader-snapshot tests |
+| Can missed or failed replays be detected and recovered? | [Operating contract, actual local history and alert receipts](docs/OPERATING_HISTORY.md), [independent checker](taxi_platform/operations.py), and [schedule coverage tests](tests/test_replay_schedule.py) |
 | Can another engineer operate it? | [Runbook: failed checks, backfills and corrected files](docs/RUNBOOK.md) |
 | Can a SQL rule change leave stale history? | [Model revision guard](taxi_platform/revision.py), [plan/apply tests](tests/test_change_plan.py) and [executed change exercise](docs/CHANGE_MANAGEMENT.md) |
 | What does table-format rollback actually cover? | [Optional Iceberg comparison and measured limits](docs/ICEBERG.md) |
