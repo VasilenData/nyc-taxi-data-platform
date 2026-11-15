@@ -31,7 +31,7 @@ def sha(path):
 
 def source_identity():
     paths = ["scripts/operating_replay.py", "taxi_platform/operations.py",
-             "taxi_platform/publication.py", "taxi_platform/ingest.py",
+             "taxi_platform/publication.py", "taxi_platform/mart_contract.py", "taxi_platform/ingest.py",
              "taxi_platform/quality.py", "taxi_platform/revision.py", "taxi_platform/config.py",
              "scripts/check_replay_schedule.py", "operations/replay-window.json", "requirements.txt"]
     paths += [path.relative_to(ROOT).as_posix() for path in sorted((ROOT / "dbt").rglob("*"))
