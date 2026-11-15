@@ -11,7 +11,7 @@ models:
           - accepted_values:
               arguments:
                 values: [missing_timestamp, non_positive_duration, implausible_duration, out_of_period,
-                         bad_distance, bad_fare, unknown_zone, duplicate]
+                         non_finite_value, bad_distance, bad_fare, unknown_zone, duplicate]
               config:
                 where: "reject_reason is not null"
   - name: stg_trips
