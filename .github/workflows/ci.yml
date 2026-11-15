@@ -42,6 +42,16 @@ jobs:
           path: ${{ runner.temp }}/recovery-demo/
           retention-days: 14
           if-no-files-found: warn
+      - name: Exercise dated operating history, local detection and recovery
+        run: python scripts/operating_replay.py drill --history "${{ runner.temp }}/operating-exercise" --database "${{ runner.temp }}/operating-exercise.duckdb"
+      - name: Retain the actual operating exercise records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operating-exercise
+          path: ${{ runner.temp }}/operating-exercise/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Retain test evidence including offline cloud acceptance
         if: always()
         uses: actions/upload-artifact@v4

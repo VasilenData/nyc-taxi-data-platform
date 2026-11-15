@@ -1,0 +1,53 @@
+name: Bounded historical operating replay
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 15-30 11 *'
+    - cron: '17 3 1-14 12 *'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: historical-operating-replay
+  cancel-in-progress: false
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the explicit 2026 operating window
+        id: window
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/check_replay_schedule.py eligibility >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        if: steps.window.outputs.active == 'true'
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install the existing pipeline runtime
+        if: steps.window.outputs.active == 'true'
+        run: pip install -r requirements.txt
+      - name: Replay the bundled historical sample
+        if: steps.window.outputs.active == 'true'
+        shell: bash
+        run: |
+          scheduled=()
+          if [ "$GITHUB_EVENT_NAME" = schedule ]; then scheduled=(--scheduled); fi
+          python scripts/operating_replay.py run \
+            --history "$RUNNER_TEMP/operating-history" --database "$RUNNER_TEMP/replay.duckdb" \
+            --slot-id '${{ steps.window.outputs.slot_id }}' --attempt-id 'run-${{ github.run_id }}-try-${{ github.run_attempt }}' \
+            --due-at '${{ steps.window.outputs.due_at }}' "${scheduled[@]}"
+      - name: Check actual publication independently and deliver local notices
+        if: always() && steps.window.outputs.active == 'true'
+        run: python scripts/operating_replay.py check --history "$RUNNER_TEMP/operating-history" --database "$RUNNER_TEMP/replay.duckdb" --check-id after-replay
+      - name: Retain immutable attempt records and bounded logs
+        if: always() && steps.window.outputs.active == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: operating-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/operating-history/
+          retention-days: 45
+          if-no-files-found: error

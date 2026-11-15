@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "start_date_utc": "2026-11-15",
+  "end_date_utc": "2026-12-14",
+  "due_time_utc": "03:17",
+  "completion_grace_seconds": 10800,
+  "repository": "VasilenData/nyc-taxi-data-platform",
+  "branch": "main",
+  "workflow": "operating-replay.yml",
+  "scope": "Bounded scheduled replay of bundled 2023 historical samples; no live taxi feed or persistent cloud warehouse"
+}
