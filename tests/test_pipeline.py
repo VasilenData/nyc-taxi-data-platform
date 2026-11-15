@@ -47,7 +47,7 @@ def test_raw_equals_valid_plus_rejected(warehouse):
 def test_every_rejection_has_a_known_reason(warehouse):
     reasons = {r[0] for r in q(warehouse[0], "select distinct reject_reason from main.trips_quarantine")}
     assert reasons <= {"missing_timestamp", "non_positive_duration", "implausible_duration", "out_of_period",
-                       "bad_distance", "bad_fare", "unknown_zone", "duplicate"}
+                       "non_finite_value", "bad_distance", "bad_fare", "unknown_zone", "duplicate"}
 
 
 def test_fact_table_has_no_impossible_trips(warehouse):
