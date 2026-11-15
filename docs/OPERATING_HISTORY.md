@@ -5,6 +5,36 @@ workflows activate from the default branch for the window below.** No multiweek 
 history, outbound email delivery, persistent cloud warehouse or live taxi feed is
 claimed. AWS remains offline-only.
 
+## First scheduled attempt: delayed launch and unavailable metadata
+
+The [15 November scheduled run](https://github.com/VasilenData/nyc-taxi-data-platform/actions/runs/43706325459)
+used commit `6235ffc7d09526be76c42b612d60ac5be762498d`. GitHub created and
+started it at **10:54:28 UTC**, approximately **7 hours 37 minutes after the
+03:17 UTC due time**, already beyond the three-hour freshness allowance.
+Its eligibility step then failed when GitHub's own run-metadata response hit a
+10-second read timeout. Ingestion, dbt, publication, independent checks and
+artifact retention were all skipped. This records a failed scheduled attempt,
+not pipeline execution, consumer-data corruption or a successful recovery.
+
+The metadata helper now permits at most **three attempts**, uses request
+timeouts of at most **eight seconds**, and applies a **30-second retry budget**
+to requests and backoff. Timeout/temporary connection failures and selected
+temporary HTTP responses can retry; permanent authentication, validation,
+malformed JSON and oversized responses fail immediately. Retry-After and
+rate-limit reset hints are honored in full. If the required wait cannot fit
+the remaining budget, the helper fails rather than retrying early or waiting
+indefinitely. A late response is rejected. Socket timeouts are not an OS-level
+hard process deadline; the workflow timeout remains the outer execution bound.
+The policy follows [GitHub's rate-limit guidance](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api#handle-rate-limit-errors-appropriately).
+
+Deterministic transport/clock tests cover recovery, exhaustion, permanent
+errors, rate-limit hints and late responses; they are synthetic regressions,
+not additional successful scheduled runs. The due-slot identity, three-hour
+freshness rule and coverage checks remain unchanged. The failed/delayed attempt
+above is retained even if a later retry succeeds.
+
+## Supervisor correction from hosted CI
+
 Hosted Linux CI exposed a timeout-reporting defect: `psutil.wait_procs` reaped
 the direct child before `subprocess.Popen` could collect its exit status, allowing
 a killed process to be reported with exit code zero. The supervisor now gives
