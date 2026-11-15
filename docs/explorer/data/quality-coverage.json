@@ -1,0 +1,156 @@
+{
+  "release_id": "6d25c388-cb17-424b-b08e-046de145b062",
+  "quality": {
+    "input_rows": 30000,
+    "valid_rows": 29326,
+    "rejected_rows": 674,
+    "by_month_and_reason": [
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "bad_distance",
+        "rejected_rows": 186,
+        "share_of_month": 0.0124
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "bad_fare",
+        "rejected_rows": 110,
+        "share_of_month": 0.007333333333333333
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "implausible_duration",
+        "rejected_rows": 12,
+        "share_of_month": 0.0008
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "non_positive_duration",
+        "rejected_rows": 9,
+        "share_of_month": 0.0006
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "bad_distance",
+        "rejected_rows": 209,
+        "share_of_month": 0.013933333333333334
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "bad_fare",
+        "rejected_rows": 126,
+        "share_of_month": 0.0084
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "implausible_duration",
+        "rejected_rows": 5,
+        "share_of_month": 0.0003333333333333333
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "non_positive_duration",
+        "rejected_rows": 16,
+        "share_of_month": 0.0010666666666666667
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "out_of_period",
+        "rejected_rows": 1,
+        "share_of_month": 6.666666666666667e-05
+      }
+    ]
+  },
+  "coverage": {
+    "source_months": [
+      "2023-01",
+      "2023-02"
+    ],
+    "first_observed_date": "2023-01-01",
+    "last_observed_date": "2023-02-28",
+    "observed_dates": [
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06",
+      "2023-01-07",
+      "2023-01-08",
+      "2023-01-09",
+      "2023-01-10",
+      "2023-01-11",
+      "2023-01-12",
+      "2023-01-13",
+      "2023-01-14",
+      "2023-01-15",
+      "2023-01-16",
+      "2023-01-17",
+      "2023-01-18",
+      "2023-01-19",
+      "2023-01-20",
+      "2023-01-21",
+      "2023-01-22",
+      "2023-01-23",
+      "2023-01-24",
+      "2023-01-25",
+      "2023-01-26",
+      "2023-01-27",
+      "2023-01-28",
+      "2023-01-29",
+      "2023-01-30",
+      "2023-01-31",
+      "2023-02-01",
+      "2023-02-02",
+      "2023-02-03",
+      "2023-02-04",
+      "2023-02-05",
+      "2023-02-06",
+      "2023-02-07",
+      "2023-02-08",
+      "2023-02-09",
+      "2023-02-10",
+      "2023-02-11",
+      "2023-02-12",
+      "2023-02-13",
+      "2023-02-14",
+      "2023-02-15",
+      "2023-02-16",
+      "2023-02-17",
+      "2023-02-18",
+      "2023-02-19",
+      "2023-02-20",
+      "2023-02-21",
+      "2023-02-22",
+      "2023-02-23",
+      "2023-02-24",
+      "2023-02-25",
+      "2023-02-26",
+      "2023-02-27",
+      "2023-02-28"
+    ],
+    "boroughs": [
+      "Bronx",
+      "Brooklyn",
+      "Manhattan",
+      "N/A",
+      "Queens",
+      "Staten Island",
+      "Unknown"
+    ],
+    "daily_borough_rows": 265,
+    "full_source_files": false,
+    "observed_date_count": 59,
+    "source_calendar_days": 59,
+    "coverage_note": "Observed dates may cover every calendar day while trip coverage remains partial; absent borough/day groups are unobserved, not measured zero."
+  }
+}

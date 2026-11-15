@@ -1,0 +1,11 @@
+{
+  "grain": "One observed NYC-local pickup date and pickup borough; absent groups are missing observations, not measured zero demand.",
+  "pickup_date": "YYYY-MM-DD from the source pickup timestamp; naive NYC local civil time, no UTC conversion.",
+  "pickup_borough": "Pickup taxi-zone lookup borough; null mapped to Unknown. EWR and Unknown are retained.",
+  "trips": "Valid fact rows, deduplicated within source month using the pipeline trip identity; integer count.",
+  "total_amount_cents": "Sum of recorded total_amount in USD cents (fare, taxes, tolls, tips and other recorded components). Not driver earnings, net revenue or average fare. Every source fact must be representable to cents; summed as integers.",
+  "quality": "Whole-release source-month totals and first failing rejection rule; not filtered borough/date statistics.",
+  "missing": "No aggregate row means no observed valid sample rows. It does not establish zero activity; percent change is unavailable when the comparison has no observations or a zero denominator.",
+  "scope": "Historical January/February 2023 public TLC extracts: exactly 15,000 bundled source rows per month. A convenience sample, not a random or representative estimate of NYC demand.",
+  "exclusions": "Missing/nonpositive/6-hour-or-longer timestamps or durations; pickups outside source month; nonfinite measures; distance outside (0,200] miles; missing/negative fare or nonpositive total; zone outside 1..265; repeated trip identity within month. First failing rule is retained in quarantine."
+}
