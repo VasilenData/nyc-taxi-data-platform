@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from . import config, ingest
 from .quality import evaluate
+from .mart_contract import validate_marts
 from .revision import model_files, model_signature
 
 TABLES = (
@@ -43,6 +44,7 @@ def publish(con=None) -> dict:
                 total = con.execute(f'select coalesce(sum(trips),0) from build."{name}"').fetchone()[0]
                 if total != counts["fct_trips"]:
                     raise ValueError(f"Publication refused: {name}/fact row mismatch")
+            validate_marts(con)
             validated_at = time.perf_counter()
             # Older installs have main views referencing the old classifier.
             views = {r[0] for r in con.execute("""select table_name from information_schema.views
