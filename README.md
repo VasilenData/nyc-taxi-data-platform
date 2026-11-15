@@ -2,7 +2,7 @@
 
 ![NYC Taxi: a failed refresh, a valid dataset. Historical public data and local recovery exercises.](project-cover.svg)
 
-[View the pipeline results](https://vasilendata.github.io/projects/nyc-taxi/) · [Inspect the recovery proof](docs/OPERATING_HISTORY.md) · [Watch the walkthrough](https://vasilendata.github.io/demos/nyc-recovery/)
+[Explore the historical sample](https://vasilendata.github.io/nyc-taxi-data-platform/explorer/) · [Query it locally](docs/ANALYST_GUIDE.md) · [Inspect the recovery proof](docs/OPERATING_HISTORY.md)
 
 [![CI](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml)
 
@@ -76,7 +76,7 @@ flowchart TD
 
 ## Run the sample
 
-Use Python 3.11 or later. The sample command uses two bundled 15,000-row extracts and requires no TLC data download.
+Use Python 3.11 or later. This persistent starter uses exactly two bundled 15,000-row extracts and requires no TLC download or cloud account. It leaves a queryable warehouse and verified analyst package. [Open the static explorer](https://vasilendata.github.io/nyc-taxi-data-platform/explorer/) for date/borough filters, comparison periods and downloads without installing anything.
 
 ```bash
 git clone https://github.com/VasilenData/nyc-taxi-data-platform.git
@@ -84,8 +84,10 @@ cd nyc-taxi-data-platform
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
-python scripts/benchmark.py --dataset sample --output measurements/local-sample.json
-pytest -q
+python -m taxi_platform.sample
+python -m taxi_platform.query boroughs
+python -m taxi_platform.query quality
+python -m taxi_platform.sample
 ```
 
 On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in PowerShell.
@@ -97,10 +99,11 @@ docker compose up --build
 # http://localhost:3000
 ```
 
-The quickstart always selects the bundled sample, even if full TLC files have
-previously been downloaded. It writes `measurements/local-sample.json` and its
-companion `.log`. Choose a new `.json` filename to repeat the measurement; existing
-evidence is not overwritten.
+The starter ignores inherited `TAXI_*` overrides and verifies the exact bundled bytes. It retains `data/sample-workspace/warehouse.duckdb`, its execution receipt and a CSV/JSON/Parquet analyst package. The second run validates and reuses that complete snapshot without loading duplicate rows. Choose a new `--output` directory after changing source or model files. [SQL recipes, data contract, failure handling and verification](docs/ANALYST_GUIDE.md).
+
+The sample contains 29,326 valid trips and 674 quarantined records from historical January/February 2023 extracts, with incomplete trip coverage and borough/date gaps. It is not a representative estimate of NYC demand. Recorded total amount is `sum(total_amount)`, not net revenue or driver earnings.
+
+For a disposable timed measurement, `python scripts/benchmark.py --dataset sample --output measurements/local-sample.json` still writes a receipt/log and deletes its temporary warehouse. Use a new evidence filename for each measurement.
 
 For a full-data run, follow [the benchmark commands](docs/BENCHMARKS.md#full-januaryoctober-2023-data). Full mode requires every requested input file in the full-data directory and prevents the loader's automatic fallback to bundled samples. Verify the recorded row counts and checksums when reusing files. For ordinary runs, `TAXI_DATA_DIR` selects the input directory, `TAXI_DB` selects the warehouse, and `TAXI_DUCKDB_MEMORY_LIMIT` optionally caps ingestion/dbt memory.
 

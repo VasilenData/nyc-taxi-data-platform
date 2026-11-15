@@ -1,0 +1,1790 @@
+{
+  "schema_version": 1,
+  "release_id": "6d25c388-cb17-424b-b08e-046de145b062",
+  "model_sha256": "d6031938e1ba689dc0b14c05e05a391b52710073344e47f5ea77ad489d1f78de",
+  "model_files": {
+    "dbt_project.yml": "968882cb308ccde3f45ecbbf4bb5bcda33b9baf6bc763e9045d2d2626db75fed",
+    "macros/accepted_range.sql": "78feaafc65bb5a30ccd676fab7560bf5cb7f5bfe7931a60e6f2266c19be45d14",
+    "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+    "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+    "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+    "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+    "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+    "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+    "models/staging/schema.yml": "229bb1972b12cbd35aa5f9fe5a5b0bb0a9cc98ddf007f2e687d6a571af411f49",
+    "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+    "models/staging/stg_trips_classified.sql": "640e07ec1eb75ad0c3aba2276ab543693965340bea0efc1e2d8412e59600ab9c",
+    "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+    "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+    "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+    "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+    "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+    "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+  },
+  "inputs": [
+    {
+      "source_month": "2023-01",
+      "file": "yellow_tripdata_2023-01.parquet",
+      "sha256": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558",
+      "bytes": 319180,
+      "rows": 15000
+    },
+    {
+      "source_month": "2023-02",
+      "file": "yellow_tripdata_2023-02.parquet",
+      "sha256": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd",
+      "bytes": 318700,
+      "rows": 15000
+    }
+  ],
+  "scope": "Historical January/February 2023 public TLC extracts: exactly 15,000 bundled source rows per month. A convenience sample, not a random or representative estimate of NYC demand.",
+  "coverage": {
+    "source_months": [
+      "2023-01",
+      "2023-02"
+    ],
+    "first_observed_date": "2023-01-01",
+    "last_observed_date": "2023-02-28",
+    "observed_dates": [
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06",
+      "2023-01-07",
+      "2023-01-08",
+      "2023-01-09",
+      "2023-01-10",
+      "2023-01-11",
+      "2023-01-12",
+      "2023-01-13",
+      "2023-01-14",
+      "2023-01-15",
+      "2023-01-16",
+      "2023-01-17",
+      "2023-01-18",
+      "2023-01-19",
+      "2023-01-20",
+      "2023-01-21",
+      "2023-01-22",
+      "2023-01-23",
+      "2023-01-24",
+      "2023-01-25",
+      "2023-01-26",
+      "2023-01-27",
+      "2023-01-28",
+      "2023-01-29",
+      "2023-01-30",
+      "2023-01-31",
+      "2023-02-01",
+      "2023-02-02",
+      "2023-02-03",
+      "2023-02-04",
+      "2023-02-05",
+      "2023-02-06",
+      "2023-02-07",
+      "2023-02-08",
+      "2023-02-09",
+      "2023-02-10",
+      "2023-02-11",
+      "2023-02-12",
+      "2023-02-13",
+      "2023-02-14",
+      "2023-02-15",
+      "2023-02-16",
+      "2023-02-17",
+      "2023-02-18",
+      "2023-02-19",
+      "2023-02-20",
+      "2023-02-21",
+      "2023-02-22",
+      "2023-02-23",
+      "2023-02-24",
+      "2023-02-25",
+      "2023-02-26",
+      "2023-02-27",
+      "2023-02-28"
+    ],
+    "boroughs": [
+      "Bronx",
+      "Brooklyn",
+      "Manhattan",
+      "N/A",
+      "Queens",
+      "Staten Island",
+      "Unknown"
+    ],
+    "daily_borough_rows": 265,
+    "full_source_files": false,
+    "observed_date_count": 59,
+    "source_calendar_days": 59,
+    "coverage_note": "Observed dates may cover every calendar day while trip coverage remains partial; absent borough/day groups are unobserved, not measured zero."
+  },
+  "quality": {
+    "input_rows": 30000,
+    "valid_rows": 29326,
+    "rejected_rows": 674,
+    "by_month_and_reason": [
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "bad_distance",
+        "rejected_rows": 186,
+        "share_of_month": 0.0124
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "bad_fare",
+        "rejected_rows": 110,
+        "share_of_month": 0.007333333333333333
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "implausible_duration",
+        "rejected_rows": 12,
+        "share_of_month": 0.0008
+      },
+      {
+        "source_month": "2023-01",
+        "raw_rows": 15000,
+        "reject_reason": "non_positive_duration",
+        "rejected_rows": 9,
+        "share_of_month": 0.0006
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "bad_distance",
+        "rejected_rows": 209,
+        "share_of_month": 0.013933333333333334
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "bad_fare",
+        "rejected_rows": 126,
+        "share_of_month": 0.0084
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "implausible_duration",
+        "rejected_rows": 5,
+        "share_of_month": 0.0003333333333333333
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "non_positive_duration",
+        "rejected_rows": 16,
+        "share_of_month": 0.0010666666666666667
+      },
+      {
+        "source_month": "2023-02",
+        "raw_rows": 15000,
+        "reject_reason": "out_of_period",
+        "rejected_rows": 1,
+        "share_of_month": 6.666666666666667e-05
+      }
+    ]
+  },
+  "totals": {
+    "trips": 29326,
+    "total_amount_cents": 79896425
+  },
+  "rows": [
+    {
+      "pickup_date": "2023-01-01",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 2500
+    },
+    {
+      "pickup_date": "2023-01-01",
+      "pickup_borough": "Brooklyn",
+      "trips": 7,
+      "total_amount_cents": 21624
+    },
+    {
+      "pickup_date": "2023-01-01",
+      "pickup_borough": "Manhattan",
+      "trips": 322,
+      "total_amount_cents": 855831
+    },
+    {
+      "pickup_date": "2023-01-01",
+      "pickup_borough": "Queens",
+      "trips": 49,
+      "total_amount_cents": 326212
+    },
+    {
+      "pickup_date": "2023-01-01",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 48723
+    },
+    {
+      "pickup_date": "2023-01-02",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 12049
+    },
+    {
+      "pickup_date": "2023-01-02",
+      "pickup_borough": "Manhattan",
+      "trips": 267,
+      "total_amount_cents": 581048
+    },
+    {
+      "pickup_date": "2023-01-02",
+      "pickup_borough": "Queens",
+      "trips": 47,
+      "total_amount_cents": 322523
+    },
+    {
+      "pickup_date": "2023-01-02",
+      "pickup_borough": "Unknown",
+      "trips": 6,
+      "total_amount_cents": 21220
+    },
+    {
+      "pickup_date": "2023-01-03",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 970
+    },
+    {
+      "pickup_date": "2023-01-03",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 7000
+    },
+    {
+      "pickup_date": "2023-01-03",
+      "pickup_borough": "Manhattan",
+      "trips": 324,
+      "total_amount_cents": 732751
+    },
+    {
+      "pickup_date": "2023-01-03",
+      "pickup_borough": "Queens",
+      "trips": 65,
+      "total_amount_cents": 448900
+    },
+    {
+      "pickup_date": "2023-01-03",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 22551
+    },
+    {
+      "pickup_date": "2023-01-04",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1900
+    },
+    {
+      "pickup_date": "2023-01-04",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 3600
+    },
+    {
+      "pickup_date": "2023-01-04",
+      "pickup_borough": "Manhattan",
+      "trips": 363,
+      "total_amount_cents": 808587
+    },
+    {
+      "pickup_date": "2023-01-04",
+      "pickup_borough": "Queens",
+      "trips": 46,
+      "total_amount_cents": 317860
+    },
+    {
+      "pickup_date": "2023-01-04",
+      "pickup_borough": "Unknown",
+      "trips": 2,
+      "total_amount_cents": 6675
+    },
+    {
+      "pickup_date": "2023-01-05",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 3100
+    },
+    {
+      "pickup_date": "2023-01-05",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 13625
+    },
+    {
+      "pickup_date": "2023-01-05",
+      "pickup_borough": "Manhattan",
+      "trips": 429,
+      "total_amount_cents": 962677
+    },
+    {
+      "pickup_date": "2023-01-05",
+      "pickup_borough": "Queens",
+      "trips": 39,
+      "total_amount_cents": 290982
+    },
+    {
+      "pickup_date": "2023-01-05",
+      "pickup_borough": "Unknown",
+      "trips": 3,
+      "total_amount_cents": 15703
+    },
+    {
+      "pickup_date": "2023-01-06",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 2487
+    },
+    {
+      "pickup_date": "2023-01-06",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 7417
+    },
+    {
+      "pickup_date": "2023-01-06",
+      "pickup_borough": "Manhattan",
+      "trips": 420,
+      "total_amount_cents": 944800
+    },
+    {
+      "pickup_date": "2023-01-06",
+      "pickup_borough": "Queens",
+      "trips": 29,
+      "total_amount_cents": 213265
+    },
+    {
+      "pickup_date": "2023-01-06",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 7431
+    },
+    {
+      "pickup_date": "2023-01-07",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 3270
+    },
+    {
+      "pickup_date": "2023-01-07",
+      "pickup_borough": "Manhattan",
+      "trips": 456,
+      "total_amount_cents": 966625
+    },
+    {
+      "pickup_date": "2023-01-07",
+      "pickup_borough": "Queens",
+      "trips": 44,
+      "total_amount_cents": 268245
+    },
+    {
+      "pickup_date": "2023-01-07",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 29014
+    },
+    {
+      "pickup_date": "2023-01-08",
+      "pickup_borough": "Manhattan",
+      "trips": 360,
+      "total_amount_cents": 871776
+    },
+    {
+      "pickup_date": "2023-01-08",
+      "pickup_borough": "Queens",
+      "trips": 38,
+      "total_amount_cents": 279538
+    },
+    {
+      "pickup_date": "2023-01-08",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 34824
+    },
+    {
+      "pickup_date": "2023-01-09",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 6125
+    },
+    {
+      "pickup_date": "2023-01-09",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 5500
+    },
+    {
+      "pickup_date": "2023-01-09",
+      "pickup_borough": "Manhattan",
+      "trips": 369,
+      "total_amount_cents": 819140
+    },
+    {
+      "pickup_date": "2023-01-09",
+      "pickup_borough": "Queens",
+      "trips": 52,
+      "total_amount_cents": 362005
+    },
+    {
+      "pickup_date": "2023-01-09",
+      "pickup_borough": "Unknown",
+      "trips": 2,
+      "total_amount_cents": 4452
+    },
+    {
+      "pickup_date": "2023-01-10",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 5114
+    },
+    {
+      "pickup_date": "2023-01-10",
+      "pickup_borough": "Manhattan",
+      "trips": 462,
+      "total_amount_cents": 1050932
+    },
+    {
+      "pickup_date": "2023-01-10",
+      "pickup_borough": "Queens",
+      "trips": 47,
+      "total_amount_cents": 347404
+    },
+    {
+      "pickup_date": "2023-01-10",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 10002
+    },
+    {
+      "pickup_date": "2023-01-11",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 7910
+    },
+    {
+      "pickup_date": "2023-01-11",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 2379
+    },
+    {
+      "pickup_date": "2023-01-11",
+      "pickup_borough": "Manhattan",
+      "trips": 450,
+      "total_amount_cents": 999223
+    },
+    {
+      "pickup_date": "2023-01-11",
+      "pickup_borough": "Queens",
+      "trips": 39,
+      "total_amount_cents": 264934
+    },
+    {
+      "pickup_date": "2023-01-11",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 17634
+    },
+    {
+      "pickup_date": "2023-01-12",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 12730
+    },
+    {
+      "pickup_date": "2023-01-12",
+      "pickup_borough": "Manhattan",
+      "trips": 474,
+      "total_amount_cents": 1111805
+    },
+    {
+      "pickup_date": "2023-01-12",
+      "pickup_borough": "Queens",
+      "trips": 55,
+      "total_amount_cents": 400383
+    },
+    {
+      "pickup_date": "2023-01-12",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 12519
+    },
+    {
+      "pickup_date": "2023-01-13",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1360
+    },
+    {
+      "pickup_date": "2023-01-13",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 16815
+    },
+    {
+      "pickup_date": "2023-01-13",
+      "pickup_borough": "Manhattan",
+      "trips": 465,
+      "total_amount_cents": 1069650
+    },
+    {
+      "pickup_date": "2023-01-13",
+      "pickup_borough": "Queens",
+      "trips": 53,
+      "total_amount_cents": 395018
+    },
+    {
+      "pickup_date": "2023-01-13",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 16214
+    },
+    {
+      "pickup_date": "2023-01-14",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 11025
+    },
+    {
+      "pickup_date": "2023-01-14",
+      "pickup_borough": "Manhattan",
+      "trips": 496,
+      "total_amount_cents": 1100745
+    },
+    {
+      "pickup_date": "2023-01-14",
+      "pickup_borough": "Queens",
+      "trips": 47,
+      "total_amount_cents": 311387
+    },
+    {
+      "pickup_date": "2023-01-14",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 32556
+    },
+    {
+      "pickup_date": "2023-01-15",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 3140
+    },
+    {
+      "pickup_date": "2023-01-15",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 900
+    },
+    {
+      "pickup_date": "2023-01-15",
+      "pickup_borough": "Manhattan",
+      "trips": 397,
+      "total_amount_cents": 874797
+    },
+    {
+      "pickup_date": "2023-01-15",
+      "pickup_borough": "Queens",
+      "trips": 48,
+      "total_amount_cents": 314548
+    },
+    {
+      "pickup_date": "2023-01-15",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 44648
+    },
+    {
+      "pickup_date": "2023-01-16",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 14261
+    },
+    {
+      "pickup_date": "2023-01-16",
+      "pickup_borough": "Manhattan",
+      "trips": 315,
+      "total_amount_cents": 683294
+    },
+    {
+      "pickup_date": "2023-01-16",
+      "pickup_borough": "Queens",
+      "trips": 46,
+      "total_amount_cents": 307818
+    },
+    {
+      "pickup_date": "2023-01-16",
+      "pickup_borough": "Unknown",
+      "trips": 6,
+      "total_amount_cents": 26435
+    },
+    {
+      "pickup_date": "2023-01-17",
+      "pickup_borough": "Manhattan",
+      "trips": 407,
+      "total_amount_cents": 983825
+    },
+    {
+      "pickup_date": "2023-01-17",
+      "pickup_borough": "Queens",
+      "trips": 40,
+      "total_amount_cents": 291721
+    },
+    {
+      "pickup_date": "2023-01-17",
+      "pickup_borough": "Staten Island",
+      "trips": 1,
+      "total_amount_cents": 550
+    },
+    {
+      "pickup_date": "2023-01-17",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 30488
+    },
+    {
+      "pickup_date": "2023-01-18",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1800
+    },
+    {
+      "pickup_date": "2023-01-18",
+      "pickup_borough": "Manhattan",
+      "trips": 490,
+      "total_amount_cents": 1095898
+    },
+    {
+      "pickup_date": "2023-01-18",
+      "pickup_borough": "Queens",
+      "trips": 39,
+      "total_amount_cents": 260690
+    },
+    {
+      "pickup_date": "2023-01-18",
+      "pickup_borough": "Unknown",
+      "trips": 9,
+      "total_amount_cents": 37236
+    },
+    {
+      "pickup_date": "2023-01-19",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 6610
+    },
+    {
+      "pickup_date": "2023-01-19",
+      "pickup_borough": "Manhattan",
+      "trips": 525,
+      "total_amount_cents": 1236180
+    },
+    {
+      "pickup_date": "2023-01-19",
+      "pickup_borough": "Queens",
+      "trips": 34,
+      "total_amount_cents": 232032
+    },
+    {
+      "pickup_date": "2023-01-19",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 40044
+    },
+    {
+      "pickup_date": "2023-01-20",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 6755
+    },
+    {
+      "pickup_date": "2023-01-20",
+      "pickup_borough": "Manhattan",
+      "trips": 454,
+      "total_amount_cents": 1034640
+    },
+    {
+      "pickup_date": "2023-01-20",
+      "pickup_borough": "Queens",
+      "trips": 45,
+      "total_amount_cents": 286302
+    },
+    {
+      "pickup_date": "2023-01-20",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 13730
+    },
+    {
+      "pickup_date": "2023-01-21",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 6930
+    },
+    {
+      "pickup_date": "2023-01-21",
+      "pickup_borough": "Manhattan",
+      "trips": 508,
+      "total_amount_cents": 1063469
+    },
+    {
+      "pickup_date": "2023-01-21",
+      "pickup_borough": "Queens",
+      "trips": 32,
+      "total_amount_cents": 217615
+    },
+    {
+      "pickup_date": "2023-01-21",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 7828
+    },
+    {
+      "pickup_date": "2023-01-22",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 8527
+    },
+    {
+      "pickup_date": "2023-01-22",
+      "pickup_borough": "Manhattan",
+      "trips": 359,
+      "total_amount_cents": 829235
+    },
+    {
+      "pickup_date": "2023-01-22",
+      "pickup_borough": "Queens",
+      "trips": 60,
+      "total_amount_cents": 431033
+    },
+    {
+      "pickup_date": "2023-01-22",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 6506
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1670
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 19052
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "Manhattan",
+      "trips": 398,
+      "total_amount_cents": 861519
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 4100
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "Queens",
+      "trips": 46,
+      "total_amount_cents": 352507
+    },
+    {
+      "pickup_date": "2023-01-23",
+      "pickup_borough": "Unknown",
+      "trips": 3,
+      "total_amount_cents": 8381
+    },
+    {
+      "pickup_date": "2023-01-24",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 3100
+    },
+    {
+      "pickup_date": "2023-01-24",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 11230
+    },
+    {
+      "pickup_date": "2023-01-24",
+      "pickup_borough": "Manhattan",
+      "trips": 441,
+      "total_amount_cents": 1020450
+    },
+    {
+      "pickup_date": "2023-01-24",
+      "pickup_borough": "Queens",
+      "trips": 31,
+      "total_amount_cents": 217195
+    },
+    {
+      "pickup_date": "2023-01-24",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 21761
+    },
+    {
+      "pickup_date": "2023-01-25",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1900
+    },
+    {
+      "pickup_date": "2023-01-25",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 5829
+    },
+    {
+      "pickup_date": "2023-01-25",
+      "pickup_borough": "Manhattan",
+      "trips": 439,
+      "total_amount_cents": 995405
+    },
+    {
+      "pickup_date": "2023-01-25",
+      "pickup_borough": "Queens",
+      "trips": 36,
+      "total_amount_cents": 268804
+    },
+    {
+      "pickup_date": "2023-01-25",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 6703
+    },
+    {
+      "pickup_date": "2023-01-26",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 16413
+    },
+    {
+      "pickup_date": "2023-01-26",
+      "pickup_borough": "Manhattan",
+      "trips": 521,
+      "total_amount_cents": 1146926
+    },
+    {
+      "pickup_date": "2023-01-26",
+      "pickup_borough": "Queens",
+      "trips": 43,
+      "total_amount_cents": 296503
+    },
+    {
+      "pickup_date": "2023-01-26",
+      "pickup_borough": "Unknown",
+      "trips": 13,
+      "total_amount_cents": 51389
+    },
+    {
+      "pickup_date": "2023-01-27",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 12293
+    },
+    {
+      "pickup_date": "2023-01-27",
+      "pickup_borough": "Manhattan",
+      "trips": 469,
+      "total_amount_cents": 1084719
+    },
+    {
+      "pickup_date": "2023-01-27",
+      "pickup_borough": "Queens",
+      "trips": 45,
+      "total_amount_cents": 300932
+    },
+    {
+      "pickup_date": "2023-01-27",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 36840
+    },
+    {
+      "pickup_date": "2023-01-28",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 4750
+    },
+    {
+      "pickup_date": "2023-01-28",
+      "pickup_borough": "Manhattan",
+      "trips": 481,
+      "total_amount_cents": 1071629
+    },
+    {
+      "pickup_date": "2023-01-28",
+      "pickup_borough": "Queens",
+      "trips": 28,
+      "total_amount_cents": 182101
+    },
+    {
+      "pickup_date": "2023-01-28",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 13453
+    },
+    {
+      "pickup_date": "2023-01-29",
+      "pickup_borough": "Manhattan",
+      "trips": 388,
+      "total_amount_cents": 839297
+    },
+    {
+      "pickup_date": "2023-01-29",
+      "pickup_borough": "Queens",
+      "trips": 50,
+      "total_amount_cents": 289833
+    },
+    {
+      "pickup_date": "2023-01-29",
+      "pickup_borough": "Unknown",
+      "trips": 11,
+      "total_amount_cents": 43430
+    },
+    {
+      "pickup_date": "2023-01-30",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 2400
+    },
+    {
+      "pickup_date": "2023-01-30",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 14547
+    },
+    {
+      "pickup_date": "2023-01-30",
+      "pickup_borough": "Manhattan",
+      "trips": 348,
+      "total_amount_cents": 807046
+    },
+    {
+      "pickup_date": "2023-01-30",
+      "pickup_borough": "Queens",
+      "trips": 42,
+      "total_amount_cents": 314534
+    },
+    {
+      "pickup_date": "2023-01-30",
+      "pickup_borough": "Unknown",
+      "trips": 12,
+      "total_amount_cents": 55991
+    },
+    {
+      "pickup_date": "2023-01-31",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 6125
+    },
+    {
+      "pickup_date": "2023-01-31",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 10559
+    },
+    {
+      "pickup_date": "2023-01-31",
+      "pickup_borough": "Manhattan",
+      "trips": 456,
+      "total_amount_cents": 1046411
+    },
+    {
+      "pickup_date": "2023-01-31",
+      "pickup_borough": "Queens",
+      "trips": 30,
+      "total_amount_cents": 216399
+    },
+    {
+      "pickup_date": "2023-01-31",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 23978
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 14940
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "Manhattan",
+      "trips": 516,
+      "total_amount_cents": 1171798
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 4890
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "Queens",
+      "trips": 33,
+      "total_amount_cents": 237392
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "Staten Island",
+      "trips": 1,
+      "total_amount_cents": 450
+    },
+    {
+      "pickup_date": "2023-02-01",
+      "pickup_borough": "Unknown",
+      "trips": 6,
+      "total_amount_cents": 26302
+    },
+    {
+      "pickup_date": "2023-02-02",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 4938
+    },
+    {
+      "pickup_date": "2023-02-02",
+      "pickup_borough": "Manhattan",
+      "trips": 509,
+      "total_amount_cents": 1187081
+    },
+    {
+      "pickup_date": "2023-02-02",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 1596
+    },
+    {
+      "pickup_date": "2023-02-02",
+      "pickup_borough": "Queens",
+      "trips": 51,
+      "total_amount_cents": 356649
+    },
+    {
+      "pickup_date": "2023-02-02",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 33193
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "Bronx",
+      "trips": 3,
+      "total_amount_cents": 9575
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 9024
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "Manhattan",
+      "trips": 488,
+      "total_amount_cents": 1095870
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 1600
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "Queens",
+      "trips": 32,
+      "total_amount_cents": 260003
+    },
+    {
+      "pickup_date": "2023-02-03",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 28529
+    },
+    {
+      "pickup_date": "2023-02-04",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 10820
+    },
+    {
+      "pickup_date": "2023-02-04",
+      "pickup_borough": "Manhattan",
+      "trips": 455,
+      "total_amount_cents": 992247
+    },
+    {
+      "pickup_date": "2023-02-04",
+      "pickup_borough": "Queens",
+      "trips": 27,
+      "total_amount_cents": 161549
+    },
+    {
+      "pickup_date": "2023-02-04",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 30064
+    },
+    {
+      "pickup_date": "2023-02-05",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 6610
+    },
+    {
+      "pickup_date": "2023-02-05",
+      "pickup_borough": "Manhattan",
+      "trips": 349,
+      "total_amount_cents": 788142
+    },
+    {
+      "pickup_date": "2023-02-05",
+      "pickup_borough": "Queens",
+      "trips": 46,
+      "total_amount_cents": 327584
+    },
+    {
+      "pickup_date": "2023-02-05",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 30937
+    },
+    {
+      "pickup_date": "2023-02-06",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 5124
+    },
+    {
+      "pickup_date": "2023-02-06",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 3826
+    },
+    {
+      "pickup_date": "2023-02-06",
+      "pickup_borough": "Manhattan",
+      "trips": 384,
+      "total_amount_cents": 875202
+    },
+    {
+      "pickup_date": "2023-02-06",
+      "pickup_borough": "Queens",
+      "trips": 51,
+      "total_amount_cents": 390350
+    },
+    {
+      "pickup_date": "2023-02-06",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 34035
+    },
+    {
+      "pickup_date": "2023-02-07",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 7879
+    },
+    {
+      "pickup_date": "2023-02-07",
+      "pickup_borough": "Manhattan",
+      "trips": 483,
+      "total_amount_cents": 1113695
+    },
+    {
+      "pickup_date": "2023-02-07",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 3117
+    },
+    {
+      "pickup_date": "2023-02-07",
+      "pickup_borough": "Queens",
+      "trips": 38,
+      "total_amount_cents": 252998
+    },
+    {
+      "pickup_date": "2023-02-07",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 20267
+    },
+    {
+      "pickup_date": "2023-02-08",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 970
+    },
+    {
+      "pickup_date": "2023-02-08",
+      "pickup_borough": "Manhattan",
+      "trips": 512,
+      "total_amount_cents": 1173420
+    },
+    {
+      "pickup_date": "2023-02-08",
+      "pickup_borough": "Queens",
+      "trips": 34,
+      "total_amount_cents": 225054
+    },
+    {
+      "pickup_date": "2023-02-08",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 37167
+    },
+    {
+      "pickup_date": "2023-02-09",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 14229
+    },
+    {
+      "pickup_date": "2023-02-09",
+      "pickup_borough": "Manhattan",
+      "trips": 558,
+      "total_amount_cents": 1302759
+    },
+    {
+      "pickup_date": "2023-02-09",
+      "pickup_borough": "N/A",
+      "trips": 3,
+      "total_amount_cents": 12714
+    },
+    {
+      "pickup_date": "2023-02-09",
+      "pickup_borough": "Queens",
+      "trips": 47,
+      "total_amount_cents": 340276
+    },
+    {
+      "pickup_date": "2023-02-09",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 16884
+    },
+    {
+      "pickup_date": "2023-02-10",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 2300
+    },
+    {
+      "pickup_date": "2023-02-10",
+      "pickup_borough": "Manhattan",
+      "trips": 523,
+      "total_amount_cents": 1266171
+    },
+    {
+      "pickup_date": "2023-02-10",
+      "pickup_borough": "Queens",
+      "trips": 38,
+      "total_amount_cents": 253400
+    },
+    {
+      "pickup_date": "2023-02-10",
+      "pickup_borough": "Unknown",
+      "trips": 9,
+      "total_amount_cents": 41780
+    },
+    {
+      "pickup_date": "2023-02-11",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 2895
+    },
+    {
+      "pickup_date": "2023-02-11",
+      "pickup_borough": "Manhattan",
+      "trips": 518,
+      "total_amount_cents": 1230543
+    },
+    {
+      "pickup_date": "2023-02-11",
+      "pickup_borough": "Queens",
+      "trips": 34,
+      "total_amount_cents": 229574
+    },
+    {
+      "pickup_date": "2023-02-11",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 29726
+    },
+    {
+      "pickup_date": "2023-02-12",
+      "pickup_borough": "Brooklyn",
+      "trips": 5,
+      "total_amount_cents": 15421
+    },
+    {
+      "pickup_date": "2023-02-12",
+      "pickup_borough": "Manhattan",
+      "trips": 436,
+      "total_amount_cents": 984310
+    },
+    {
+      "pickup_date": "2023-02-12",
+      "pickup_borough": "Queens",
+      "trips": 40,
+      "total_amount_cents": 313925
+    },
+    {
+      "pickup_date": "2023-02-12",
+      "pickup_borough": "Unknown",
+      "trips": 9,
+      "total_amount_cents": 54354
+    },
+    {
+      "pickup_date": "2023-02-13",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 6500
+    },
+    {
+      "pickup_date": "2023-02-13",
+      "pickup_borough": "Manhattan",
+      "trips": 445,
+      "total_amount_cents": 974469
+    },
+    {
+      "pickup_date": "2023-02-13",
+      "pickup_borough": "Queens",
+      "trips": 31,
+      "total_amount_cents": 204007
+    },
+    {
+      "pickup_date": "2023-02-13",
+      "pickup_borough": "Unknown",
+      "trips": 3,
+      "total_amount_cents": 6664
+    },
+    {
+      "pickup_date": "2023-02-14",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 14359
+    },
+    {
+      "pickup_date": "2023-02-14",
+      "pickup_borough": "Manhattan",
+      "trips": 489,
+      "total_amount_cents": 1100841
+    },
+    {
+      "pickup_date": "2023-02-14",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 6815
+    },
+    {
+      "pickup_date": "2023-02-14",
+      "pickup_borough": "Queens",
+      "trips": 38,
+      "total_amount_cents": 281936
+    },
+    {
+      "pickup_date": "2023-02-14",
+      "pickup_borough": "Unknown",
+      "trips": 1,
+      "total_amount_cents": 1360
+    },
+    {
+      "pickup_date": "2023-02-15",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 8035
+    },
+    {
+      "pickup_date": "2023-02-15",
+      "pickup_borough": "Manhattan",
+      "trips": 471,
+      "total_amount_cents": 1158954
+    },
+    {
+      "pickup_date": "2023-02-15",
+      "pickup_borough": "Queens",
+      "trips": 32,
+      "total_amount_cents": 218064
+    },
+    {
+      "pickup_date": "2023-02-15",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 25252
+    },
+    {
+      "pickup_date": "2023-02-16",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 7045
+    },
+    {
+      "pickup_date": "2023-02-16",
+      "pickup_borough": "Manhattan",
+      "trips": 542,
+      "total_amount_cents": 1325390
+    },
+    {
+      "pickup_date": "2023-02-16",
+      "pickup_borough": "Queens",
+      "trips": 42,
+      "total_amount_cents": 339835
+    },
+    {
+      "pickup_date": "2023-02-16",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 6144
+    },
+    {
+      "pickup_date": "2023-02-17",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 7166
+    },
+    {
+      "pickup_date": "2023-02-17",
+      "pickup_borough": "Manhattan",
+      "trips": 541,
+      "total_amount_cents": 1258265
+    },
+    {
+      "pickup_date": "2023-02-17",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 4434
+    },
+    {
+      "pickup_date": "2023-02-17",
+      "pickup_borough": "Queens",
+      "trips": 52,
+      "total_amount_cents": 400965
+    },
+    {
+      "pickup_date": "2023-02-17",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 34181
+    },
+    {
+      "pickup_date": "2023-02-18",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 6862
+    },
+    {
+      "pickup_date": "2023-02-18",
+      "pickup_borough": "Manhattan",
+      "trips": 445,
+      "total_amount_cents": 1012918
+    },
+    {
+      "pickup_date": "2023-02-18",
+      "pickup_borough": "N/A",
+      "trips": 1,
+      "total_amount_cents": 1670
+    },
+    {
+      "pickup_date": "2023-02-18",
+      "pickup_borough": "Queens",
+      "trips": 35,
+      "total_amount_cents": 270457
+    },
+    {
+      "pickup_date": "2023-02-18",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 6448
+    },
+    {
+      "pickup_date": "2023-02-19",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 6600
+    },
+    {
+      "pickup_date": "2023-02-19",
+      "pickup_borough": "Manhattan",
+      "trips": 420,
+      "total_amount_cents": 966518
+    },
+    {
+      "pickup_date": "2023-02-19",
+      "pickup_borough": "Queens",
+      "trips": 46,
+      "total_amount_cents": 327017
+    },
+    {
+      "pickup_date": "2023-02-19",
+      "pickup_borough": "Unknown",
+      "trips": 7,
+      "total_amount_cents": 16932
+    },
+    {
+      "pickup_date": "2023-02-20",
+      "pickup_borough": "Manhattan",
+      "trips": 347,
+      "total_amount_cents": 783127
+    },
+    {
+      "pickup_date": "2023-02-20",
+      "pickup_borough": "Queens",
+      "trips": 53,
+      "total_amount_cents": 390512
+    },
+    {
+      "pickup_date": "2023-02-20",
+      "pickup_borough": "Staten Island",
+      "trips": 1,
+      "total_amount_cents": 9620
+    },
+    {
+      "pickup_date": "2023-02-20",
+      "pickup_borough": "Unknown",
+      "trips": 4,
+      "total_amount_cents": 16932
+    },
+    {
+      "pickup_date": "2023-02-21",
+      "pickup_borough": "Bronx",
+      "trips": 2,
+      "total_amount_cents": 4600
+    },
+    {
+      "pickup_date": "2023-02-21",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 5242
+    },
+    {
+      "pickup_date": "2023-02-21",
+      "pickup_borough": "Manhattan",
+      "trips": 452,
+      "total_amount_cents": 1025188
+    },
+    {
+      "pickup_date": "2023-02-21",
+      "pickup_borough": "Queens",
+      "trips": 55,
+      "total_amount_cents": 398557
+    },
+    {
+      "pickup_date": "2023-02-21",
+      "pickup_borough": "Unknown",
+      "trips": 10,
+      "total_amount_cents": 29327
+    },
+    {
+      "pickup_date": "2023-02-22",
+      "pickup_borough": "Brooklyn",
+      "trips": 6,
+      "total_amount_cents": 20821
+    },
+    {
+      "pickup_date": "2023-02-22",
+      "pickup_borough": "Manhattan",
+      "trips": 499,
+      "total_amount_cents": 1160211
+    },
+    {
+      "pickup_date": "2023-02-22",
+      "pickup_borough": "Queens",
+      "trips": 49,
+      "total_amount_cents": 365708
+    },
+    {
+      "pickup_date": "2023-02-22",
+      "pickup_borough": "Unknown",
+      "trips": 9,
+      "total_amount_cents": 31862
+    },
+    {
+      "pickup_date": "2023-02-23",
+      "pickup_borough": "Brooklyn",
+      "trips": 2,
+      "total_amount_cents": 3460
+    },
+    {
+      "pickup_date": "2023-02-23",
+      "pickup_borough": "Manhattan",
+      "trips": 492,
+      "total_amount_cents": 1199026
+    },
+    {
+      "pickup_date": "2023-02-23",
+      "pickup_borough": "Queens",
+      "trips": 33,
+      "total_amount_cents": 233481
+    },
+    {
+      "pickup_date": "2023-02-23",
+      "pickup_borough": "Unknown",
+      "trips": 5,
+      "total_amount_cents": 26073
+    },
+    {
+      "pickup_date": "2023-02-24",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 2965
+    },
+    {
+      "pickup_date": "2023-02-24",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 9315
+    },
+    {
+      "pickup_date": "2023-02-24",
+      "pickup_borough": "Manhattan",
+      "trips": 529,
+      "total_amount_cents": 1272721
+    },
+    {
+      "pickup_date": "2023-02-24",
+      "pickup_borough": "Queens",
+      "trips": 41,
+      "total_amount_cents": 309871
+    },
+    {
+      "pickup_date": "2023-02-24",
+      "pickup_borough": "Unknown",
+      "trips": 2,
+      "total_amount_cents": 9382
+    },
+    {
+      "pickup_date": "2023-02-25",
+      "pickup_borough": "Brooklyn",
+      "trips": 6,
+      "total_amount_cents": 15328
+    },
+    {
+      "pickup_date": "2023-02-25",
+      "pickup_borough": "Manhattan",
+      "trips": 535,
+      "total_amount_cents": 1216335
+    },
+    {
+      "pickup_date": "2023-02-25",
+      "pickup_borough": "Queens",
+      "trips": 23,
+      "total_amount_cents": 169100
+    },
+    {
+      "pickup_date": "2023-02-25",
+      "pickup_borough": "Unknown",
+      "trips": 8,
+      "total_amount_cents": 16701
+    },
+    {
+      "pickup_date": "2023-02-26",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 870
+    },
+    {
+      "pickup_date": "2023-02-26",
+      "pickup_borough": "Brooklyn",
+      "trips": 4,
+      "total_amount_cents": 9682
+    },
+    {
+      "pickup_date": "2023-02-26",
+      "pickup_borough": "Manhattan",
+      "trips": 407,
+      "total_amount_cents": 928530
+    },
+    {
+      "pickup_date": "2023-02-26",
+      "pickup_borough": "Queens",
+      "trips": 58,
+      "total_amount_cents": 412424
+    },
+    {
+      "pickup_date": "2023-02-26",
+      "pickup_borough": "Unknown",
+      "trips": 1,
+      "total_amount_cents": 4620
+    },
+    {
+      "pickup_date": "2023-02-27",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 5355
+    },
+    {
+      "pickup_date": "2023-02-27",
+      "pickup_borough": "Brooklyn",
+      "trips": 3,
+      "total_amount_cents": 8905
+    },
+    {
+      "pickup_date": "2023-02-27",
+      "pickup_borough": "Manhattan",
+      "trips": 363,
+      "total_amount_cents": 827899
+    },
+    {
+      "pickup_date": "2023-02-27",
+      "pickup_borough": "Queens",
+      "trips": 55,
+      "total_amount_cents": 413784
+    },
+    {
+      "pickup_date": "2023-02-27",
+      "pickup_borough": "Unknown",
+      "trips": 3,
+      "total_amount_cents": 8358
+    },
+    {
+      "pickup_date": "2023-02-28",
+      "pickup_borough": "Bronx",
+      "trips": 1,
+      "total_amount_cents": 1670
+    },
+    {
+      "pickup_date": "2023-02-28",
+      "pickup_borough": "Brooklyn",
+      "trips": 1,
+      "total_amount_cents": 4345
+    },
+    {
+      "pickup_date": "2023-02-28",
+      "pickup_borough": "Manhattan",
+      "trips": 482,
+      "total_amount_cents": 1057451
+    },
+    {
+      "pickup_date": "2023-02-28",
+      "pickup_borough": "Queens",
+      "trips": 63,
+      "total_amount_cents": 480192
+    },
+    {
+      "pickup_date": "2023-02-28",
+      "pickup_borough": "Unknown",
+      "trips": 6,
+      "total_amount_cents": 14771
+    }
+  ]
+}

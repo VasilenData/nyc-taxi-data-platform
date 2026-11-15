@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "historical-bundled-sample-analyst",
+  "release_id": "6d25c388-cb17-424b-b08e-046de145b062",
+  "model_sha256": "d6031938e1ba689dc0b14c05e05a391b52710073344e47f5ea77ad489d1f78de",
+  "model_files": {
+    "dbt_project.yml": "968882cb308ccde3f45ecbbf4bb5bcda33b9baf6bc763e9045d2d2626db75fed",
+    "macros/accepted_range.sql": "78feaafc65bb5a30ccd676fab7560bf5cb7f5bfe7931a60e6f2266c19be45d14",
+    "models/marts/fct_trips.sql": "664eaa8cd93a89dc5e661bba24c3c3e19145d26167f9ba4560d8e06cfa969009",
+    "models/marts/mart_daily_borough.sql": "94a306d3804371848f9d8d930dc4e64aeeb731faa8e24913553db32250e6447d",
+    "models/marts/mart_data_quality.sql": "55741045b63c475cc6b1f3284587712f047e260f604e21d9ff8407f234115b40",
+    "models/marts/mart_hourly_demand.sql": "4b341ffbc354632e493a605b873c85d95099843e7b4ec27195dce615064bb71b",
+    "models/marts/schema.yml": "494f9fef9f650a717e81db492ba2a1e926b050c90f63c4ba96b96d3ff6d0863f",
+    "models/sources.yml": "30ae18c49f1f96696efbc8779b3d0d6df600a9aac1c50cafe368af23cb2b96f9",
+    "models/staging/schema.yml": "229bb1972b12cbd35aa5f9fe5a5b0bb0a9cc98ddf007f2e687d6a571af411f49",
+    "models/staging/stg_trips.sql": "e1007da76c6dc18a32ab6ace83ed3e8927f54ac619033e913f0c7b83a974cd64",
+    "models/staging/stg_trips_classified.sql": "640e07ec1eb75ad0c3aba2276ab543693965340bea0efc1e2d8412e59600ab9c",
+    "models/staging/trips_quarantine.sql": "279b811e5881ff1faaaba15d8956b660cadcbbed1abaa221873b84ebfb4b5912",
+    "models/staging/unit_tests.yml": "9d2dc451370fc42abfe81f9c7d0e2bbf530977ed9b51288b83403bd79a63fa4a",
+    "seeds/taxi_zone_lookup.csv": "5e8f5ff10175d75f468c6fbdf0f68ca93e77ecd48942718d5403f8b7232e90b0",
+    "tests/assert_fact_matches_valid.sql": "2ed0034aeb203c01a271a1f901e27d6f36356b45b92b77ba544ab5562dfb70a4",
+    "tests/assert_raw_equals_valid_plus_rejected.sql": "662c5269f5ffaba0e1a8f2d0ef8c24fd7ce9f302b34c6b952d20d5474d7b2d06",
+    "tests/assert_trip_id_unique_per_month.sql": "333682f87cb5cc2f9627f9db23068dcfe9830d4beec0bf4cb70d5bed3f3389ab"
+  },
+  "inputs": [
+    {
+      "source_month": "2023-01",
+      "file": "yellow_tripdata_2023-01.parquet",
+      "sha256": "f517dc1958e3bfc29c74a7fb7c7e1c112e2fca05c48e06c970d6ab3aab2f6558",
+      "bytes": 319180,
+      "rows": 15000
+    },
+    {
+      "source_month": "2023-02",
+      "file": "yellow_tripdata_2023-02.parquet",
+      "sha256": "ef77b0d663ca4927a2cd9fc12ab77fd3d55252b12a5673ef37581ca260a730bd",
+      "bytes": 318700,
+      "rows": 15000
+    }
+  ],
+  "created_at_utc": "2026-11-15T23:14:36.400405+00:00",
+  "runtime": {
+    "python": "3.12.14",
+    "duckdb": "2.0.0"
+  },
+  "exporter_sha256": "a5b7e000ffb361c5b6d394a22c0f8a7cb32670c1f739053314730218e95fbbcb",
+  "files": [
+    {
+      "file": "daily-borough.csv",
+      "sha256": "52340150f1be30dc3e1eb0d5f578eaf827ed4ddbdbcbc55a57466255ea317286",
+      "bytes": 7773
+    },
+    {
+      "file": "daily-borough.parquet",
+      "sha256": "4dcc110e1d96899444b0fa5c0648e4d4ce4916600e5db2b36b8fe6bf35933996",
+      "bytes": 2421
+    },
+    {
+      "file": "data.json",
+      "sha256": "2c7efc686646cd0f3daed0921d2de88cc0c61d4e77ccfa86898797c06f2a20b1",
+      "bytes": 44287
+    },
+    {
+      "file": "metric-dictionary.json",
+      "sha256": "420807a74ecd59d4cd8172479631428e6b796b1c4b8455a2643fcc56d9b01c4e",
+      "bytes": 1555
+    },
+    {
+      "file": "quality-coverage.json",
+      "sha256": "60886fd7ece73d6296f07c4f6574ff8e83458be35f4636e61e5c9a49e68617a2",
+      "bytes": 3895
+    }
+  ],
+  "reconciliation": {
+    "daily_borough_fact_differences": 0,
+    "raw_valid_rejected_balanced": true,
+    "parquet_round_trip_differences": 0,
+    "trips": 29326,
+    "total_amount_cents": 79896425
+  },
+  "scope": "Historical January/February 2023 public TLC extracts: exactly 15,000 bundled source rows per month. A convenience sample, not a random or representative estimate of NYC demand.",
+  "limits": "Static sample; no live service or representative citywide inference. Amounts are exact cents; source marts use DOUBLE, reconciled with their existing tolerance before cent reconciliation."
+}
