@@ -1,0 +1,26 @@
+{
+  "observed_at_utc": "2026-11-15T15:30:06.474007+00:00",
+  "scope": "Synthetic in-memory DuckDB counterexamples. Not production incidents or a full-data benchmark.",
+  "baseline_git_commit": "409935de9acb4ece227d337e69d9c44f0a95c81c",
+  "baseline_publisher_sha256": "b9d7c62f29f71af1a34bfa404e60c87e94f3b00156fd469bc0ac11734ffb9018",
+  "duckdb_version": "2.0.0",
+  "cases": [
+    {
+      "scenario": "revenue_error",
+      "old_publisher_accepted_corruption": true,
+      "new_publisher_rejection": "Publication refused: mart_daily_borough grain/metric mismatch (1 rows)",
+      "all_previous_consumer_relations_preserved": true
+    },
+    {
+      "scenario": "balanced_between_boroughs",
+      "old_publisher_accepted_corruption": true,
+      "new_publisher_rejection": "Publication refused: mart_daily_borough grain/metric mismatch (2 rows)",
+      "all_previous_consumer_relations_preserved": true
+    }
+  ],
+  "candidate_source_sha256_lf": {
+    "taxi_platform/publication.py": "258b0e21d46db92ab047a90556efbada14be42495861642be7d99cae6abaa408",
+    "taxi_platform/mart_contract.py": "bd381ef52d54d4144ccbd155d615766c5c6895dedcecce174caa4983071dbbf3",
+    "tests/test_mart_contract.py": "44ec1a21e96afa9b0fa2eff7209867b017ae20e7c9e5b65ef44af72c72b7227d"
+  }
+}
