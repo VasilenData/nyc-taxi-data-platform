@@ -22,6 +22,16 @@ A reproducible batch pipeline that turns inconsistent public NYC taxi records in
 
 ## Results at a glance
 
+**15 November quality hardening:** reject non-finite source measures and reconcile
+every daily-borough/hourly reporting grain before publication. Hand-computed
+counterexamples show that changed revenue and balanced between-borough errors
+previously passed global counts; the new gate refuses them while preserving all
+nine consumer relations. [Contract, reproduced failures and scope](docs/QUALITY_CONTRACT.md).
+A [new 31,593,944-row local run](measurements/full-quality-2026-11-15.json) passed
+the changed contract: 30,694,510 valid facts plus 899,434 quarantined rows reconcile
+exactly. Its single 106.544-second run is correctness evidence, not a comparative
+speed claim. The dated timings below precede these additional checks.
+
 **14 November publication comparison:** on the same prepared 31.6-million-row workload, allowing unordered table copies reduced median publication wall time from **31.311 s to 24.165 s (22.8%)** across three alternating measured pairs. All eight tables and version metadata passed checks after every run, and rollback/reader-snapshot protections remain tested. The trade-off was **4.5% more CPU time, 0.8% more sampled peak RSS and 1.8% larger checkpointed files**. This is a local publication-only result, not an end-to-end or cloud speedup. [Repeated measurements, ranges and method](docs/PUBLICATION_PERFORMANCE.md) · [raw evidence](measurements/publication-order-2026-11-14.json).
 
 Measured **12 November 2026**, including staged validation and publication of all eight consumer tables, in a new warehouse:
@@ -62,7 +72,7 @@ flowchart TD
 - **Ingestion:** reloads a month transactionally without accumulating a second copy; empty or failed replacements roll back to the previous data. Requires the top-level fields used by trip identity, classification and published metrics before replacing a month; historical optional fee fields remain nullable. Records source month, filename and timestamp, plus an append-only `audit.source_loads` entry with the source SHA-256, byte size, logical schema and absent optional fields in the same transaction. Failed schema checks, changed source bytes or failed audit writes preserve the previous rows and successful load history. Hashing before and after ingestion detects ordinary file changes; use immutable input files and a single loader. Older loads are not retroactively fingerprinted.
 - **Transformation:** an incremental dbt classifier compares load versions per month, including corrected versions with older timestamps. A changed model revision forces full reclassification of loaded history, preventing old rules from persisting behind unchanged source timestamps. The fact table has an enforced column/type contract and joins the zone lookup seed.
 - **Consumption:** marts summarize daily borough activity, hourly demand and data quality.
-- **Quality:** reconciliation includes output-only months as well as raw months, so stale valid or quarantined data cannot hide behind a raw-side join. Reconciliation, rejection-rate and coverage checks validate the candidate `build` schema. A downstream publication asset repeats those gates within its snapshot, checks fact/mart totals, then copies the eight managed tables and publication metadata to `main` in one DuckDB transaction. CLI, UI and scheduled transform jobs use this same path.
+- **Quality:** reconciliation includes output-only months as well as raw months, so stale valid or quarantined data cannot hide behind a raw-side join. Reconciliation, rejection-rate and coverage checks validate the candidate `build` schema. A downstream publication asset repeats those gates within its snapshot and independently reconciles every daily-borough/hourly reporting grain and metric against candidate facts, then copies the eight managed tables and publication metadata to `main` in one DuckDB transaction. CLI, UI and scheduled transform jobs use this same path.
 
 ## Run the sample
 
