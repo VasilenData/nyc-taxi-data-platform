@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title"><title id="title">NYC Taxi — A failed refresh. A valid dataset.</title><rect width="100%" height="100%" fill="#111315"/>
+<rect x="0" y="0" width="1200" height="8" rx="0" fill="#7EE0B8"/>
+<text x="64" y="71.01" fill="#AAB7B1" font-family="Consolas,monospace" font-size="19" font-weight="400" text-anchor="start">02 / DATA PLATFORM</text>
+<text x="64" y="170.83" fill="#F0F3F2" font-family="Segoe UI,Arial,sans-serif" font-size="77" font-weight="700" text-anchor="start">NYC Taxi</text>
+<text x="64" y="252.02" fill="#7EE0B8" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700" text-anchor="start">A failed refresh.</text>
+<text x="64" y="300.02" fill="#7EE0B8" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700" text-anchor="start">A valid dataset.</text>
+<rect x="64.0" y="378" width="333.3333333333333" height="66" rx="8" fill="#181D20" stroke="#34413B"/>
+<circle cx="85.0" cy="411" r="4" fill="#7EE0B8"/>
+<text x="101.0" y="415.22" fill="#AAB7B1" font-family="Consolas,monospace" font-size="18" font-weight="400" text-anchor="start">CANDIDATE</text>
+<polyline points="397.3333333333333,411 433.3333333333333,411" fill="none" stroke="#7EE0B8" stroke-width="2"/>
+<polyline points="426.3333333333333,406 433.3333333333333,411 426.3333333333333,416" fill="none" stroke="#7EE0B8" stroke-width="2"/>
+<rect x="433.3333333333333" y="378" width="333.3333333333333" height="66" rx="8" fill="#181D20" stroke="#34413B"/>
+<circle cx="454.3333333333333" cy="411" r="4" fill="#7EE0B8"/>
+<text x="470.3333333333333" y="415.22" fill="#AAB7B1" font-family="Consolas,monospace" font-size="18" font-weight="400" text-anchor="start">VALIDATE</text>
+<polyline points="766.6666666666666,411 802.6666666666666,411" fill="none" stroke="#7EE0B8" stroke-width="2"/>
+<polyline points="795.6666666666666,406 802.6666666666666,411 795.6666666666666,416" fill="none" stroke="#7EE0B8" stroke-width="2"/>
+<rect x="802.6666666666666" y="378" width="333.3333333333333" height="66" rx="8" fill="#181D20" stroke="#34413B"/>
+<circle cx="823.6666666666666" cy="411" r="4" fill="#7EE0B8"/>
+<text x="839.6666666666666" y="415.22" fill="#AAB7B1" font-family="Consolas,monospace" font-size="18" font-weight="400" text-anchor="start">PUBLISH</text>
+<polyline points="64,494 1136,494" fill="none" stroke="#34413B" stroke-width="1"/>
+<text x="64" y="545.8" fill="#AAB7B1" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="start">Historical public data · Local recovery exercises</text>
+<text x="64" y="584.43" fill="#F0F3F2" font-family="Consolas,monospace" font-size="17" font-weight="400" text-anchor="start">VASILEN KANCHEV</text>
+</svg>

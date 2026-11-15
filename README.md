@@ -1,5 +1,9 @@
 # NYC Taxi Data Platform
 
+![NYC Taxi: a failed refresh, a valid dataset. Historical public data and local recovery exercises.](project-cover.svg)
+
+[View the pipeline results](https://vasilendata.github.io/projects/nyc-taxi/) · [Inspect the recovery proof](docs/OPERATING_HISTORY.md) · [Watch the walkthrough](https://vasilendata.github.io/demos/nyc-recovery/)
+
 [![CI](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml)
 
 A reproducible batch pipeline that turns inconsistent public NYC taxi records into reconciled analytics tables. I implemented monthly source validation, an incremental dbt classifier, and an eight-table publication transaction so a failed candidate cannot replace the last good consumer dataset.
