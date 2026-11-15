@@ -16,3 +16,5 @@ dagster_home/
 .venv/
 data/benchmark_work/
 .cloud-work/
+data/sample-workspace/
+data/*.log
