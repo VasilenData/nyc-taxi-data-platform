@@ -7,11 +7,14 @@ from __future__ import annotations
 
 import argparse
 from datetime import date, datetime, time as daytime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 import json
 import os
 from pathlib import Path
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -23,6 +26,9 @@ CONFIG = ROOT / "operations/replay-window.json"
 REQUIRED_STEPS = {"Replay the bundled historical sample",
                   "Check actual publication independently and deliver local notices",
                   "Retain immutable attempt records and bounded logs"}
+HTTP_ATTEMPTS = 3
+HTTP_RETRY_BUDGET_SECONDS = 30
+HTTP_REQUEST_TIMEOUT_SECONDS = 8
 
 
 def slots(config):
@@ -36,16 +42,85 @@ def slots(config):
             for i in range((end - start).days + 1)]
 
 
-def fetch_json(url):
+def retry_delay(error, attempt, epoch):
+    """Return a bounded-policy delay, or None for a permanent HTTP error.
+
+    Do not shorten a server's requested wait. The caller refuses a retry when
+    the full wait cannot fit its remaining budget.
+    """
+    headers = error.headers or {}
+    limited = error.code == 429 or (
+        error.code == 403 and
+        (headers.get("Retry-After") is not None or headers.get("X-RateLimit-Remaining") == "0")
+    )
+    if not limited and error.code not in {408, 500, 502, 503, 504}:
+        return None
+    delays = [2 ** attempt]
+    retry_after = headers.get("Retry-After")
+    if retry_after is not None:
+        try:
+            seconds = int(retry_after)
+            if seconds < 0:
+                return None
+            delays.append(seconds)
+        except ValueError:
+            try:
+                delays.append(max(0, parsedate_to_datetime(retry_after).timestamp() - epoch()))
+            except (TypeError, ValueError, OverflowError):
+                return None  # An invalid server hint is not permission to retry early.
+    if headers.get("X-RateLimit-Remaining") == "0":
+        try:
+            delays.append(max(0, int(headers["X-RateLimit-Reset"]) - epoch()))
+        except (KeyError, TypeError, ValueError, OverflowError):
+            return None
+    elif limited and retry_after is None:
+        delays.append(60)  # GitHub's minimum wait without a reset or Retry-After hint.
+    return max(delays)
+
+
+def fetch_json(url, *, opener=None, monotonic=None, sleep=None, epoch=None):
+    """Fetch metadata with finite attempts, request timeouts and a retry deadline.
+
+    Payload and JSON failures remain permanent. A response that returns after
+    the deadline is refused; no additional request or sleep starts beyond it.
+    Socket timeouts are not an OS-level hard process deadline.
+    """
+    opener = opener or urllib.request.urlopen
+    clock, pause, wall_time = monotonic or time.monotonic, sleep or time.sleep, epoch or time.time
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "nyc-operating-replay-monitor"}
     if os.environ.get("GITHUB_TOKEN"):
         headers["Authorization"] = "Bearer " + os.environ["GITHUB_TOKEN"]
     request = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(request, timeout=10) as response:
-        payload = response.read(2_000_001)
-    if len(payload) > 2_000_000:
-        raise ValueError("GitHub response exceeded the bounded monitor payload")
-    return json.loads(payload)
+    deadline = clock() + HTTP_RETRY_BUDGET_SECONDS
+    for attempt in range(HTTP_ATTEMPTS):
+        remaining = deadline - clock()
+        if remaining <= 0:
+            raise TimeoutError("GitHub metadata retry budget exhausted")
+        try:
+            with opener(request, timeout=min(HTTP_REQUEST_TIMEOUT_SECONDS, remaining)) as response:
+                payload = response.read(2_000_001)
+            if clock() > deadline:
+                raise TimeoutError("GitHub metadata response exceeded retry budget")
+            if len(payload) > 2_000_000:
+                raise ValueError("GitHub response exceeded the bounded monitor payload")
+            return json.loads(payload)
+        except urllib.error.HTTPError as error:
+            delay = retry_delay(error, attempt, wall_time)
+            error.close()
+            if delay is None:
+                raise
+            failure = error
+        except (TimeoutError, ConnectionError, urllib.error.URLError) as error:
+            if isinstance(error, urllib.error.URLError) and not isinstance(error.reason, (TimeoutError, ConnectionError)):
+                raise
+            delay, failure = 2 ** attempt, error
+        remaining = deadline - clock()
+        if attempt + 1 == HTTP_ATTEMPTS or delay >= remaining:
+            raise failure
+        print(f"GitHub metadata retry {attempt + 2}/{HTTP_ATTEMPTS} after {type(failure).__name__}; "
+              f"waiting {delay:g}s", file=sys.stderr)
+        pause(delay)
+    raise AssertionError("Unreachable retry state")
 
 
 def github_history(config, fetch=fetch_json):
