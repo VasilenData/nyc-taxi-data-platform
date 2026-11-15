@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore a verified historical NYC taxi sample by date and borough. Compare periods and download exactly the rows you see.">
+  <title>NYC Taxi · Sample explorer</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+<div class="shell">
+  <header><a class="brand" href="https://github.com/VasilenData/nyc-taxi-data-platform"><span class="brand-mark" aria-hidden="true">N</span> NYC TAXI <span class="brand-separator">/</span> DATA PLATFORM</a><a class="quiet" href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/ANALYST_GUIDE.md">Reproduce locally ↗</a></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow"><span class="dot"></span> HISTORICAL SAMPLE · JAN–FEB 2023</p><h1>Explore the trips.<br><span>Keep the evidence.</span></h1><p class="lead">Compare observed taxi activity by pickup date and borough.<br class="desktop"> Every result comes from one verified, downloadable snapshot.</p></div><aside class="scope-card"><span class="small-label">THE DATA YOU ARE EXPLORING</span><strong>30,000 <span>source rows</span></strong><p>Two bundled TLC extracts, not complete monthly files. A convenience sample, unsuitable for citywide demand estimates.</p><a href="#evidence">See coverage &amp; exclusions ↓</a></aside></section>
+    <div id="loading" class="notice" role="status">Loading and verifying the sample release…</div>
+    <div id="error" class="notice error" role="alert" hidden></div>
+    <form id="filters" class="filters" aria-label="Explore sample" hidden>
+      <fieldset><legend>01 <span>Current period</span></legend><div class="date-pair"><label>From<input required type="date" name="start" value="2023-01-01"></label><label>Through<input required type="date" name="end" value="2023-01-31"></label></div></fieldset>
+      <fieldset><legend>02 <span>Compare with</span></legend><div class="date-pair"><label>From<input required type="date" name="compareStart" value="2023-02-01"></label><label>Through<input required type="date" name="compareEnd" value="2023-02-28"></label></div></fieldset>
+      <fieldset class="borough-field"><legend>03 <span>Pickup borough</span></legend><label class="sr-only" for="borough">Pickup borough</label><select id="borough" name="borough"></select></fieldset>
+      <div class="actions"><button class="primary" type="submit">Apply filters <span aria-hidden="true">↗</span></button><button id="reset" type="button" class="text-button">Reset</button></div>
+    </form>
+    <section id="results" tabindex="-1" hidden>
+      <div class="section-heading"><div><p class="eyebrow">YOUR SELECTION</p><h2 id="selection-title"></h2></div><button id="share" class="secondary" type="button">Copy share link</button></div>
+      <div id="share-panel" class="share-panel" hidden><label for="share-url">Share this exact selection</label><input id="share-url" type="url" readonly aria-describedby="share-hint"><span id="share-hint" class="footnote">Copy this URL to keep the dates, comparison, borough and release identity.</span></div>
+      <p id="period-caption" class="muted"></p>
+      <div id="summary" class="summary" aria-live="polite"></div>
+      <p id="comparison-note" class="footnote"></p>
+      <div class="analysis-grid"><section class="panel"><div class="panel-title"><h3>Where the sample picked up</h3><span class="chip">CURRENT PERIOD</span></div><p class="muted">Observed valid trips, by pickup borough</p><div id="bars"></div></section><section class="panel insight"><span class="small-label">READ THIS RESULT CORRECTLY</span><h3>Observation is not<br>the whole city.</h3><p id="coverage-note"></p><p>Missing dates and boroughs mean no observed valid sample rows. They do not establish zero activity. Period totals are not normalized by days.</p><a href="data/metric-dictionary.json">Read the metric dictionary ↗</a></section></div>
+      <section class="panel table-panel"><div class="panel-title"><div><h3>Daily borough detail</h3><p class="muted" id="table-caption"></p></div><div class="downloads"><button id="csv" class="secondary" type="button">Download filtered CSV ↓</button><button id="json" class="text-button" type="button">JSON ↓</button></div></div><div class="table-scroll" tabindex="0" aria-label="Daily borough results"><table><caption class="sr-only">Current period observed daily-borough rows</caption><thead><tr><th scope="col">Pickup date</th><th scope="col">Pickup borough</th><th scope="col" class="numeric">Valid trips</th><th scope="col" class="numeric">Recorded total amount (USD)</th></tr></thead><tbody id="rows"></tbody></table></div><p id="empty" class="notice" hidden>No observed sample rows in this selection. Try January 1 or February 1, 2023, or another borough. This is missing coverage, not measured zero demand.</p></section>
+    </section>
+    <section id="evidence" class="evidence"><div><p class="eyebrow">TRACEABLE BY DESIGN</p><h2>A small sample.<br>A complete audit trail.</h2><p class="muted">Historical public TLC records. Local computation. Static downloads.<br>No credentials, backend or cloud query required.</p></div><div class="evidence-details"><dl id="quality"></dl><details><summary>Coverage and exclusion rules</summary><p id="scope-description"></p><p>Pickups use the source’s NYC local civil time. Source-month duplicates are quarantined by trip identity. Invalid timestamps, durations, distances, fares, zones and nonfinite values are excluded; the first failing rule is recorded. Unknown and EWR lookup categories are retained when valid.</p><p>Recorded total amount is sum(total_amount), including recorded fare, taxes, tolls, tips and other components. It is not net earnings. This explorer does not filter the separate weekday/hour mart.</p></details><div class="evidence-links"><a href="data/manifest.json">Release manifest ↗</a><a href="data/quality-coverage.json">Quality &amp; coverage ↗</a><a href="data/daily-borough.parquet">Full sample Parquet ↓</a><a href="data/daily-borough.csv">Full sample CSV ↓</a><a href="data/data.json">Full sample JSON ↓</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform">Code &amp; checks ↗</a></div><p class="footnote" id="release"></p></div></section>
+  </main>
+  <footer><span>NYC TAXI DATA PLATFORM</span><span>Historical data. Visible limits. Reproducible results.</span></footer>
+</div>
+<script type="module" src="app.mjs"></script>
+</body></html>
