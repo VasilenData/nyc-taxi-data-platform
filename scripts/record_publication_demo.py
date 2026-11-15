@@ -48,9 +48,18 @@ def candidate(con, size, value):
     con.execute("create or replace table build.stg_trips as select *, ? value from raw.trips", [value])
     con.execute("create or replace table build.trips_quarantine as select * from build.stg_trips where false")
     con.execute("""create or replace table build.fct_trips as
-        select _source_month source_month, ? value from raw.trips""", [value])
-    for table in ("mart_daily_borough", "mart_hourly_demand"):
-        con.execute(f'create or replace table build."{table}" as select ? trips, ? value', [size, value])
+        select _source_month source_month, ? value, date '2023-01-01' pickup_date,
+            'Test borough' pickup_borough, 7 pickup_dow, 10 pickup_hour,
+            ?::double total_amount, ?::double fare_amount, 3.0::double distance_miles,
+            12.0::double duration_min, null::double tip_pct, 15.0::double avg_speed_mph
+        from raw.trips""", [value, value, value])
+    con.execute("""create or replace table build.mart_daily_borough as
+        select date '2023-01-01' pickup_date, 'Test borough' pickup_borough, ? trips,
+            ? value, ?::double revenue, ?::double avg_fare, 3.0::double avg_distance_miles,
+            12.0::double avg_duration_min, null::double avg_tip_pct""", [size, value, size * value, value])
+    con.execute("""create or replace table build.mart_hourly_demand as
+        select 7 pickup_dow, 10 pickup_hour, ? trips, ? value,
+            15.0::double avg_speed_mph, ?::double avg_fare""", [size, value, value])
     con.execute("""create or replace table build.mart_data_quality as
         select '2023-01' source_month, 0 rejected_rows, ? raw_rows""", [size])
 
@@ -168,7 +177,8 @@ def record(output):
                 "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                 "runtime": {"python": platform.python_version(), "duckdb": duckdb.__version__, "platform": platform.system()},
                 "source_sha256": {name: sha((ROOT / name).read_bytes()) for name in (
-                    "taxi_platform/publication.py", "taxi_platform/quality.py", "tests/test_publication.py", "scripts/record_publication_demo.py")},
+                    "taxi_platform/publication.py", "taxi_platform/quality.py", "taxi_platform/mart_contract.py",
+                    "tests/test_publication.py", "scripts/record_publication_demo.py")},
                 "teaching_copy_sha256": {"broken": sha(broken.encode()), "fixed": sha(original.encode())},
                 "broken": broken_result, "fixed": fixed_result, "steps": steps}
     (output / "evidence.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")

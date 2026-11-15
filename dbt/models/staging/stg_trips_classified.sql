@@ -65,6 +65,16 @@ classified as (
                 then 'implausible_duration'
             when strftime(tpep_pickup_datetime, '%Y-%m') <> _source_month
                 then 'out_of_period'
+            -- NaN compares greater than finite values in DuckDB, so lower-bound
+            -- checks alone do not protect financial sums. Preserve null policy;
+            -- quarantine only non-null NaN/infinities across consumed measures.
+            when (passenger_count is not null and not isfinite(passenger_count))
+              or (trip_distance is not null and not isfinite(trip_distance))
+              or (fare_amount is not null and not isfinite(fare_amount))
+              or (tip_amount is not null and not isfinite(tip_amount))
+              or (tolls_amount is not null and not isfinite(tolls_amount))
+              or (total_amount is not null and not isfinite(total_amount))
+                then 'non_finite_value'
             when trip_distance is null or trip_distance <= 0 or trip_distance > {{ var('max_trip_miles') }}
                 then 'bad_distance'
             when fare_amount is null or fare_amount < 0 or total_amount is null or total_amount <= 0

@@ -9,24 +9,7 @@ import duckdb
 import pytest
 
 from taxi_platform.publication import TABLES, publish
-
-
-def candidate(con, size, value):
-    con.execute("create schema if not exists raw")
-    con.execute("create schema if not exists build")
-    con.execute("""create or replace table raw.trips as select '2023-01' _source_month,
-        'exercise.parquet' _source_file, timestamp '2023-01-01' _loaded_at from range(?)""", [size])
-    for table in TABLES:
-        con.execute(f'create or replace table build."{table}" as select ? value from range(?)', [value, size])
-    con.execute("""create or replace table build.stg_trips as
-        select *, ? value from raw.trips""", [value])
-    con.execute("create or replace table build.trips_quarantine as select * from build.stg_trips where false")
-    con.execute("""create or replace table build.fct_trips as
-        select _source_month source_month, ? value from raw.trips""", [value])
-    for table in ("mart_daily_borough", "mart_hourly_demand"):
-        con.execute(f'create or replace table build."{table}" as select ? trips, ? value', [size, value])
-    con.execute("""create or replace table build.mart_data_quality as
-        select '2023-01' source_month, 0 rejected_rows, ? raw_rows""", [size])
+from scripts.record_publication_demo import candidate
 
 
 def snapshot(con):

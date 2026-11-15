@@ -141,9 +141,14 @@ def benchmark(args):
         raise ValueError("Baseline must be a full immutable Git commit")
     # Relative imports use current helpers: prove they are unchanged from baseline.
     dependencies = ("taxi_platform/config.py", "taxi_platform/ingest.py", "taxi_platform/quality.py",
-                    "taxi_platform/revision.py")
+                    "taxi_platform/revision.py", "taxi_platform/mart_contract.py")
     for path in dependencies:
-        original = subprocess.check_output(["git", "show", f"{args.baseline}:{path}"], cwd=ROOT)
+        try:
+            original = subprocess.check_output(["git", "show", f"{args.baseline}:{path}"], cwd=ROOT,
+                                               stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError as exc:
+            raise ValueError(f"Baseline lacks current validation helper: {path}; "
+                             "use a baseline with the same validation contract") from exc
         if original.replace(b"\r\n", b"\n") != (ROOT / path).read_bytes().replace(b"\r\n", b"\n"):
             raise ValueError(f"Baseline helper changed: {path}")
     baseline = subprocess.check_output(["git", "show", f"{args.baseline}:taxi_platform/publication.py"], cwd=ROOT)
