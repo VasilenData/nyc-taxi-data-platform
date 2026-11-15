@@ -14,6 +14,9 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-dev.txt
       - run: pip install -r requirements-dev.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Lint
         run: ruff check .
       - name: Parse dbt project
@@ -32,6 +35,15 @@ jobs:
           if-no-files-found: warn
       - name: Tests
         run: pytest -q --junitxml="${{ runner.temp }}/tests/results.xml"
+      - name: Keep and query the documented sample, then verify the same snapshot on rerun
+        run: |
+          python -m taxi_platform.sample
+          python -m taxi_platform.query boroughs
+          python -m taxi_platform.query quality
+          python -m taxi_platform.sample
+          python -m taxi_platform.analyst verify data/sample-workspace/analyst
+      - name: Verify published analyst bytes, URL filters and exact exports
+        run: node --test tests/explorer.test.mjs
       - name: Reproduce the teaching failure, transaction repair and recovery
         run: python scripts/record_publication_demo.py --output "${{ runner.temp }}/recovery-demo"
       - name: Retain the recovery walkthrough evidence
